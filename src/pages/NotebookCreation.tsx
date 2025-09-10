@@ -1,28 +1,27 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
-import { BookOpen, ArrowLeft, Plus, Trash2, MoreVertical } from "lucide-react";
+import { BookOpen, Plus, Search } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useProjects } from "@/contexts/ProjectContext";
+import { ProjectHeader } from "@/components/ProjectHeader";
+import { NotebookCard } from "@/components/NotebookCard";
+import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
+import { NotebookListSkeleton } from "@/components/skeletons/NotebookSkeleton";
 
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
   const [deleteDialog, setDeleteDialog] = useState({ open: false, notebookId: "", notebookName: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { toast } = useToast();
@@ -32,7 +31,11 @@ const NotebookCreation = () => {
   const currentProject = projects.find(p => p.id === projectId);
   const notebooks = currentProject?.notebooks || [];
 
-  const handleCreateNotebook = () => {
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleCreateNotebook = async () => {
     if (!notebookName.trim()) {
       toast({
         title: "Error",
@@ -42,25 +45,40 @@ const NotebookCreation = () => {
       return;
     }
 
-    // Add new notebook using context
-    const newNotebook = {
-      id: `notebook_${Date.now()}`,
-      name: notebookName,
-      updatedAt: "Just created"
-    };
-    addNotebook(projectId!, newNotebook);
+    setIsLoading(true);
 
-    toast({
-      title: "Notebook Created",
-      description: `${notebookName} has been created successfully!`
-    });
+    try {
+      // Simulate creation delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Clear form
-    setNotebookName("");
-    setNotebookDescription("");
+      // Add new notebook using context
+      const newNotebook = {
+        id: `notebook_${Date.now()}`,
+        name: notebookName,
+        updatedAt: "Just created"
+      };
+      addNotebook(projectId!, newNotebook);
 
-    // Navigate to the notebook interface
-    navigate(`/project/${projectId}/notebook`);
+      toast({
+        title: "Notebook Created",
+        description: `${notebookName} has been created successfully!`
+      });
+
+      // Clear form
+      setNotebookName("");
+      setNotebookDescription("");
+
+      // Navigate to the notebook interface
+      navigate(`/project/${projectId}/notebook`);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create notebook. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDeleteNotebook = (notebookId: string, notebookName: string) => {
@@ -77,148 +95,179 @@ const NotebookCreation = () => {
     setDeleteDialog({ open: false, notebookId: "", notebookName: "" });
   };
 
-  const handleBackToProjects = () => {
-    navigate("/");
-  };
+  if (!currentProject) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <Header />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-8">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
+              <p className="text-muted-foreground mt-2">The project you're looking for doesn't exist.</p>
+              <Button onClick={() => navigate("/")} className="mt-4">
+                Back to Projects
+              </Button>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="w-full max-w-3xl mx-auto">
-            <Button 
-              variant="ghost" 
-              onClick={handleBackToProjects}
-              className="mb-6"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Projects
-            </Button>
-
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
-                <BookOpen className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">Create Notebook</h1>
-              <p className="text-lg text-muted-foreground">
-                Project ID: {projectId}
-              </p>
-            </div>
-
-            {/* Existing Notebooks - only show if there are notebooks */}
-            {notebooks.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4 text-center">Existing Notebooks</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  {notebooks.map((notebook) => (
-                    <Card key={notebook.id} className="bg-card/50 border-border hover:bg-card/70 transition-colors">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${projectId}/notebook`)}>
-                            <h3 className="font-semibold">{notebook.name}</h3>
-                            <p className="text-sm text-muted-foreground">{notebook.updatedAt}</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Button variant="ghost" size="sm" asChild>
-                              <Link to={`/project/${projectId}/notebook`}>Open</Link>
-                            </Button>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreVertical className="w-4 h-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem
-                                  onClick={() => handleDeleteNotebook(notebook.id, notebook.name)}
-                                  className="text-destructive"
-                                >
-                                  <Trash2 className="w-4 h-4 mr-2" />
-                                  Delete Notebook
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <Card className="bg-card/80 backdrop-blur-sm border-border">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl">New Analysis Notebook</CardTitle>
-                <CardDescription>
-                  Create a notebook to organize your data analysis workflow
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="notebook-name">Notebook Name</Label>
-                  <Input
-                    id="notebook-name"
-                    placeholder="Enter notebook name..."
-                    value={notebookName}
-                    onChange={(e) => setNotebookName(e.target.value)}
-                    className="text-lg"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="notebook-description">Description (Optional)</Label>
-                  <Textarea
-                    id="notebook-description"
-                    placeholder="Describe your analysis goals..."
-                    value={notebookDescription}
-                    onChange={(e) => setNotebookDescription(e.target.value)}
-                    rows={4}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleBackToProjects}
-                    className="text-lg py-6"
-                  >
-                    Cancel
-                  </Button>
-                  <Button 
-                    onClick={handleCreateNotebook}
-                    className="text-lg py-6"
-                  >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Create Notebook
+        <div className="flex-1 flex flex-col">
+          <ProjectHeader project={currentProject} />
+          
+          <main className="flex-1 p-8">
+            <div className="w-full max-w-6xl mx-auto space-y-8">
+              
+              {/* Notebooks Section */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">Notebooks</h2>
+                    <p className="text-muted-foreground">
+                      Organize your analysis workflows with notebooks
+                    </p>
+                  </div>
+                  <Button onClick={scrollToForm} className="gap-2">
+                    <Plus className="w-4 h-4" />
+                    New Notebook
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
 
-            <div className="mt-8 p-6 bg-card/50 rounded-lg border-border border">
-              <h3 className="font-semibold mb-2">What you can do in a notebook:</h3>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Upload and manage your datasets</li>
-                <li>• Profile and explore your data</li>
-                <li>• Generate hypotheses and insights</li>
-                <li>• Perform statistical analysis</li>
-                <li>• Create comprehensive reports</li>
-              </ul>
+                {/* Notebooks List */}
+                {notebooks.length === 0 ? (
+                  <NoNotebooksState onCreateNotebook={scrollToForm} />
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {notebooks.map((notebook) => (
+                      <NotebookCard
+                        key={notebook.id}
+                        notebook={notebook}
+                        projectId={projectId!}
+                        onDelete={handleDeleteNotebook}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Create New Notebook Form */}
+              <div ref={formRef} className="scroll-mt-8">
+                <Card className="bg-card/80 backdrop-blur-sm border-border">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
+                        <BookOpen className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-xl">Create New Notebook</CardTitle>
+                        <CardDescription>
+                          Set up a new analysis environment for your data
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="notebook-name">Notebook Name *</Label>
+                        <Input
+                          id="notebook-name"
+                          placeholder="e.g., Customer Analysis, Sales Report..."
+                          value={notebookName}
+                          onChange={(e) => setNotebookName(e.target.value)}
+                          disabled={isLoading}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="notebook-description">Description</Label>
+                        <Textarea
+                          id="notebook-description"
+                          placeholder="Describe your analysis goals and objectives..."
+                          value={notebookDescription}
+                          onChange={(e) => setNotebookDescription(e.target.value)}
+                          rows={3}
+                          disabled={isLoading}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end gap-3">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => navigate("/")}
+                        disabled={isLoading}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={handleCreateNotebook}
+                        disabled={isLoading || !notebookName.trim()}
+                        className="gap-2"
+                      >
+                        <Plus className="w-4 h-4" />
+                        {isLoading ? "Creating..." : "Create Notebook"}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Info Section */}
+              <Card className="bg-muted/30 border-muted">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold mb-3 text-foreground">Notebook Capabilities</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <span>Upload and manage datasets</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <span>Data profiling and exploration</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <span>Statistical analysis tools</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <span>Hypothesis generation</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <span>Interactive visualizations</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <span>Comprehensive reporting</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <DeleteConfirmDialog
+                open={deleteDialog.open}
+                onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
+                onConfirm={confirmDeleteNotebook}
+                title="Delete Notebook"
+                description="Are you sure you want to delete"
+                itemName={deleteDialog.notebookName}
+              />
             </div>
-
-            <DeleteConfirmDialog
-              open={deleteDialog.open}
-              onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
-              onConfirm={confirmDeleteNotebook}
-              title="Delete Notebook"
-              description="Are you sure you want to delete"
-              itemName={deleteDialog.notebookName}
-            />
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
   );
