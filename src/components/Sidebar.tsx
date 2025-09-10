@@ -191,8 +191,8 @@ const Sidebar = () => {
         )}
       </div>
 
-      {/* Navigation */}
-      {projectId && (
+      {/* Navigation - only show when in notebook context */}
+      {projectId && location.pathname.includes('/notebook') && (
         <nav className="flex-1 p-4 space-y-1 bg-[#e9eef2] rounded-lg">
           {navigationItems.map((item, index) => {
           const isActive = location.pathname === item.path;
