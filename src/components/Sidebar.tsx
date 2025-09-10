@@ -16,7 +16,6 @@ const Sidebar = () => {
   const location = useLocation();
   
   const navigationItems = [
-    { icon: Zap, label: "Example project name", path: "/" },
     { icon: Upload, label: "data upload", path: "/data-upload" },
     { icon: BarChart3, label: "data profiling", path: "/data-profiling" },
     { icon: FileText, label: "data description", path: "/data-description" },
