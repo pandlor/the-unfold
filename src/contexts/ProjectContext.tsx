@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 export interface Notebook {
   id: string;
@@ -86,7 +87,7 @@ const initialProjects: Project[] = [
 ];
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useLocalStorage<Project[]>('dataminder-projects', initialProjects);
 
   const addProject = (newProject: Omit<Project, 'notebooks'>) => {
     const project: Project = {

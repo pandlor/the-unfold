@@ -2,12 +2,13 @@ import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
+import { ProgressTracker } from "@/components/ProgressTracker";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Plus, Trash2, Save } from "lucide-react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 interface Hypothesis {
   id: number;
@@ -15,6 +16,7 @@ interface Hypothesis {
 }
 
 const Hypotheses = () => {
+  const { toast } = useToast();
   const [hypotheses, setHypotheses] = useState<Hypothesis[]>([
     { id: 1, content: "" }
   ]);
@@ -28,7 +30,11 @@ const Hypotheses = () => {
     if (hypotheses.length > 1) {
       setHypotheses(hypotheses.filter(h => h.id !== id));
     } else {
-      toast.error("You must have at least one hypothesis");
+      toast({
+        title: "Cannot remove hypothesis",
+        description: "You must have at least one hypothesis",
+        variant: "destructive",
+      });
     }
   };
 
@@ -41,10 +47,17 @@ const Hypotheses = () => {
   const saveHypotheses = () => {
     const filledHypotheses = hypotheses.filter(h => h.content.trim());
     if (filledHypotheses.length === 0) {
-      toast.error("Please write at least one hypothesis before saving");
+      toast({
+        title: "No hypotheses to save",
+        description: "Please write at least one hypothesis before saving",
+        variant: "destructive",
+      });
       return;
     }
-    toast.success(`Saved ${filledHypotheses.length} hypothesis${filledHypotheses.length > 1 ? 'es' : ''}`);
+    toast({
+      title: "Hypotheses saved",
+      description: `Saved ${filledHypotheses.length} hypothesis${filledHypotheses.length > 1 ? 'es' : ''}`,
+    });
   };
 
   return (
@@ -55,6 +68,7 @@ const Hypotheses = () => {
         <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
+            <ProgressTracker />
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-3xl font-bold text-foreground">Hypotheses</h1>
               <Button onClick={saveHypotheses} className="gap-2">
