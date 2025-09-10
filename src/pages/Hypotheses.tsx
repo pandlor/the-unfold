@@ -2,7 +2,6 @@ import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
-import { ProgressTracker } from "@/components/ProgressTracker";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -68,7 +67,6 @@ const Hypotheses = () => {
         <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
-            <ProgressTracker />
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-3xl font-bold text-foreground">Hypotheses</h1>
               <Button onClick={saveHypotheses} className="gap-2">

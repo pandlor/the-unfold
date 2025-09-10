@@ -1,7 +1,6 @@
 import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
-import { ProgressTracker } from "@/components/ProgressTracker";
 
 const DataProfiling = () => {
   return (
@@ -12,7 +11,6 @@ const DataProfiling = () => {
         <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
-            <ProgressTracker />
               <h1 className="text-3xl font-bold text-foreground mb-6">Data Profiling</h1>
               <div className="bg-card border border-border rounded-lg p-6">
                 <p className="text-muted-foreground mb-4">

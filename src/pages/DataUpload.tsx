@@ -2,7 +2,6 @@ import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { FileUpload } from "@/components/FileUpload";
-import { ProgressTracker } from "@/components/ProgressTracker";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,7 +33,6 @@ const DataUpload = () => {
         <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
-            <ProgressTracker />
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">Data Upload</h1>

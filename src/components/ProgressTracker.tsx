@@ -30,48 +30,39 @@ export const ProgressTracker = () => {
   const currentStepIndex = getCurrentStepIndex();
 
   return (
-    <div className="bg-card border border-border rounded-lg p-4 mb-6">
-      <h3 className="text-sm font-medium text-muted-foreground mb-4">Analysis Progress</h3>
-      <div className="flex items-center space-x-2">
+    <div className="bg-muted/30 rounded-lg p-3">
+      <h3 className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">Progress</h3>
+      <div className="space-y-2">
         {steps.map((step, index) => {
           const isCompleted = index < currentStepIndex;
           const isCurrent = index === currentStepIndex;
           
           return (
-            <div key={step.id} className="flex items-center">
-              <div className="flex items-center space-x-2">
-                <div
-                  className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium",
-                    isCompleted && "bg-accent text-accent-foreground",
-                    isCurrent && "bg-primary text-primary-foreground",
-                    !isCompleted && !isCurrent && "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {isCompleted ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Circle className="w-4 h-4" />
-                  )}
-                </div>
-                <span
-                  className={cn(
-                    "text-xs font-medium hidden sm:inline",
-                    isCurrent && "text-foreground",
-                    !isCurrent && "text-muted-foreground"
-                  )}
-                >
-                  {step.label}
-                </span>
+            <div key={step.id} className="flex items-center space-x-3">
+              <div
+                className={cn(
+                  "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
+                  isCompleted && "bg-accent text-accent-foreground",
+                  isCurrent && "bg-primary text-primary-foreground",
+                  !isCompleted && !isCurrent && "bg-border text-muted-foreground"
+                )}
+              >
+                {isCompleted ? (
+                  <Check className="w-3 h-3" />
+                ) : (
+                  <Circle className="w-3 h-3" />
+                )}
               </div>
-              {index < steps.length - 1 && (
-                <div
-                  className={cn(
-                    "h-px w-8 mx-2",
-                    isCompleted ? "bg-accent" : "bg-border"
-                  )}
-                />
-              )}
+              <span
+                className={cn(
+                  "text-sm",
+                  isCurrent && "text-foreground font-medium",
+                  isCompleted && "text-muted-foreground",
+                  !isCompleted && !isCurrent && "text-muted-foreground"
+                )}
+              >
+                {step.label}
+              </span>
             </div>
           );
         })}

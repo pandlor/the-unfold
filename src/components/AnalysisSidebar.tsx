@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Upload, BarChart3, FileText, Lightbulb, Activity, FileBarChart } from "lucide-react";
+import { Upload, BarChart3, FileText, Target, TrendingUp, FileOutput } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { ProgressTracker } from "@/components/ProgressTracker";
 
 const AnalysisSidebar = () => {
   const location = useLocation();
@@ -9,64 +10,70 @@ const AnalysisSidebar = () => {
   const navigationItems = [
     {
       icon: Upload,
-      label: "data upload",
+      label: "Data Upload",
       path: `/project/${projectId}/notebook/data-upload`
     },
     {
       icon: BarChart3,
-      label: "data profiling",
+      label: "Data Profiling",
       path: `/project/${projectId}/notebook/data-profiling`
     },
     {
       icon: FileText,
-      label: "data description",
+      label: "Data Description",
       path: `/project/${projectId}/notebook/data-description`
     },
     {
-      icon: Lightbulb,
-      label: "hypotheses",
+      icon: Target,
+      label: "Hypotheses",
       path: `/project/${projectId}/notebook/hypotheses`
     },
     {
-      icon: Activity,
-      label: "analysis",
+      icon: TrendingUp,
+      label: "Analysis",
       path: `/project/${projectId}/notebook/analysis`
     },
     {
-      icon: FileBarChart,
-      label: "report",
+      icon: FileOutput,
+      label: "Report",
       path: `/project/${projectId}/notebook/report`
     }
   ];
 
   return (
-    <aside className="w-48 bg-muted/30 border-r border-border flex flex-col">
-      <div className="p-4 border-b border-border">
-        <h3 className="text-sm font-medium text-foreground">Analysis Steps</h3>
+    <aside className="w-64 bg-card border-r border-border p-4 flex flex-col">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-foreground mb-4">Analysis Workflow</h2>
+        
+        {/* Progress Tracker */}
+        <div className="mb-6">
+          <ProgressTracker />
+        </div>
+        
+        {/* Navigation Items */}
+        <nav className="space-y-2">
+          {navigationItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Button
+                key={index}
+                variant={isActive ? "secondary" : "ghost"}
+                className={`w-full justify-start text-sm font-normal ${
+                  isActive
+                    ? "bg-primary/10 text-primary hover:bg-primary/15"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+                asChild
+              >
+                <Link to={item.path}>
+                  <item.icon className="w-4 h-4 mr-3" />
+                  {item.label}
+                </Link>
+              </Button>
+            );
+          })}
+        </nav>
       </div>
-      
-      <nav className="flex-1 p-3 space-y-1">
-        {navigationItems.map((item, index) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <Button
-              key={index}
-              variant={isActive ? "secondary" : "ghost"}
-              className={`w-full justify-start text-sm font-normal ${
-                isActive
-                  ? "bg-primary/10 text-primary hover:bg-primary/15"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              }`}
-              asChild
-            >
-              <Link to={item.path}>
-                <item.icon className="w-4 h-4 mr-3" />
-                {item.label}
-              </Link>
-            </Button>
-          );
-        })}
-      </nav>
     </aside>
   );
 };
