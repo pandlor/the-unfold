@@ -21,8 +21,25 @@ const Header = () => {
   const currentProject = projects.find(p => p.id === projectId);
   const projectName = currentProject?.name || `Project ${projectId}`;
 
-  // Since the current routing doesn't specify which notebook, show generic label
-  const notebookName = "Current Notebook";
+  // Get the current notebook name based on the active notebook
+  const getCurrentNotebookName = () => {
+    if (!currentProject) return "Notebook";
+    
+    // If there's a currentNotebookId, use that notebook's name
+    if (currentProject.currentNotebookId) {
+      const currentNotebook = currentProject.notebooks.find(nb => nb.id === currentProject.currentNotebookId);
+      if (currentNotebook) return currentNotebook.name;
+    }
+    
+    // Otherwise, use the most recently created notebook (first in array)
+    if (currentProject.notebooks.length > 0) {
+      return currentProject.notebooks[0].name;
+    }
+    
+    return "New Notebook";
+  };
+
+  const notebookName = getCurrentNotebookName();
 
   // Analysis step mapping
   const analysisSteps: Record<string, { label: string; icon: any }> = {

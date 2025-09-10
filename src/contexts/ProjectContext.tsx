@@ -12,6 +12,7 @@ export interface Project {
   name: string;
   updatedAt: string;
   notebooks: Notebook[];
+  currentNotebookId?: string; // Track which notebook is currently active
 }
 
 interface ProjectContextType {
@@ -21,6 +22,7 @@ interface ProjectContextType {
   addNotebook: (projectId: string, notebook: Notebook) => void;
   deleteNotebook: (projectId: string, notebookId: string) => void;
   updateProject: (projectId: string, updates: Partial<Project>) => void;
+  setCurrentNotebook: (projectId: string, notebookId: string) => void;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -104,7 +106,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const addNotebook = (projectId: string, notebook: Notebook) => {
     setProjects(prev => prev.map(project => 
       project.id === projectId 
-        ? { ...project, notebooks: [notebook, ...project.notebooks] }
+        ? { 
+            ...project, 
+            notebooks: [notebook, ...project.notebooks],
+            currentNotebookId: notebook.id // Set the new notebook as current
+          }
         : project
     ));
   };
@@ -125,6 +131,14 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     ));
   };
 
+  const setCurrentNotebook = (projectId: string, notebookId: string) => {
+    setProjects(prev => prev.map(project => 
+      project.id === projectId 
+        ? { ...project, currentNotebookId: notebookId }
+        : project
+    ));
+  };
+
   return (
     <ProjectContext.Provider value={{
       projects,
@@ -132,7 +146,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       deleteProject,
       addNotebook,
       deleteNotebook,
-      updateProject
+      updateProject,
+      setCurrentNotebook
     }}>
       {children}
     </ProjectContext.Provider>

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { BookOpen, MoreVertical, Trash2, Clock, ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { Notebook } from "@/contexts/ProjectContext";
+import { Notebook, useProjects } from "@/contexts/ProjectContext";
 
 interface NotebookCardProps {
   notebook: Notebook;
@@ -19,9 +19,12 @@ interface NotebookCardProps {
 
 export const NotebookCard = ({ notebook, projectId, onDelete }: NotebookCardProps) => {
   const navigate = useNavigate();
+  const { setCurrentNotebook } = useProjects();
 
   const handleCardClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    // Set this notebook as current when clicked
+    setCurrentNotebook(projectId, notebook.id);
     navigate(`/project/${projectId}/notebook`);
   };
 
@@ -30,7 +33,7 @@ export const NotebookCard = ({ notebook, projectId, onDelete }: NotebookCardProp
   };
 
   return (
-    <Link to={`/project/${projectId}/notebook`} className="block">
+    <div onClick={handleCardClick} className="block cursor-pointer">
       <Card className="group hover:shadow-md transition-all duration-200 cursor-pointer hover:border-primary/20 bg-card/50 backdrop-blur-sm">
         <CardContent className="p-6">
           <div className="flex items-start justify-between">
@@ -81,6 +84,6 @@ export const NotebookCard = ({ notebook, projectId, onDelete }: NotebookCardProp
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   );
 };
