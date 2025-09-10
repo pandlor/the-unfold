@@ -67,10 +67,11 @@ const AnalysisSidebar = () => {
                 <div
                   className={cn(
                     "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
-                    isCompleted && "bg-accent text-accent-foreground",
+                    isCompleted && "text-white",
                     isCurrent && "bg-primary text-primary-foreground", 
                     !isCompleted && !isCurrent && "bg-border text-muted-foreground"
                   )}
+                  style={isCompleted ? { backgroundColor: '#12d9b3' } : {}}
                 >
                   {isCompleted ? (
                     <Check className="w-3 h-3" />
