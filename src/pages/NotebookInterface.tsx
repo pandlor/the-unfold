@@ -1,13 +1,17 @@
 import Sidebar from "@/components/Sidebar";
 import ChatInterface from "@/components/ChatInterface";
+import Header from "@/components/Header";
 
 const NotebookInterface = () => {
   return (
-    <div className="min-h-screen bg-background flex">
-      <Sidebar />
-      <main className="flex-1">
-        <ChatInterface />
-      </main>
+    <div className="min-h-screen bg-background flex flex-col">
+      <Header />
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1">
+          <ChatInterface />
+        </main>
+      </div>
     </div>
   );
 };

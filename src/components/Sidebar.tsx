@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Upload, BarChart3, FileText, Lightbulb, Activity, FileBarChart, LogOut, Zap } from "lucide-react";
+import { Upload, BarChart3, FileText, Lightbulb, Activity, FileBarChart, LogOut, Zap, ArrowLeft, Home, BookOpen } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 const Sidebar = () => {
   const location = useLocation();
@@ -43,6 +43,22 @@ const Sidebar = () => {
             <div className="text-xs text-muted-foreground">ID: PRJ-2024-001</div>
           </div>
         </div>
+      </div>
+
+      {/* Quick Navigation */}
+      <div className="p-4 space-y-2 border-b border-dataminder-border">
+        <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
+          <Link to="/">
+            <Home className="w-3 h-3 mr-2" />
+            All Projects
+          </Link>
+        </Button>
+        <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
+          <Link to={`/project/${projectId}`}>
+            <BookOpen className="w-3 h-3 mr-2" />
+            Create Notebook
+          </Link>
+        </Button>
       </div>
 
       {/* Navigation */}

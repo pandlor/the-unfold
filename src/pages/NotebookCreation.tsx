@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
 import { BookOpen, ArrowLeft, Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
@@ -108,6 +109,26 @@ const NotebookCreation = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Existing Notebooks */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4 text-center">Existing Notebooks</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">Main Analysis</h3>
+                    <p className="text-sm text-muted-foreground">Last updated today</p>
+                  </div>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to={`/project/${projectId}/notebook`}>Open</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         <div className="mt-8 p-6 bg-card/50 rounded-lg border-border border">
           <h3 className="font-semibold mb-2">What you can do in a notebook:</h3>

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { Plus, Folder, BarChart3 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 const ProjectCreation = () => {
   const [projectName, setProjectName] = useState("");
@@ -87,6 +88,39 @@ const ProjectCreation = () => {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Recent Projects */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4 text-center">Recent Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">Sample Project 1</h3>
+                    <p className="text-sm text-muted-foreground">Created 2 days ago</p>
+                  </div>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/project/sample1">Open</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">Sample Project 2</h3>
+                    <p className="text-sm text-muted-foreground">Created 1 week ago</p>
+                  </div>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/project/sample2">Open</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           <Card className="bg-card/50 border-border">
