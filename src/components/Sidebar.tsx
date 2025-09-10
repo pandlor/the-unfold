@@ -12,6 +12,18 @@ const Sidebar = () => {
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
   const [openProjects, setOpenProjects] = useState<string[]>([projectId || ""]);
   const { projects } = useProjects();
+  
+  const currentProject = projects.find(p => p.id === projectId);
+  const getCurrentNotebookStep = () => {
+    const path = location.pathname;
+    if (path.includes('data-upload')) return 'Data Upload';
+    if (path.includes('data-profiling')) return 'Data Profiling';
+    if (path.includes('data-description')) return 'Data Description';
+    if (path.includes('hypotheses')) return 'Hypotheses';
+    if (path.includes('analysis')) return 'Analysis';
+    if (path.includes('report')) return 'Report';
+    return 'Notebook';
+  };
 
   const toggleProject = (projectIdToToggle: string) => {
     setOpenProjects(prev => prev.includes(projectIdToToggle) ? prev.filter(id => id !== projectIdToToggle) : [...prev, projectIdToToggle]);
@@ -89,11 +101,12 @@ const Sidebar = () => {
                   <Button variant="ghost" size="sm" onClick={() => toggleProject(project.id)} className="flex-shrink-0 w-6 h-6 p-0 ml-6">
                     {openProjects.includes(project.id) ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                   </Button>
-                  <Button variant="ghost" size="sm" className={`flex-1 justify-start text-xs pl-2 ${projectId === project.id ? "bg-primary/10 text-primary" : ""}`} asChild>
+                  <Button variant="ghost" size="sm" className={`flex-1 justify-start text-xs pl-2 ${projectId === project.id ? "bg-primary/10 text-primary border-l-2 border-primary" : ""}`} asChild>
                     <Link to={`/project/${project.id}`}>
                       <div className="flex flex-col items-start w-full">
                         <span className="font-medium truncate">{project.name}</span>
                         <span className="text-xs text-muted-foreground">{project.updatedAt}</span>
+                        {projectId === project.id && <span className="text-xs text-primary font-medium">• Active Project</span>}
                       </div>
                     </Link>
                   </Button>
@@ -120,14 +133,26 @@ const Sidebar = () => {
           </CollapsibleContent>
         </Collapsible>
 
-        {/* Notebook Navigation - only show when in notebook context */}
-        {projectId && (
-          <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
-            <Link to={`/project/${projectId}/notebook`}>
-              <BookOpen className="w-3 h-3 mr-2" />
-              Current Notebook
-            </Link>
-          </Button>
+        {/* Current Context - only show when in project context */}
+        {projectId && currentProject && (
+          <div className="space-y-1">
+            <div className="px-2 py-1 bg-muted/50 rounded-md">
+              <div className="text-xs text-muted-foreground">Current Project:</div>
+              <div className="text-xs font-medium text-primary truncate">{currentProject.name}</div>
+            </div>
+            {location.pathname.includes('/notebook') && (
+              <div className="px-2 py-1 bg-primary/10 rounded-md">
+                <div className="text-xs text-muted-foreground">Current Step:</div>
+                <div className="text-xs font-medium text-primary">{getCurrentNotebookStep()}</div>
+              </div>
+            )}
+            <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
+              <Link to={`/project/${projectId}/notebook`}>
+                <BookOpen className="w-3 h-3 mr-2" />
+                Go to Notebook
+              </Link>
+            </Button>
+          </div>
         )}
       </div>
     </aside>
