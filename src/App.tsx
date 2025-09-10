@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import ProjectCreation from "./pages/ProjectCreation";
 import NotebookCreation from "./pages/NotebookCreation";
@@ -27,7 +27,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<ProjectCreation />} />
           <Route path="/project/:projectId" element={<NotebookCreation />} />
-          <Route path="/project/:projectId/notebook" element={<NotebookInterface />} />
+          <Route path="/project/:projectId/notebook" element={<Navigate to="data-upload" replace />} />
           <Route path="/project/:projectId/notebook/data-upload" element={<DataUpload />} />
           <Route path="/project/:projectId/notebook/data-profiling" element={<DataProfiling />} />
           <Route path="/project/:projectId/notebook/data-description" element={<DataDescription />} />
