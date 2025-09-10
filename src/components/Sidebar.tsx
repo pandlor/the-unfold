@@ -10,16 +10,19 @@ import {
   LogOut,
   Zap
 } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
+  const location = useLocation();
+  
   const navigationItems = [
-    { icon: Zap, label: "Example project name", active: true },
-    { icon: Upload, label: "data upload" },
-    { icon: BarChart3, label: "data profiling" },
-    { icon: FileText, label: "data description" },
-    { icon: Lightbulb, label: "hypotheses" },
-    { icon: Activity, label: "analysis" },
-    { icon: FileBarChart, label: "report" },
+    { icon: Zap, label: "Example project name", path: "/" },
+    { icon: Upload, label: "data upload", path: "/data-upload" },
+    { icon: BarChart3, label: "data profiling", path: "/data-profiling" },
+    { icon: FileText, label: "data description", path: "/data-description" },
+    { icon: Lightbulb, label: "hypotheses", path: "/hypotheses" },
+    { icon: Activity, label: "analysis", path: "/analysis" },
+    { icon: FileBarChart, label: "report", path: "/report" },
   ];
 
   return (
@@ -39,20 +42,26 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
-        {navigationItems.map((item, index) => (
-          <Button
-            key={index}
-            variant={item.active ? "secondary" : "ghost"}
-            className={`w-full justify-start text-sm font-normal ${
-              item.active 
-                ? "bg-primary/10 text-primary hover:bg-primary/15" 
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <item.icon className="w-4 h-4 mr-3" />
-            {item.label}
-          </Button>
-        ))}
+        {navigationItems.map((item, index) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Button
+              key={index}
+              variant={isActive ? "secondary" : "ghost"}
+              className={`w-full justify-start text-sm font-normal ${
+                isActive 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+              asChild
+            >
+              <Link to={item.path}>
+                <item.icon className="w-4 h-4 mr-3" />
+                {item.label}
+              </Link>
+            </Button>
+          );
+        })}
         
         <div className="pt-2">
           <Button variant="ghost" className="w-full justify-start text-sm font-normal text-muted-foreground hover:text-foreground">
