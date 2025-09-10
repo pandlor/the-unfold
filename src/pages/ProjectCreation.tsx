@@ -99,59 +99,8 @@ const ProjectCreation = () => {
         <Sidebar />
         <main className="flex-1 p-8">
           <div className="max-w-6xl mx-auto">
-            <div className="mb-8" id="create-project-form">
-              <Card className="bg-card/80 backdrop-blur-sm border-border">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-2xl">Create New Project</CardTitle>
-                  <CardDescription>
-                    Start your data analysis journey by creating a new project
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="project-name">Project Name</Label>
-                    <Input 
-                      id="project-name" 
-                      placeholder="Enter project name..." 
-                      value={projectName} 
-                      onChange={e => setProjectName(e.target.value)} 
-                      className="text-lg" 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description (Optional)</Label>
-                    <Textarea 
-                      id="description" 
-                      placeholder="Describe your project..."
-                      value={projectDescription}
-                      onChange={e => setProjectDescription(e.target.value)}
-                      className="min-h-[100px]"
-                    />
-                  </div>
-                  
-                  <Button 
-                    onClick={handleCreateProject} 
-                    className="w-full"
-                    disabled={isCreating}
-                  >
-                    {isCreating ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                        Creating...
-                      </>
-                    ) : (
-                      <>
-                        <Plus className="w-4 h-4 mr-2" />
-                        Create Project
-                      </>
-                    )}
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mb-6">
+            {/* Recent Projects Section */}
+            <div className="mb-8">
               <h2 className="text-xl font-semibold text-foreground mb-4">Recent Projects</h2>
               {isLoading ? (
                 <ProjectListSkeleton count={6} />
@@ -211,6 +160,59 @@ const ProjectCreation = () => {
               ) : (
                 <NoProjectsState onCreateProject={scrollToForm} />
               )}
+            </div>
+
+            {/* Create New Project Section */}
+            <div id="create-project-form">
+              <Card className="bg-card/80 backdrop-blur-sm border-border">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl">Create New Project</CardTitle>
+                  <CardDescription>
+                    Start your data analysis journey by creating a new project
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="project-name">Project Name</Label>
+                    <Input 
+                      id="project-name" 
+                      placeholder="Enter project name..." 
+                      value={projectName} 
+                      onChange={e => setProjectName(e.target.value)} 
+                      className="text-lg" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description (Optional)</Label>
+                    <Textarea 
+                      id="description" 
+                      placeholder="Describe your project..."
+                      value={projectDescription}
+                      onChange={e => setProjectDescription(e.target.value)}
+                      className="min-h-[100px]"
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={handleCreateProject} 
+                    className="w-full"
+                    disabled={isCreating}
+                  >
+                    {isCreating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                        Creating...
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Project
+                      </>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </main>
