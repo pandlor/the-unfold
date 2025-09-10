@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -51,6 +52,7 @@ const Hypotheses = () => {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
+        <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-6">

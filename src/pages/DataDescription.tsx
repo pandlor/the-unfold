@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,6 +92,7 @@ const DataDescription = () => {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
+        <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold text-foreground mb-6">Data Description</h1>
