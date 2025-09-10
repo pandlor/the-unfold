@@ -10,13 +10,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-
 const ProjectCreation = () => {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const navigate = useNavigate();
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleCreateProject = () => {
     if (!projectName.trim()) {
       toast({
@@ -29,7 +29,6 @@ const ProjectCreation = () => {
 
     // Generate a simple project ID
     const projectId = `proj_${Date.now()}`;
-    
     toast({
       title: "Project Created",
       description: `${projectName} has been created successfully!`
@@ -38,9 +37,7 @@ const ProjectCreation = () => {
     // Navigate to notebook creation
     navigate(`/project/${projectId}`);
   };
-
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
+  return <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
@@ -97,31 +94,15 @@ const ProjectCreation = () => {
               <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="project-name">Project Name</Label>
-                  <Input
-                    id="project-name"
-                    placeholder="Enter project name..."
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                    className="text-lg"
-                  />
+                  <Input id="project-name" placeholder="Enter project name..." value={projectName} onChange={e => setProjectName(e.target.value)} className="text-lg" />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="project-description">Project Description</Label>
-                  <Textarea
-                    id="project-description"
-                    placeholder="Describe your project objectives..."
-                    value={projectDescription}
-                    onChange={(e) => setProjectDescription(e.target.value)}
-                    rows={4}
-                  />
+                  <Textarea id="project-description" placeholder="Describe your project objectives..." value={projectDescription} onChange={e => setProjectDescription(e.target.value)} rows={4} />
                 </div>
 
-                <Button 
-                  onClick={handleCreateProject}
-                  className="w-full text-lg py-6"
-                  size="lg"
-                >
+                <Button onClick={handleCreateProject} className="w-full text-lg py-6" size="lg">
                   <Plus className="w-5 h-5 mr-2" />
                   Create Project
                 </Button>
@@ -129,37 +110,7 @@ const ProjectCreation = () => {
             </Card>
 
             {/* Recent Projects */}
-            <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-4 text-center">Recent Projects</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">Sample Project 1</h3>
-                        <p className="text-sm text-muted-foreground">Created 2 days ago</p>
-                      </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to="/project/sample1">Open</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">Sample Project 2</h3>
-                        <p className="text-sm text-muted-foreground">Created 1 week ago</p>
-                      </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to="/project/sample2">Open</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+            
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
               <Card className="bg-card/50 border-border">
@@ -187,8 +138,6 @@ const ProjectCreation = () => {
           </div>
         </main>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ProjectCreation;
