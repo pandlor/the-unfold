@@ -186,11 +186,19 @@ export const ProjectTabs = ({
                 <Plus className="w-6 h-6" />
                 <span>Create Notebook</span>
               </Button>
-              <Button variant="outline" className="h-auto p-4 flex-col gap-2">
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => window.location.href = `/project/${projectId}/upload`}
+              >
                 <FileText className="w-6 h-6" />
                 <span>Import Data</span>
               </Button>
-              <Button variant="outline" className="h-auto p-4 flex-col gap-2">
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => window.location.href = `/project/${projectId}/report`}
+              >
                 <BarChart3 className="w-6 h-6" />
                 <span>View Reports</span>
               </Button>
