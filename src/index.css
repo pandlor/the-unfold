@@ -37,8 +37,8 @@ All colors MUST be HSL.
     --ring: 209 93% 56%;
 
     /* Custom DataMinder colors */
-    --dataminder-primary: 202 65% 21%;
-    --dataminder-secondary: 202 65% 21%;
+    --dataminder-primary: 207 20% 93%;
+    --dataminder-secondary: 207 20% 93%%;
     --dataminder-accent: 0 0% 100%;
     --dataminder-muted: 207 20% 88%;
     --dataminder-border: 207 15% 85%;
@@ -58,7 +58,7 @@ All colors MUST be HSL.
     --radius: 0.5rem;
 
     --sidebar-background: 207 20% 93%;
-    --sidebar-foreground: 202 65% 21%;
+    --sidebar-foreground: 207 20% 93%%;
     --sidebar-primary: 202 65% 21%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 207 15% 90%;
