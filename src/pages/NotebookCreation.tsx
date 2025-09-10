@@ -15,6 +15,7 @@ import { ProjectHeader } from "@/components/ProjectHeader";
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { NotebookListSkeleton } from "@/components/skeletons/NotebookSkeleton";
+import { ProjectTabs } from "@/components/ProjectTabs";
 
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
@@ -124,138 +125,75 @@ const NotebookCreation = () => {
           <ProjectHeader project={currentProject} />
           
           <main className="flex-1 p-8">
-            <div className="w-full max-w-6xl mx-auto space-y-8">
+            <div className="w-full max-w-6xl mx-auto">
               
-              {/* Notebooks Section */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-foreground">Notebooks</h2>
-                    <p className="text-muted-foreground">
-                      Organize your analysis workflows with notebooks
-                    </p>
-                  </div>
-                  <Button onClick={scrollToForm} className="gap-2">
-                    <Plus className="w-4 h-4" />
-                    New Notebook
-                  </Button>
-                </div>
-
-                {/* Notebooks List */}
-                {notebooks.length === 0 ? (
-                  <NoNotebooksState onCreateNotebook={scrollToForm} />
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {notebooks.map((notebook) => (
-                      <NotebookCard
-                        key={notebook.id}
-                        notebook={notebook}
-                        projectId={projectId!}
-                        onDelete={handleDeleteNotebook}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Create New Notebook Form */}
-              <div ref={formRef} className="scroll-mt-8">
-                <Card className="bg-card/80 backdrop-blur-sm border-border">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
-                        <BookOpen className="w-5 h-5 text-primary" />
+              <ProjectTabs
+                project={currentProject}
+                notebooks={notebooks}
+                projectId={projectId!}
+                onCreateNotebook={scrollToForm}
+                onDeleteNotebook={handleDeleteNotebook}
+                createNotebookSection={
+                  <Card className="bg-card/80 backdrop-blur-sm border-border">
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
+                          <BookOpen className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl">Create New Notebook</CardTitle>
+                          <CardDescription>
+                            Set up a new analysis environment for your data
+                          </CardDescription>
+                        </div>
                       </div>
-                      <div>
-                        <CardTitle className="text-xl">Create New Notebook</CardTitle>
-                        <CardDescription>
-                          Set up a new analysis environment for your data
-                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="notebook-name">Notebook Name *</Label>
+                          <Input
+                            id="notebook-name"
+                            placeholder="e.g., Customer Analysis, Sales Report..."
+                            value={notebookName}
+                            onChange={(e) => setNotebookName(e.target.value)}
+                            disabled={isLoading}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="notebook-description">Description</Label>
+                          <Textarea
+                            id="notebook-description"
+                            placeholder="Describe your analysis goals and objectives..."
+                            value={notebookDescription}
+                            onChange={(e) => setNotebookDescription(e.target.value)}
+                            rows={3}
+                            disabled={isLoading}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="notebook-name">Notebook Name *</Label>
-                        <Input
-                          id="notebook-name"
-                          placeholder="e.g., Customer Analysis, Sales Report..."
-                          value={notebookName}
-                          onChange={(e) => setNotebookName(e.target.value)}
+
+                      <div className="flex justify-end gap-3">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => navigate("/")}
                           disabled={isLoading}
-                        />
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={handleCreateNotebook}
+                          disabled={isLoading || !notebookName.trim()}
+                          className="gap-2"
+                        >
+                          <Plus className="w-4 h-4" />
+                          {isLoading ? "Creating..." : "Create Notebook"}
+                        </Button>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="notebook-description">Description</Label>
-                        <Textarea
-                          id="notebook-description"
-                          placeholder="Describe your analysis goals and objectives..."
-                          value={notebookDescription}
-                          onChange={(e) => setNotebookDescription(e.target.value)}
-                          rows={3}
-                          disabled={isLoading}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-3">
-                      <Button 
-                        variant="outline" 
-                        onClick={() => navigate("/")}
-                        disabled={isLoading}
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        onClick={handleCreateNotebook}
-                        disabled={isLoading || !notebookName.trim()}
-                        className="gap-2"
-                      >
-                        <Plus className="w-4 h-4" />
-                        {isLoading ? "Creating..." : "Create Notebook"}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Info Section */}
-              <Card className="bg-muted/30 border-muted">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-3 text-foreground">Notebook Capabilities</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        <span>Upload and manage datasets</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        <span>Data profiling and exploration</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        <span>Statistical analysis tools</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        <span>Hypothesis generation</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        <span>Interactive visualizations</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                        <span>Comprehensive reporting</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+                }
+              />
 
               <DeleteConfirmDialog
                 open={deleteDialog.open}
