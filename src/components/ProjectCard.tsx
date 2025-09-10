@@ -118,7 +118,15 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
                 <div className="text-sm font-medium text-foreground">Recent Notebooks</div>
                 <div className="space-y-1">
                   {project.notebooks.slice(0, 2).map((notebook) => (
-                    <div key={notebook.id} className="flex items-center gap-2 p-2 bg-muted/30 rounded-md">
+                    <button
+                      key={notebook.id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.location.href = `/project/${project.id}/notebook`;
+                      }}
+                      className="w-full flex items-center gap-2 p-2 bg-muted/30 rounded-md hover:bg-muted/50 transition-colors text-left"
+                    >
                       <div className="w-6 h-6 bg-primary/10 rounded-md flex items-center justify-center">
                         <FileText className="w-3 h-3 text-primary" />
                       </div>
@@ -126,7 +134,7 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
                         <p className="text-sm font-medium text-foreground truncate">{notebook.name}</p>
                         <p className="text-xs text-muted-foreground">{notebook.updatedAt}</p>
                       </div>
-                    </div>
+                    </button>
                   ))}
                   {project.notebooks.length > 2 && (
                     <div className="text-xs text-muted-foreground text-center py-1">
