@@ -107,45 +107,47 @@ const NotebookCreation = () => {
               </p>
             </div>
 
-            {/* Existing Notebooks */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-center">Existing Notebooks</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {notebooks.map((notebook) => (
-                  <Card key={notebook.id} className="bg-card/50 border-border hover:bg-card/70 transition-colors">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${projectId}/notebook`)}>
-                          <h3 className="font-semibold">{notebook.name}</h3>
-                          <p className="text-sm text-muted-foreground">{notebook.updatedAt}</p>
+            {/* Existing Notebooks - only show if there are notebooks */}
+            {notebooks.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4 text-center">Existing Notebooks</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  {notebooks.map((notebook) => (
+                    <Card key={notebook.id} className="bg-card/50 border-border hover:bg-card/70 transition-colors">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${projectId}/notebook`)}>
+                            <h3 className="font-semibold">{notebook.name}</h3>
+                            <p className="text-sm text-muted-foreground">{notebook.updatedAt}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="ghost" size="sm" asChild>
+                              <Link to={`/project/${projectId}/notebook`}>Open</Link>
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteNotebook(notebook.id, notebook.name)}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete Notebook
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm" asChild>
-                            <Link to={`/project/${projectId}/notebook`}>Open</Link>
-                          </Button>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreVertical className="w-4 h-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() => handleDeleteNotebook(notebook.id, notebook.name)}
-                                className="text-destructive"
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" />
-                                Delete Notebook
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <Card className="bg-card/80 backdrop-blur-sm border-border">
               <CardHeader className="text-center">
