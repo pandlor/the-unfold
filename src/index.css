@@ -38,7 +38,7 @@ All colors MUST be HSL.
 
     /* Custom DataMinder colors */
     --dataminder-primary: 202 65% 21%;
-    --dataminder-secondary: 207 15% 85%;
+    --dataminder-secondary: 202 65% 21%;
     --dataminder-accent: 0 0% 100%;
     --dataminder-muted: 207 20% 88%;
     --dataminder-border: 207 15% 85%;
