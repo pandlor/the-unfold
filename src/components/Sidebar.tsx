@@ -56,10 +56,7 @@ const Sidebar = () => {
       })}
         
         <div className="pt-2">
-          <Button variant="ghost" className="w-full justify-start text-sm font-normal text-muted-foreground hover:text-foreground">
-            <span className="w-4 h-4 mr-3 flex items-center justify-center text-xs">...</span>
-            ...
-          </Button>
+          
         </div>
       </nav>
 
