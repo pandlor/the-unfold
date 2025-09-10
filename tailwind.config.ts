@@ -47,6 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        dataminder: {
+          primary: "hsl(var(--dataminder-primary))",
+          secondary: "hsl(var(--dataminder-secondary))",
+          accent: "hsl(var(--dataminder-accent))",
+          muted: "hsl(var(--dataminder-muted))",
+          border: "hsl(var(--dataminder-border))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
