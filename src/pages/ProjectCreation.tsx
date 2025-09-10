@@ -107,54 +107,61 @@ const ProjectCreation = () => {
               ) : projects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {projects.map((project) => (
-                    <Card key={project.id} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-start space-x-3">
-                            <div className="p-2 bg-primary/10 rounded-lg">
-                              <Folder className="w-5 h-5 text-primary" />
+                    <Link key={project.id} to={`/project/${project.id}`}>
+                      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-start space-x-3">
+                              <div className="p-2 bg-primary/10 rounded-lg">
+                                <Folder className="w-5 h-5 text-primary" />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-foreground truncate">{project.name}</h3>
+                                <p className="text-sm text-muted-foreground">{project.updatedAt}</p>
+                              </div>
                             </div>
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-foreground truncate">{project.name}</h3>
-                              <p className="text-sm text-muted-foreground">{project.updatedAt}</p>
-                            </div>
+                            
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button 
+                                  variant="ghost" 
+                                  className="h-8 w-8 p-0"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleDeleteProject(project.id, project.name);
+                                  }}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete Project
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                           
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() => handleDeleteProject(project.id, project.name)}
-                                className="text-destructive"
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" />
-                                Delete Project
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                        
-                        <div className="space-y-3">
-                          <div className="flex items-center text-sm text-muted-foreground">
-                            <BarChart3 className="w-4 h-4 mr-2" />
-                            {project.notebooks.length} notebook{project.notebooks.length !== 1 ? 's' : ''}
+                          <div className="space-y-3">
+                            <div className="flex items-center text-sm text-muted-foreground">
+                              <BarChart3 className="w-4 h-4 mr-2" />
+                              {project.notebooks.length} notebook{project.notebooks.length !== 1 ? 's' : ''}
+                            </div>
+                            
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-muted-foreground">Last updated {project.updatedAt}</span>
+                              <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded">
+                                Click to open
+                              </span>
+                            </div>
                           </div>
-                          
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-muted-foreground">Last updated {project.updatedAt}</span>
-                            <Button size="sm" asChild>
-                              <Link to={`/project/${project.id}`}>
-                                Open
-                              </Link>
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   ))}
                 </div>
               ) : (
