@@ -17,16 +17,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useProjects } from "@/contexts/ProjectContext";
+
 const ProjectCreation = () => {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [projects, setProjects] = useState([
-    { id: "sample1", name: "Sample Project 1", description: "Created 2 days ago" },
-    { id: "sample2", name: "Sample Project 2", description: "Created 1 week ago" },
-  ]);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, projectId: "", projectName: "" });
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { projects, addProject, deleteProject } = useProjects();
   const handleCreateProject = () => {
     if (!projectName.trim()) {
       toast({
@@ -40,13 +39,12 @@ const ProjectCreation = () => {
     // Generate a simple project ID
     const projectId = `proj_${Date.now()}`;
     
-    // Add new project to state
-    const newProject = {
+    // Add new project using context
+    addProject({
       id: projectId,
       name: projectName,
-      description: "Just created"
-    };
-    setProjects(prev => [newProject, ...prev]);
+      updatedAt: "Just created"
+    });
     
     toast({
       title: "Project Created",
@@ -67,7 +65,7 @@ const ProjectCreation = () => {
 
   const confirmDeleteProject = () => {
     const { projectId } = deleteDialog;
-    setProjects(prev => prev.filter(p => p.id !== projectId));
+    deleteProject(projectId);
     toast({
       title: "Project Deleted",
       description: `${deleteDialog.projectName} has been deleted successfully.`
@@ -98,7 +96,7 @@ const ProjectCreation = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${project.id}`)}>
                           <h3 className="font-semibold">{project.name}</h3>
-                          <p className="text-sm text-muted-foreground">{project.description}</p>
+                          <p className="text-sm text-muted-foreground">{project.updatedAt}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Button variant="ghost" size="sm" asChild>

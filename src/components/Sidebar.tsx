@@ -4,60 +4,15 @@ import { Upload, BarChart3, FileText, Lightbulb, Activity, FileBarChart, LogOut,
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
+import { useProjects } from "@/contexts/ProjectContext";
+
 const Sidebar = () => {
   const location = useLocation();
-  const {
-    projectId
-  } = useParams();
+  const { projectId } = useParams();
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
   const [openProjects, setOpenProjects] = useState<string[]>([projectId || ""]);
+  const { projects } = useProjects();
 
-  // Mock projects data with notebooks - in real app this would come from API/state
-  const projects = [{
-    id: "sample1",
-    name: "Sample Project 1",
-    updatedAt: "2 days ago",
-    notebooks: [{
-      id: "notebook1",
-      name: "Main Analysis",
-      updatedAt: "2 hours ago"
-    }, {
-      id: "notebook2",
-      name: "Data Exploration",
-      updatedAt: "1 day ago"
-    }]
-  }, {
-    id: "sample2",
-    name: "Sample Project 2",
-    updatedAt: "1 week ago",
-    notebooks: [{
-      id: "notebook1",
-      name: "Customer Insights",
-      updatedAt: "3 days ago"
-    }]
-  }, {
-    id: "proj_1757530116846",
-    name: "Customer Analysis",
-    updatedAt: "3 hours ago",
-    notebooks: [{
-      id: "notebook1",
-      name: "Segmentation Analysis",
-      updatedAt: "1 hour ago"
-    }, {
-      id: "notebook2",
-      name: "Behavior Patterns",
-      updatedAt: "2 hours ago"
-    }]
-  }, {
-    id: "proj_1757530116847",
-    name: "Sales Dashboard",
-    updatedAt: "Yesterday",
-    notebooks: [{
-      id: "notebook1",
-      name: "Revenue Analysis",
-      updatedAt: "Yesterday"
-    }]
-  }];
   const toggleProject = (projectIdToToggle: string) => {
     setOpenProjects(prev => prev.includes(projectIdToToggle) ? prev.filter(id => id !== projectIdToToggle) : [...prev, projectIdToToggle]);
   };

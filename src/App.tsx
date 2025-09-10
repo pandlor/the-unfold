@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ProjectProvider } from "@/contexts/ProjectContext";
 import ProjectCreation from "./pages/ProjectCreation";
 import NotebookCreation from "./pages/NotebookCreation";
 import NotebookInterface from "./pages/NotebookInterface";
@@ -18,7 +19,8 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+    <ProjectProvider>
+      <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
@@ -37,7 +39,8 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
+  </ProjectProvider>
+</QueryClientProvider>
 );
 
 export default App;

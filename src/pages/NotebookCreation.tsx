@@ -17,17 +17,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useProjects } from "@/contexts/ProjectContext";
 
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
-  const [notebooks, setNotebooks] = useState([
-    { id: "notebook1", name: "Main Analysis", description: "Last updated today" }
-  ]);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, notebookId: "", notebookName: "" });
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { toast } = useToast();
+  const { projects, addNotebook, deleteNotebook } = useProjects();
+
+  // Get notebooks for current project
+  const currentProject = projects.find(p => p.id === projectId);
+  const notebooks = currentProject?.notebooks || [];
 
   const handleCreateNotebook = () => {
     if (!notebookName.trim()) {
@@ -39,13 +42,13 @@ const NotebookCreation = () => {
       return;
     }
 
-    // Add new notebook to state
+    // Add new notebook using context
     const newNotebook = {
       id: `notebook_${Date.now()}`,
       name: notebookName,
-      description: "Just created"
+      updatedAt: "Just created"
     };
-    setNotebooks(prev => [newNotebook, ...prev]);
+    addNotebook(projectId!, newNotebook);
 
     toast({
       title: "Notebook Created",
@@ -66,7 +69,7 @@ const NotebookCreation = () => {
 
   const confirmDeleteNotebook = () => {
     const { notebookId } = deleteDialog;
-    setNotebooks(prev => prev.filter(n => n.id !== notebookId));
+    deleteNotebook(projectId!, notebookId);
     toast({
       title: "Notebook Deleted",
       description: `${deleteDialog.notebookName} has been deleted successfully.`
@@ -114,7 +117,7 @@ const NotebookCreation = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${projectId}/notebook`)}>
                           <h3 className="font-semibold">{notebook.name}</h3>
-                          <p className="text-sm text-muted-foreground">{notebook.description}</p>
+                          <p className="text-sm text-muted-foreground">{notebook.updatedAt}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <Button variant="ghost" size="sm" asChild>
