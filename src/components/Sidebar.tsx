@@ -39,20 +39,6 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
-        {navigationItems.map((item, index) => (
-          <Button
-            key={index}
-            variant={item.active ? "secondary" : "ghost"}
-            className={`w-full justify-start text-sm font-normal ${
-              item.active 
-                ? "bg-primary/10 text-primary hover:bg-primary/15" 
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            <item.icon className="w-4 h-4 mr-3" />
-            {item.label}
-          </Button>
-        ))}
         
         <div className="pt-2">
           <Button variant="ghost" className="w-full justify-start text-sm font-normal text-muted-foreground hover:text-foreground">
