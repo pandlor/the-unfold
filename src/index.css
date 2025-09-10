@@ -41,7 +41,7 @@ All colors MUST be HSL.
     --dataminder-secondary: 202 65% 21%;
     --dataminder-accent: 0 0% 100%;
     --dataminder-muted: 207 20% 88%;
-    --dataminder-border: 207 15% 85%;
+    --dataminder-border: 206 65% 21%;
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(202 65% 21%), hsl(169 85% 46%));
