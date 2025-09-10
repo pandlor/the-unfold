@@ -5,18 +5,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
-import { Plus, Folder, BarChart3 } from "lucide-react";
+import { Plus, Folder, BarChart3, Trash2, MoreVertical } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 const ProjectCreation = () => {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+  const [projects, setProjects] = useState([
+    { id: "sample1", name: "Sample Project 1", description: "Created 2 days ago" },
+    { id: "sample2", name: "Sample Project 2", description: "Created 1 week ago" },
+  ]);
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, projectId: "", projectName: "" });
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const handleCreateProject = () => {
     if (!projectName.trim()) {
       toast({
@@ -29,13 +39,40 @@ const ProjectCreation = () => {
 
     // Generate a simple project ID
     const projectId = `proj_${Date.now()}`;
+    
+    // Add new project to state
+    const newProject = {
+      id: projectId,
+      name: projectName,
+      description: "Just created"
+    };
+    setProjects(prev => [newProject, ...prev]);
+    
     toast({
       title: "Project Created",
       description: `${projectName} has been created successfully!`
     });
 
+    // Clear form
+    setProjectName("");
+    setProjectDescription("");
+
     // Navigate to notebook creation
     navigate(`/project/${projectId}`);
+  };
+
+  const handleDeleteProject = (projectId: string, projectName: string) => {
+    setDeleteDialog({ open: true, projectId, projectName });
+  };
+
+  const confirmDeleteProject = () => {
+    const { projectId } = deleteDialog;
+    setProjects(prev => prev.filter(p => p.id !== projectId));
+    toast({
+      title: "Project Deleted",
+      description: `${deleteDialog.projectName} has been deleted successfully.`
+    });
+    setDeleteDialog({ open: false, projectId: "", projectName: "" });
   };
   return <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -55,32 +92,39 @@ const ProjectCreation = () => {
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-center">Recent Projects</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">Sample Project 1</h3>
-                        <p className="text-sm text-muted-foreground">Created 2 days ago</p>
+                {projects.map((project) => (
+                  <Card key={project.id} className="bg-card/50 border-border hover:bg-card/70 transition-colors">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${project.id}`)}>
+                          <h3 className="font-semibold">{project.name}</h3>
+                          <p className="text-sm text-muted-foreground">{project.description}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm" asChild>
+                            <Link to={`/project/${project.id}`}>Open</Link>
+                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteProject(project.id, project.name)}
+                                className="text-destructive"
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete Project
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to="/project/sample1">Open</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">Sample Project 2</h3>
-                        <p className="text-sm text-muted-foreground">Created 1 week ago</p>
-                      </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to="/project/sample2">Open</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
 
@@ -135,6 +179,15 @@ const ProjectCreation = () => {
                 </CardContent>
               </Card>
             </div>
+            
+            <DeleteConfirmDialog
+              open={deleteDialog.open}
+              onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
+              onConfirm={confirmDeleteProject}
+              title="Delete Project"
+              description="Are you sure you want to delete"
+              itemName={deleteDialog.projectName}
+            />
           </div>
         </main>
       </div>

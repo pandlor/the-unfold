@@ -5,15 +5,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
-import { BookOpen, ArrowLeft, Plus } from "lucide-react";
+import { BookOpen, ArrowLeft, Plus, Trash2, MoreVertical } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
+  const [notebooks, setNotebooks] = useState([
+    { id: "notebook1", name: "Main Analysis", description: "Last updated today" }
+  ]);
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, notebookId: "", notebookName: "" });
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { toast } = useToast();
@@ -28,13 +39,39 @@ const NotebookCreation = () => {
       return;
     }
 
+    // Add new notebook to state
+    const newNotebook = {
+      id: `notebook_${Date.now()}`,
+      name: notebookName,
+      description: "Just created"
+    };
+    setNotebooks(prev => [newNotebook, ...prev]);
+
     toast({
       title: "Notebook Created",
       description: `${notebookName} has been created successfully!`
     });
 
+    // Clear form
+    setNotebookName("");
+    setNotebookDescription("");
+
     // Navigate to the notebook interface
     navigate(`/project/${projectId}/notebook`);
+  };
+
+  const handleDeleteNotebook = (notebookId: string, notebookName: string) => {
+    setDeleteDialog({ open: true, notebookId, notebookName });
+  };
+
+  const confirmDeleteNotebook = () => {
+    const { notebookId } = deleteDialog;
+    setNotebooks(prev => prev.filter(n => n.id !== notebookId));
+    toast({
+      title: "Notebook Deleted",
+      description: `${deleteDialog.notebookName} has been deleted successfully.`
+    });
+    setDeleteDialog({ open: false, notebookId: "", notebookName: "" });
   };
 
   const handleBackToProjects = () => {
@@ -71,19 +108,39 @@ const NotebookCreation = () => {
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-center">Existing Notebooks</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">Main Analysis</h3>
-                        <p className="text-sm text-muted-foreground">Last updated today</p>
+                {notebooks.map((notebook) => (
+                  <Card key={notebook.id} className="bg-card/50 border-border hover:bg-card/70 transition-colors">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${projectId}/notebook`)}>
+                          <h3 className="font-semibold">{notebook.name}</h3>
+                          <p className="text-sm text-muted-foreground">{notebook.description}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm" asChild>
+                            <Link to={`/project/${projectId}/notebook`}>Open</Link>
+                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreVertical className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteNotebook(notebook.id, notebook.name)}
+                                className="text-destructive"
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete Notebook
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to={`/project/${projectId}/notebook`}>Open</Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
 
@@ -146,6 +203,15 @@ const NotebookCreation = () => {
                 <li>• Create comprehensive reports</li>
               </ul>
             </div>
+
+            <DeleteConfirmDialog
+              open={deleteDialog.open}
+              onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
+              onConfirm={confirmDeleteNotebook}
+              title="Delete Notebook"
+              description="Are you sure you want to delete"
+              itemName={deleteDialog.notebookName}
+            />
           </div>
         </main>
       </div>
