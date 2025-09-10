@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { FileUploadSkeleton } from '@/components/skeletons/FileUploadSkeleton';
+import { NoFilesState } from '@/components/empty-states/NoFilesState';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
@@ -30,6 +31,7 @@ export const FileUpload = ({
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [showUploadArea, setShowUploadArea] = useState(true);
   const { toast } = useToast();
 
   // Simulate component initialization
@@ -137,6 +139,10 @@ export const FileUpload = ({
     }
   }, [handleFiles]);
 
+  const triggerFileInput = () => {
+    document.getElementById('file-upload')?.click();
+  };
+
   const removeFile = (id: string) => {
     setUploadedFiles(prev => prev.filter(f => f.id !== id));
   };
@@ -147,7 +153,13 @@ export const FileUpload = ({
 
   return (
     <div className="space-y-4">
-      <Card>
+      {uploadedFiles.length === 0 && showUploadArea ? (
+        <NoFilesState 
+          onBrowseFiles={triggerFileInput}
+          acceptedTypes={acceptedTypes}
+        />
+      ) : (
+        <Card>
         <CardContent className="p-6">
           <div
             className={cn(
@@ -184,6 +196,17 @@ export const FileUpload = ({
           </div>
         </CardContent>
       </Card>
+      )}
+      
+      {/* Hidden file input */}
+      <input
+        type="file"
+        multiple={multiple}
+        accept={acceptedTypes.join(',')}
+        onChange={onFileSelect}
+        className="hidden"
+        id="file-upload"
+      />
 
       {uploadedFiles.length > 0 && (
         <Card>

@@ -3,13 +3,18 @@ import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { AnalysisStepSkeleton } from "@/components/skeletons/AnalysisSkeleton";
+import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
+import { useParams } from "react-router-dom";
 
 const Report = () => {
+  const { projectId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasAnalysis, setHasAnalysis] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
+      setHasAnalysis(false); // Simulate no analysis completed
     }, 1300);
     return () => clearTimeout(timer);
   }, []);
@@ -24,6 +29,14 @@ const Report = () => {
           <div className="max-w-4xl mx-auto">
             {isLoading ? (
               <AnalysisStepSkeleton />
+            ) : !hasAnalysis ? (
+              <NoAnalysisState 
+                title="No Analysis Results"
+                description="Complete the analysis step to generate comprehensive reports."
+                currentStep="analysis"
+                projectId={projectId}
+                nextStepLabel="Run Analysis"
+              />
             ) : (
               <>
                 <h1 className="text-3xl font-bold text-foreground mb-6">Report</h1>

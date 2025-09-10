@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus, Folder, BarChart3, Trash2, MoreVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectCardSkeleton";
+import { NoProjectsState } from "@/components/empty-states/NoProjectsState";
 import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
@@ -37,6 +38,7 @@ const ProjectCreation = () => {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
   const handleCreateProject = async () => {
     if (!projectName.trim()) {
       toast({
@@ -51,36 +53,29 @@ const ProjectCreation = () => {
     
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
-    if (!projectName.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a project name",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Generate a simple project ID
-    const projectId = `proj_${Date.now()}`;
     
-    // Add new project using context
+    const projectId = `proj_${Date.now()}`;
     addProject({
       id: projectId,
       name: projectName,
-      updatedAt: "Just created"
-    });
-    
-    toast({
-      title: "Project Created",
-      description: `${projectName} has been created successfully!`
+      updatedAt: "Just now"
     });
 
-    // Clear form
+    toast({
+      title: "Project created",
+      description: `"${projectName}" has been created successfully.`,
+    });
+
     setProjectName("");
     setProjectDescription("");
-
-    // Navigate to notebook creation
+    setIsCreating(false);
     navigate(`/project/${projectId}`);
+  };
+
+  const scrollToForm = () => {
+    document.getElementById('create-project-form')?.scrollIntoView({ 
+      behavior: 'smooth' 
+    });
   };
 
   const handleDeleteProject = (projectId: string, projectName: string) => {
@@ -91,45 +86,95 @@ const ProjectCreation = () => {
     const { projectId } = deleteDialog;
     deleteProject(projectId);
     toast({
-      title: "Project Deleted",
-      description: `${deleteDialog.projectName} has been deleted successfully.`
+      title: "Project deleted",
+      description: `"${deleteDialog.projectName}" has been deleted successfully.`,
     });
     setDeleteDialog({ open: false, projectId: "", projectName: "" });
   };
-  return <div className="min-h-screen bg-background flex flex-col">
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-8">
-          <div className="w-full max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
-                <BarChart3 className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">DataMinder</h1>
-              <p className="text-xl text-muted-foreground">Create your data analysis project</p>
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-8" id="create-project-form">
+              <Card className="bg-card/80 backdrop-blur-sm border-border">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl">Create New Project</CardTitle>
+                  <CardDescription>
+                    Start your data analysis journey by creating a new project
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="project-name">Project Name</Label>
+                    <Input 
+                      id="project-name" 
+                      placeholder="Enter project name..." 
+                      value={projectName} 
+                      onChange={e => setProjectName(e.target.value)} 
+                      className="text-lg" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description (Optional)</Label>
+                    <Textarea 
+                      id="description" 
+                      placeholder="Describe your project..."
+                      value={projectDescription}
+                      onChange={e => setProjectDescription(e.target.value)}
+                      className="min-h-[100px]"
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={handleCreateProject} 
+                    className="w-full"
+                    disabled={isCreating}
+                  >
+                    {isCreating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                        Creating...
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Project
+                      </>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Recent Projects */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-center">Recent Projects</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects.map((project) => (
-                  <Card key={project.id} className="bg-card/50 border-border hover:bg-card/70 transition-colors">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 cursor-pointer" onClick={() => navigate(`/project/${project.id}`)}>
-                          <h3 className="font-semibold">{project.name}</h3>
-                          <p className="text-sm text-muted-foreground">{project.updatedAt}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm" asChild>
-                            <Link to={`/project/${project.id}`}>Open</Link>
-                          </Button>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground mb-4">Recent Projects</h2>
+              {isLoading ? (
+                <ProjectListSkeleton count={6} />
+              ) : projects.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {projects.map((project) => (
+                    <Card key={project.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-start space-x-3">
+                            <div className="p-2 bg-primary/10 rounded-lg">
+                              <Folder className="w-5 h-5 text-primary" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-foreground truncate">{project.name}</h3>
+                              <p className="text-sm text-muted-foreground">{project.updatedAt}</p>
+                            </div>
+                          </div>
+                          
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreVertical className="w-4 h-4" />
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <MoreVertical className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
@@ -143,76 +188,44 @@ const ProjectCreation = () => {
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            <Card className="bg-card/80 backdrop-blur-sm border-border">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Create New Project</CardTitle>
-                <CardDescription>
-                  Start your data analysis journey by creating a new project
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="project-name">Project Name</Label>
-                  <Input id="project-name" placeholder="Enter project name..." value={projectName} onChange={e => setProjectName(e.target.value)} className="text-lg" />
+                        
+                        <div className="space-y-3">
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <BarChart3 className="w-4 h-4 mr-2" />
+                            {project.notebooks.length} notebook{project.notebooks.length !== 1 ? 's' : ''}
+                          </div>
+                          
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-muted-foreground">Last updated {project.updatedAt}</span>
+                            <Button size="sm" asChild>
+                              <Link to={`/project/${project.id}`}>
+                                Open
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="project-description">Project Description</Label>
-                  <Textarea id="project-description" placeholder="Describe your project objectives..." value={projectDescription} onChange={e => setProjectDescription(e.target.value)} rows={4} />
-                </div>
-
-                <Button onClick={handleCreateProject} className="w-full text-lg py-6" size="lg">
-                  <Plus className="w-5 h-5 mr-2" />
-                  Create Project
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Recent Projects */}
-            
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-              <Card className="bg-card/50 border-border">
-                <CardContent className="p-4 text-center">
-                  <Folder className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <h3 className="font-semibold">Organize</h3>
-                  <p className="text-sm text-muted-foreground">Keep your data projects organized</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-card/50 border-border">
-                <CardContent className="p-4 text-center">
-                  <BarChart3 className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <h3 className="font-semibold">Analyze</h3>
-                  <p className="text-sm text-muted-foreground">Powerful analysis tools</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-card/50 border-border">
-                <CardContent className="p-4 text-center">
-                  <Plus className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <h3 className="font-semibold">Collaborate</h3>
-                  <p className="text-sm text-muted-foreground">Share insights with your team</p>
-                </CardContent>
-              </Card>
+              ) : (
+                <NoProjectsState onCreateProject={scrollToForm} />
+              )}
             </div>
-            
-            <DeleteConfirmDialog
-              open={deleteDialog.open}
-              onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
-              onConfirm={confirmDeleteProject}
-              title="Delete Project"
-              description="Are you sure you want to delete"
-              itemName={deleteDialog.projectName}
-            />
           </div>
         </main>
       </div>
-    </div>;
+
+      <DeleteConfirmDialog
+        open={deleteDialog.open}
+        onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
+        onConfirm={confirmDeleteProject}
+        title="Delete Project"
+        description="Are you sure you want to delete this project? This action cannot be undone."
+        itemName={deleteDialog.projectName}
+      />
+    </div>
+  );
 };
+
 export default ProjectCreation;

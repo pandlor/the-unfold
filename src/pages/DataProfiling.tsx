@@ -4,14 +4,20 @@ import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { AnalysisStepSkeleton, DataTableSkeleton } from "@/components/skeletons/AnalysisSkeleton";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
+import { useParams } from "react-router-dom";
 
 const DataProfiling = () => {
+  const { projectId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [hasData, setHasData] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
+      // Simulate checking if data exists
+      setHasData(false); // Set to true if files were uploaded
     }, 1200);
     return () => clearTimeout(timer);
   }, []);
@@ -21,6 +27,7 @@ const DataProfiling = () => {
     // Simulate data processing
     await new Promise(resolve => setTimeout(resolve, 3000));
     setIsProcessing(false);
+    setHasData(true);
   };
 
   return (
@@ -33,6 +40,14 @@ const DataProfiling = () => {
           <div className="max-w-4xl mx-auto">
             {isLoading ? (
               <AnalysisStepSkeleton />
+            ) : !hasData && !isProcessing ? (
+              <NoAnalysisState 
+                title="No Data to Profile"
+                description="Upload your data files first to begin profiling and analysis."
+                currentStep="data-upload"
+                projectId={projectId}
+                nextStepLabel="Upload Data"
+              />
             ) : (
               <>
                 <h1 className="text-3xl font-bold text-foreground mb-6">Data Profiling</h1>

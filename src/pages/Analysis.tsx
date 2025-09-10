@@ -3,13 +3,18 @@ import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { AnalysisStepSkeleton } from "@/components/skeletons/AnalysisSkeleton";
+import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
+import { useParams } from "react-router-dom";
 
 const Analysis = () => {
+  const { projectId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasHypotheses, setHasHypotheses] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
+      setHasHypotheses(false); // Simulate no hypotheses defined
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
@@ -24,6 +29,14 @@ const Analysis = () => {
           <div className="max-w-4xl mx-auto">
             {isLoading ? (
               <AnalysisStepSkeleton />
+            ) : !hasHypotheses ? (
+              <NoAnalysisState 
+                title="No Hypotheses Defined"
+                description="Define your research hypotheses before running analysis."
+                currentStep="hypotheses"
+                projectId={projectId}
+                nextStepLabel="Define Hypotheses"
+              />
             ) : (
               <>
                 <h1 className="text-3xl font-bold text-foreground mb-6">Analysis</h1>

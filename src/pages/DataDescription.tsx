@@ -3,6 +3,8 @@ import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { AnalysisStepSkeleton } from "@/components/skeletons/AnalysisSkeleton";
+import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
+import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,11 +13,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DataDescription = () => {
+  const { projectId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasData, setHasData] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
+      setHasData(false); // Simulate no processed data
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
