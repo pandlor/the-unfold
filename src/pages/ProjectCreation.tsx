@@ -54,6 +54,39 @@ const ProjectCreation = () => {
               <p className="text-xl text-muted-foreground">Create your data analysis project</p>
             </div>
 
+            {/* Recent Projects */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-center">Recent Projects</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold">Sample Project 1</h3>
+                        <p className="text-sm text-muted-foreground">Created 2 days ago</p>
+                      </div>
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link to="/project/sample1">Open</Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-card/50 border-border cursor-pointer hover:bg-card/70 transition-colors">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold">Sample Project 2</h3>
+                        <p className="text-sm text-muted-foreground">Created 1 week ago</p>
+                      </div>
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link to="/project/sample2">Open</Link>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
             <Card className="bg-card/80 backdrop-blur-sm border-border">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl">Create New Project</CardTitle>
