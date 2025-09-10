@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { Plus, Folder, BarChart3, Trash2, MoreVertical } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { ProjectListSkeleton } from "@/components/skeletons/ProjectCardSkeleton";
 import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
@@ -20,13 +21,36 @@ import {
 import { useProjects } from "@/contexts/ProjectContext";
 
 const ProjectCreation = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, projectId: "", projectName: "" });
   const navigate = useNavigate();
   const { toast } = useToast();
   const { projects, addProject, deleteProject } = useProjects();
-  const handleCreateProject = () => {
+
+  // Simulate loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+  const handleCreateProject = async () => {
+    if (!projectName.trim()) {
+      toast({
+        title: "Project name required",
+        description: "Please enter a project name",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCreating(true);
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
     if (!projectName.trim()) {
       toast({
         title: "Error",

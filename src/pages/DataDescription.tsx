@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
+import { AnalysisStepSkeleton } from "@/components/skeletons/AnalysisSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +11,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DataDescription = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [formData, setFormData] = useState({
     researchGroup: "",

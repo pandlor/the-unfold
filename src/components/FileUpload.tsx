@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
-import { Upload, File, X, Check } from 'lucide-react';
+import { Upload, File, X, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { FileUploadSkeleton } from '@/components/skeletons/FileUploadSkeleton';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
@@ -28,7 +29,16 @@ export const FileUpload = ({
 }: FileUploadProps) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [isInitializing, setIsInitializing] = useState(true);
   const { toast } = useToast();
+
+  // Simulate component initialization
+  useState(() => {
+    const timer = setTimeout(() => {
+      setIsInitializing(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  });
 
   const validateFile = (file: File): boolean => {
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
@@ -131,6 +141,10 @@ export const FileUpload = ({
     setUploadedFiles(prev => prev.filter(f => f.id !== id));
   };
 
+  if (isInitializing) {
+    return <FileUploadSkeleton />;
+  }
+
   return (
     <div className="space-y-4">
       <Card>
@@ -185,10 +199,18 @@ export const FileUpload = ({
                       {(uploadedFile.file.size / (1024 * 1024)).toFixed(2)} MB
                     </p>
                     {uploadedFile.status === 'uploading' && (
-                      <Progress value={uploadedFile.progress} className="w-full mt-2 h-2" />
+                      <div className="flex items-center space-x-2">
+                        <Progress value={uploadedFile.progress} className="w-full h-2" />
+                        <span className="text-xs text-muted-foreground">
+                          {Math.round(uploadedFile.progress)}%
+                        </span>
+                      </div>
                     )}
                   </div>
                   <div className="flex items-center space-x-2">
+                    {uploadedFile.status === 'uploading' && (
+                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                    )}
                     {uploadedFile.status === 'complete' && (
                       <Check className="w-5 h-5 text-green-500" />
                     )}
