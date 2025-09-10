@@ -27,7 +27,7 @@ const Sidebar = () => {
   return (
     <aside className="w-64 bg-background border-r border-dataminder-border flex flex-col">
       {/* User Profile */}
-      <div className="p-4 border-b border-dataminder-border">
+      <div className="p-4 border-b border-dataminder-border bg-background">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-dataminder-primary rounded flex items-center justify-center">
             <span className="text-white text-sm font-medium">DM</span>
