@@ -8,14 +8,53 @@ const Sidebar = () => {
   const location = useLocation();
   const { projectId } = useParams();
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
+  const [openProjects, setOpenProjects] = useState<string[]>([projectId || ""]);
   
-  // Mock projects data - in real app this would come from API/state
+  // Mock projects data with notebooks - in real app this would come from API/state
   const projects = [
-    { id: "sample1", name: "Sample Project 1", updatedAt: "2 days ago" },
-    { id: "sample2", name: "Sample Project 2", updatedAt: "1 week ago" },
-    { id: "proj_1757530116846", name: "Customer Analysis", updatedAt: "3 hours ago" },
-    { id: "proj_1757530116847", name: "Sales Dashboard", updatedAt: "Yesterday" }
+    { 
+      id: "sample1", 
+      name: "Sample Project 1", 
+      updatedAt: "2 days ago",
+      notebooks: [
+        { id: "notebook1", name: "Main Analysis", updatedAt: "2 hours ago" },
+        { id: "notebook2", name: "Data Exploration", updatedAt: "1 day ago" }
+      ]
+    },
+    { 
+      id: "sample2", 
+      name: "Sample Project 2", 
+      updatedAt: "1 week ago",
+      notebooks: [
+        { id: "notebook1", name: "Customer Insights", updatedAt: "3 days ago" }
+      ]
+    },
+    { 
+      id: "proj_1757530116846", 
+      name: "Customer Analysis", 
+      updatedAt: "3 hours ago",
+      notebooks: [
+        { id: "notebook1", name: "Segmentation Analysis", updatedAt: "1 hour ago" },
+        { id: "notebook2", name: "Behavior Patterns", updatedAt: "2 hours ago" }
+      ]
+    },
+    { 
+      id: "proj_1757530116847", 
+      name: "Sales Dashboard", 
+      updatedAt: "Yesterday",
+      notebooks: [
+        { id: "notebook1", name: "Revenue Analysis", updatedAt: "Yesterday" }
+      ]
+    }
   ];
+
+  const toggleProject = (projectIdToToggle: string) => {
+    setOpenProjects(prev => 
+      prev.includes(projectIdToToggle) 
+        ? prev.filter(id => id !== projectIdToToggle)
+        : [...prev, projectIdToToggle]
+    );
+  };
   
   const navigationItems = [{
     icon: Upload,
@@ -81,22 +120,62 @@ const Sidebar = () => {
               </Link>
             </Button>
             {projects.map((project) => (
-              <Button 
-                key={project.id} 
-                variant="ghost" 
-                size="sm" 
-                className={`w-full justify-start text-xs pl-6 ${
-                  projectId === project.id ? "bg-primary/10 text-primary" : ""
-                }`} 
-                asChild
-              >
-                <Link to={`/project/${project.id}`}>
-                  <div className="flex flex-col items-start w-full">
-                    <span className="font-medium truncate">{project.name}</span>
-                    <span className="text-xs text-muted-foreground">{project.updatedAt}</span>
+              <div key={project.id} className="space-y-1">
+                <div className="flex items-center">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleProject(project.id)}
+                    className="flex-shrink-0 w-6 h-6 p-0 ml-6"
+                  >
+                    {openProjects.includes(project.id) ? (
+                      <ChevronDown className="w-3 h-3" />
+                    ) : (
+                      <ChevronRight className="w-3 h-3" />
+                    )}
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className={`flex-1 justify-start text-xs pl-2 ${
+                      projectId === project.id ? "bg-primary/10 text-primary" : ""
+                    }`} 
+                    asChild
+                  >
+                    <Link to={`/project/${project.id}`}>
+                      <div className="flex flex-col items-start w-full">
+                        <span className="font-medium truncate">{project.name}</span>
+                        <span className="text-xs text-muted-foreground">{project.updatedAt}</span>
+                      </div>
+                    </Link>
+                  </Button>
+                </div>
+                
+                {/* Project Notebooks */}
+                {openProjects.includes(project.id) && (
+                  <div className="ml-12 space-y-1">
+                    {project.notebooks.map((notebook) => (
+                      <Button 
+                        key={notebook.id}
+                        variant="ghost" 
+                        size="sm" 
+                        className={`w-full justify-start text-xs pl-4 ${
+                          location.pathname.includes(`/project/${project.id}/notebook`) ? "bg-muted/50 text-primary" : ""
+                        }`} 
+                        asChild
+                      >
+                        <Link to={`/project/${project.id}/notebook`}>
+                          <BookOpen className="w-3 h-3 mr-2" />
+                          <div className="flex flex-col items-start w-full">
+                            <span className="truncate">{notebook.name}</span>
+                            <span className="text-xs text-muted-foreground">{notebook.updatedAt}</span>
+                          </div>
+                        </Link>
+                      </Button>
+                    ))}
                   </div>
-                </Link>
-              </Button>
+                )}
+              </div>
             ))}
           </CollapsibleContent>
         </Collapsible>
