@@ -10,7 +10,8 @@ import {
   BarChart3, 
   Clock,
   FileText,
-  TrendingUp
+  TrendingUp,
+  ArrowUpRight
 } from "lucide-react";
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
@@ -124,7 +125,11 @@ export const ProjectTabs = ({
               ) : (
                 <div className="space-y-3">
                   {notebooks.slice(0, 3).map((notebook) => (
-                    <div key={notebook.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                    <button
+                      key={notebook.id}
+                      onClick={() => window.location.href = `/project/${projectId}/notebook`}
+                      className="w-full flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left"
+                    >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                           <BookOpen className="w-4 h-4 text-primary" />
@@ -134,8 +139,8 @@ export const ProjectTabs = ({
                           <p className="text-sm text-muted-foreground">{notebook.updatedAt}</p>
                         </div>
                       </div>
-                      <Button variant="ghost" size="sm">Open</Button>
-                    </div>
+                      <ArrowUpRight className="w-4 h-4 text-muted-foreground" />
+                    </button>
                   ))}
                 </div>
               )}
