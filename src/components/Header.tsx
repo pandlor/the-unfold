@@ -12,6 +12,9 @@ const Header = () => {
   const currentProject = projects.find(p => p.id === projectId);
   const projectName = currentProject?.name || `Project ${projectId}`;
 
+  // Get the first notebook name (or default if none)
+  const notebookName = currentProject?.notebooks?.[0]?.name || "Main Notebook";
+
   // Determine breadcrumb based on current path
   const getBreadcrumb = () => {
     if (location.pathname === "/") {
@@ -29,7 +32,7 @@ const Header = () => {
       return [
         { label: "Projects", icon: Home, path: "/" },
         { label: projectName, icon: FolderOpen, path: `/project/${projectId}` },
-        { label: "Notebook", icon: BookOpen, path: `/project/${projectId}/notebook` }
+        { label: notebookName, icon: BookOpen, path: `/project/${projectId}/notebook` }
       ];
     }
     
