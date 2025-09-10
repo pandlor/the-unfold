@@ -27,13 +27,12 @@ const Sidebar = () => {
       {/* User Profile */}
       <div className="p-4 border-b border-dataminder-border">
         <div className="flex items-center space-x-3">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src="/lovable-uploads/e08a851c-41fb-4e7a-a429-1f8ccd1f671b.png" />
-            <AvatarFallback className="bg-dataminder-primary text-white text-sm">A</AvatarFallback>
-          </Avatar>
+          <div className="w-8 h-8 bg-dataminder-primary rounded flex items-center justify-center">
+            <span className="text-white text-sm font-medium">DM</span>
+          </div>
           <div>
-            <div className="font-medium text-foreground text-sm">Andželika</div>
-            <div className="text-xs text-muted-foreground">user:tb46JG</div>
+            <div className="font-medium text-foreground text-sm">DataMinder Project</div>
+            <div className="text-xs text-muted-foreground">ID: PRJ-2024-001</div>
           </div>
         </div>
       </div>
