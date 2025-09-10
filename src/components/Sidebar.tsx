@@ -86,12 +86,30 @@ const Sidebar = () => {
     label: "report",
     path: `/project/${projectId}/notebook/report`
   }];
-  return <aside className="w-64 bg-background border-r border-dataminder-border flex flex-col">
-      {/* User Profile */}
-      
+  // Check if we should show collapsed mode (when in notebook context)
+  const isInNotebook = projectId && location.pathname.includes('/notebook');
+  
+  if (isInNotebook) {
+    return (
+      <aside className="w-12 bg-background border-r border-border flex flex-col items-center py-4">
+        <Button variant="ghost" size="sm" className="w-8 h-8 p-0" asChild>
+          <Link to="/">
+            <Home className="w-4 h-4" />
+          </Link>
+        </Button>
+        <Button variant="ghost" size="sm" className="w-8 h-8 p-0 mt-2" asChild>
+          <Link to={`/project/${projectId}`}>
+            <FolderOpen className="w-4 h-4" />
+          </Link>
+        </Button>
+      </aside>
+    );
+  }
 
+  return (
+    <aside className="w-64 bg-background border-r border-border flex flex-col">
       {/* Quick Navigation */}
-      <div className="p-4 space-y-2 border-b border-dataminder-border">
+      <div className="p-4 space-y-2 border-b border-border">
         {/* All Projects Collapsible Section */}
         <Collapsible open={isProjectsOpen} onOpenChange={setIsProjectsOpen}>
           <CollapsibleTrigger asChild>
@@ -110,7 +128,8 @@ const Sidebar = () => {
                 Create New Project
               </Link>
             </Button>
-            {projects.map(project => <div key={project.id} className="space-y-1">
+            {projects.map(project => (
+              <div key={project.id} className="space-y-1">
                 <div className="flex items-center">
                   <Button variant="ghost" size="sm" onClick={() => toggleProject(project.id)} className="flex-shrink-0 w-6 h-6 p-0 ml-6">
                     {openProjects.includes(project.id) ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
@@ -126,8 +145,10 @@ const Sidebar = () => {
                 </div>
                 
                 {/* Project Notebooks */}
-                {openProjects.includes(project.id) && <div className="ml-12 space-y-1">
-                    {project.notebooks.map(notebook => <Button key={notebook.id} variant="ghost" size="sm" className={`w-full justify-start text-xs pl-4 ${location.pathname.includes(`/project/${project.id}/notebook`) ? "bg-muted/50 text-primary" : ""}`} asChild>
+                {openProjects.includes(project.id) && (
+                  <div className="ml-12 space-y-1">
+                    {project.notebooks.map(notebook => (
+                      <Button key={notebook.id} variant="ghost" size="sm" className={`w-full justify-start text-xs pl-4 ${location.pathname.includes(`/project/${project.id}/notebook`) ? "bg-muted/50 text-primary" : ""}`} asChild>
                         <Link to={`/project/${project.id}/notebook`}>
                           <BookOpen className="w-3 h-3 mr-2" />
                           <div className="flex flex-col items-start w-full">
@@ -135,40 +156,26 @@ const Sidebar = () => {
                             <span className="text-xs text-muted-foreground">{notebook.updatedAt}</span>
                           </div>
                         </Link>
-                      </Button>)}
-                  </div>}
-              </div>)}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </CollapsibleContent>
         </Collapsible>
 
         {/* Notebook Navigation - only show when in notebook context */}
-        {projectId && <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
+        {projectId && (
+          <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
             <Link to={`/project/${projectId}/notebook`}>
               <BookOpen className="w-3 h-3 mr-2" />
               Current Notebook
             </Link>
-          </Button>}
+          </Button>
+        )}
       </div>
-
-      {/* Navigation - only show when in notebook context */}
-      {projectId && location.pathname.includes('/notebook') && <nav className="flex-1 p-4 space-y-1 bg-[#e9eef2] rounded-lg">
-          {navigationItems.map((item, index) => {
-        const isActive = location.pathname === item.path;
-        return <Button key={index} variant={isActive ? "secondary" : "ghost"} className={`w-full justify-start text-sm font-normal ${isActive ? "bg-primary/10 text-primary hover:bg-primary/15" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"}`} asChild>
-                <Link to={item.path}>
-                  <item.icon className="w-4 h-4 mr-3" />
-                  {item.label}
-                </Link>
-              </Button>;
-      })}
-          
-          <div className="pt-2">
-            
-          </div>
-        </nav>}
-
-      {/* Logout */}
-      
-    </aside>;
+    </aside>
+  );
 };
 export default Sidebar;

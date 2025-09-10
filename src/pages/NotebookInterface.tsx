@@ -1,4 +1,5 @@
 import Sidebar from "@/components/Sidebar";
+import AnalysisSidebar from "@/components/AnalysisSidebar";
 import ChatInterface from "@/components/ChatInterface";
 import Header from "@/components/Header";
 
@@ -8,6 +9,7 @@ const NotebookInterface = () => {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
+        <AnalysisSidebar />
         <main className="flex-1">
           <ChatInterface />
         </main>
