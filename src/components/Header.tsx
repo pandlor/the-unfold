@@ -1,10 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Home, FolderOpen, BookOpen } from "lucide-react";
 import { Link, useParams, useLocation } from "react-router-dom";
+import { useProjects } from "@/contexts/ProjectContext";
 
 const Header = () => {
   const { projectId } = useParams();
   const location = useLocation();
+  const { projects } = useProjects();
+
+  // Get the current project name
+  const currentProject = projects.find(p => p.id === projectId);
+  const projectName = currentProject?.name || `Project ${projectId}`;
 
   // Determine breadcrumb based on current path
   const getBreadcrumb = () => {
@@ -15,14 +21,14 @@ const Header = () => {
     if (location.pathname === `/project/${projectId}`) {
       return [
         { label: "Projects", icon: Home, path: "/" },
-        { label: `Project ${projectId}`, icon: FolderOpen, path: `/project/${projectId}` }
+        { label: projectName, icon: FolderOpen, path: `/project/${projectId}` }
       ];
     }
     
     if (location.pathname.includes("/notebook")) {
       return [
         { label: "Projects", icon: Home, path: "/" },
-        { label: `Project ${projectId}`, icon: FolderOpen, path: `/project/${projectId}` },
+        { label: projectName, icon: FolderOpen, path: `/project/${projectId}` },
         { label: "Notebook", icon: BookOpen, path: `/project/${projectId}/notebook` }
       ];
     }
