@@ -3,23 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Send, CheckCircle } from "lucide-react";
 import { useState } from "react";
-
 const ChatInterface = () => {
   const [inputValue, setInputValue] = useState("What's the best way to visualise the results?");
-
-  const messages = [
-    {
-      type: "assistant" as const,
-      content: "It seems you are comparing two independent groups (patients taking Drug A vs. Drug B) on a continuous variable (blood pressure).\n\nDo your data meet the assumptions of normality?"
-    },
-    {
-      type: "user" as const,
-      content: "I'm not sure. How can I check that?"
-    },
-    {
-      type: "assistant" as const,
-      content: (
-        <div className="space-y-3">
+  const messages = [{
+    type: "assistant" as const,
+    content: "It seems you are comparing two independent groups (patients taking Drug A vs. Drug B) on a continuous variable (blood pressure).\n\nDo your data meet the assumptions of normality?"
+  }, {
+    type: "user" as const,
+    content: "I'm not sure. How can I check that?"
+  }, {
+    type: "assistant" as const,
+    content: <div className="space-y-3">
           <p>I can run a normality test for you. I'll run <strong>Shapiro-Wilk test</strong> in this case</p>
           <div className="bg-muted/50 p-3 rounded-lg">
             <div className="flex items-start space-x-2 mb-2">
@@ -33,56 +27,24 @@ const ChatInterface = () => {
           <p>Since normality is violated in one group, I recommend using the <strong>Mann-Whitney U test</strong> instead of an independent t-test.</p>
           <p>Would you like me to proceed?</p>
         </div>
-      )
-    },
-    {
-      type: "user" as const,
-      content: "Yes, please"
-    }
-  ];
-
-  return (
-    <div className="flex-1 flex flex-col">
+  }, {
+    type: "user" as const,
+    content: "Yes, please"
+  }];
+  return <div className="flex-1 flex flex-col">
       {/* Chat Messages */}
       <div className="flex-1 p-6 space-y-4 overflow-y-auto">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <Card className={`max-w-2xl p-4 ${
-              message.type === 'user' 
-                ? 'bg-dataminder-accent/10 border-dataminder-accent/20' 
-                : 'bg-card border-border'
-            }`}>
+        {messages.map((message, index) => <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <Card className={`max-w-2xl p-4 ${message.type === 'user' ? 'bg-dataminder-accent/10 border-dataminder-accent/20' : 'bg-card border-border'}`}>
               <div className="text-sm leading-relaxed">
-                {typeof message.content === 'string' ? (
-                  <div className="whitespace-pre-wrap">{message.content}</div>
-                ) : (
-                  message.content
-                )}
+                {typeof message.content === 'string' ? <div className="whitespace-pre-wrap">{message.content}</div> : message.content}
               </div>
             </Card>
-          </div>
-        ))}
+          </div>)}
       </div>
 
       {/* Input Area */}
-      <div className="p-6 border-t border-border bg-card">
-        <div className="flex space-x-2">
-          <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask about your data analysis..."
-            className="flex-1 bg-background border-border focus:border-primary focus:ring-primary"
-          />
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Send className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+      
+    </div>;
 };
-
 export default ChatInterface;
