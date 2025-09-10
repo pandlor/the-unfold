@@ -21,6 +21,7 @@ const DataDescription = () => {
     {
       id: 1,
       title: "Description of the Research Group",
+      shortTitle: "Research Group",
       description: "Provide a detailed description of the research group: who the participants are, their sample size, key demographic characteristics, or other essential information.",
       field: "researchGroup",
       component: "textarea"
@@ -28,6 +29,7 @@ const DataDescription = () => {
     {
       id: 2,
       title: "Where Was the Data Collected?",
+      shortTitle: "Where",
       description: "Specify the location of data collection (e.g., geographical location or platform).",
       field: "dataLocation",
       component: "input"
@@ -35,6 +37,7 @@ const DataDescription = () => {
     {
       id: 3,
       title: "When Was the Data Collected?",
+      shortTitle: "When",
       description: "Indicate the period during which data collection took place.",
       field: "collectionPeriod",
       component: "input"
@@ -42,6 +45,7 @@ const DataDescription = () => {
     {
       id: 4,
       title: "How Was the Data Collected?",
+      shortTitle: "How",
       description: "Describe the methods used for data collection, such as online surveys, interviews, or observations.",
       field: "collectionMethod",
       component: "textarea"
@@ -49,6 +53,7 @@ const DataDescription = () => {
     {
       id: 5,
       title: "What Is the Objective of the Study?",
+      shortTitle: "What",
       description: "Define the main goal of the study, such as analyzing consumer preferences or assessing service satisfaction.",
       field: "studyObjective",
       component: "textarea"
@@ -97,7 +102,7 @@ const DataDescription = () => {
                 onClick={() => goToQuestion(question.id)}
                 className="min-w-fit whitespace-nowrap"
               >
-                {question.id}. {question.title.split(' ').slice(0, 2).join(' ')}
+                {question.id}. {question.shortTitle}
               </Button>
             ))}
           </div>
