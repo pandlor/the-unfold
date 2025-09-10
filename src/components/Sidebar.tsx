@@ -44,7 +44,7 @@ const Sidebar = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1 bg-slate-100">
+      <nav className="flex-1 p-4 space-y-1 bg-[#e9eef2]">
         {navigationItems.map((item, index) => {
         const isActive = location.pathname === item.path;
         return <Button key={index} variant={isActive ? "secondary" : "ghost"} className={`w-full justify-start text-sm font-normal ${isActive ? "bg-primary/10 text-primary hover:bg-primary/15" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"}`} asChild>
