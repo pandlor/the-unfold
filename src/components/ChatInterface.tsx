@@ -33,7 +33,7 @@ const ChatInterface = () => {
   }];
   return <div className="flex-1 flex flex-col">
       {/* Chat Messages */}
-      <div className="flex-1 p-6 space-y-4 overflow-y-auto">
+      <div className="flex-1 p-6 space-y-4 overflow-y-auto bg-white">
         {messages.map((message, index) => <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
             <Card className={`max-w-2xl p-4 ${message.type === 'user' ? 'bg-dataminder-accent/10 border-dataminder-accent/20' : 'bg-card border-border'}`}>
               <div className="text-sm leading-relaxed">
