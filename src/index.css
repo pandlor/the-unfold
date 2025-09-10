@@ -44,7 +44,7 @@ All colors MUST be HSL.
     --dataminder-border: 206 65% 21%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(202 65% 21%), hsl(169 85% 46%));
+    --gradient-primary: linear-gradient(135deg, hsl(202 65% 21%), hsl(206 65% 21%));
     --gradient-subtle: linear-gradient(180deg, hsl(207 20% 95%), hsl(207 20% 93%));
     
     /* Shadows */
@@ -77,7 +77,7 @@ All colors MUST be HSL.
     --popover: 202 65% 12%;
     --popover-foreground: 207 20% 93%;
 
-    --primary: 169 85% 46%;
+    --primary: 206 65% 21%;
     --primary-foreground: 202 65% 8%;
 
     --secondary: 202 65% 15%;
@@ -98,7 +98,7 @@ All colors MUST be HSL.
     
     --sidebar-background: 202 65% 10%;
     --sidebar-foreground: 207 20% 93%;
-    --sidebar-primary: 169 85% 46%;
+    --sidebar-primary: 206 65% 21%;
     --sidebar-primary-foreground: 202 65% 8%;
     --sidebar-accent: 202 65% 15%;
     --sidebar-accent-foreground: 207 20% 93%;
