@@ -21,8 +21,8 @@ const Header = () => {
   const currentProject = projects.find(p => p.id === projectId);
   const projectName = currentProject?.name || `Project ${projectId}`;
 
-  // Get the first notebook name (or default if none)
-  const notebookName = currentProject?.notebooks?.[0]?.name || "Main Notebook";
+  // Since the current routing doesn't specify which notebook, show generic label
+  const notebookName = "Current Notebook";
 
   // Analysis step mapping
   const analysisSteps: Record<string, { label: string; icon: any }> = {
