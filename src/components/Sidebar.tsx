@@ -1,33 +1,35 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Upload, BarChart3, FileText, Lightbulb, Activity, FileBarChart, LogOut, Zap } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 const Sidebar = () => {
   const location = useLocation();
+  const { projectId } = useParams();
+  
   const navigationItems = [{
     icon: Upload,
     label: "data upload",
-    path: "/data-upload"
+    path: `/project/${projectId}/notebook/data-upload`
   }, {
     icon: BarChart3,
     label: "data profiling",
-    path: "/data-profiling"
+    path: `/project/${projectId}/notebook/data-profiling`
   }, {
     icon: FileText,
     label: "data description",
-    path: "/data-description"
+    path: `/project/${projectId}/notebook/data-description`
   }, {
     icon: Lightbulb,
     label: "hypotheses",
-    path: "/hypotheses"
+    path: `/project/${projectId}/notebook/hypotheses`
   }, {
     icon: Activity,
     label: "analysis",
-    path: "/analysis"
+    path: `/project/${projectId}/notebook/analysis`
   }, {
     icon: FileBarChart,
     label: "report",
-    path: "/report"
+    path: `/project/${projectId}/notebook/report`
   }];
   return <aside className="w-64 bg-background border-r border-dataminder-border flex flex-col">
       {/* User Profile */}

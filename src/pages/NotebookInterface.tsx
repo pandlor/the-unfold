@@ -1,7 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import ChatInterface from "@/components/ChatInterface";
 
-const Index = () => {
+const NotebookInterface = () => {
   return (
     <div className="min-h-screen bg-background flex">
       <Sidebar />
@@ -12,4 +12,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default NotebookInterface;
