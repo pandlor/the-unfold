@@ -8,17 +8,17 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 248 250 252;
+    --background: 210 20% 98%;
     --foreground: 221 39% 11%;
 
-    --card: 255 255 255;
+    --card: 0 0% 100%;
     --card-foreground: 221 39% 11%;
 
-    --popover: 255 255 255;
+    --popover: 0 0% 100%;
     --popover-foreground: 221 39% 11%;
 
     --primary: 262 83% 58%;
-    --primary-foreground: 255 255 255;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 240 5% 96%;
     --secondary-foreground: 240 6% 10%;
@@ -30,7 +30,7 @@ All colors MUST be HSL.
     --accent-foreground: 240 6% 10%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 255 255 255;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 240 6% 90%;
     --input: 240 6% 90%;
@@ -39,7 +39,7 @@ All colors MUST be HSL.
     /* Custom DataMinder colors */
     --dataminder-primary: 262 83% 58%;
     --dataminder-secondary: 240 100% 97%;
-    --dataminder-accent: 45 93% 58%;
+    --dataminder-accent: 0 0% 100%;
     --dataminder-muted: 240 5% 96%;
     --dataminder-border: 240 6% 90%;
     
