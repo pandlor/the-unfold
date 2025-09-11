@@ -118,7 +118,7 @@ export const ProjectTabs = ({
                 <div className="text-center py-8">
                   <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
                   <p className="text-muted-foreground">No notebooks yet</p>
-                  <Button onClick={onCreateNotebook} size="sm" className="mt-3">
+                  <Button onClick={() => window.location.href = `/project/${projectId}/notebook`} size="sm" className="mt-3">
                     Create your first notebook
                   </Button>
                 </div>
