@@ -101,7 +101,7 @@ const Sidebar = () => {
                   <Button variant="ghost" size="sm" onClick={() => toggleProject(project.id)} className="flex-shrink-0 w-6 h-6 p-0 ml-6">
                     {openProjects.includes(project.id) ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                   </Button>
-                  <Button variant="ghost" size="sm" className={`flex-1 justify-start text-xs pl-2 ${projectId === project.id ? "bg-primary/10 text-primary border-l-2 border-primary" : ""}`} asChild>
+                  <Button variant="ghost" size="sm" className={`flex-1 justify-start text-xs px-2 py-2 h-auto ${projectId === project.id ? "bg-primary/10 text-primary border-l-2 border-primary" : ""}`} asChild>
                     <Link to={`/project/${project.id}`}>
                       <div className="flex flex-col items-start w-full">
                         <span className="font-medium truncate">{project.name}</span>
