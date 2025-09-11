@@ -15,8 +15,9 @@ import {
 } from "lucide-react";
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
-import { Project, Notebook } from "@/contexts/ProjectContext";
+import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ProjectTabsProps {
   project: Project;
@@ -35,7 +36,29 @@ export const ProjectTabs = ({
   onDeleteNotebook,
   createNotebookSection 
 }: ProjectTabsProps) => {
-  const { activities } = useProjectActivity(projectId);
+  const { activities, addActivity } = useProjectActivity(projectId);
+  const { addNotebook } = useProjects();
+  const { toast } = useToast();
+
+  const createNewNotebook = () => {
+    const notebookNumber = notebooks.length + 1;
+    const newNotebook = {
+      id: `notebook_${Date.now()}`,
+      name: `Analysis Notebook ${notebookNumber}`,
+      updatedAt: "Just created"
+    };
+    
+    addNotebook(projectId, newNotebook);
+    addActivity("Notebook created", newNotebook.name);
+    
+    toast({
+      title: "Notebook Created",
+      description: `${newNotebook.name} has been created successfully!`
+    });
+    
+    // Navigate directly to the notebook interface
+    window.location.href = `/project/${projectId}/notebook-interface`;
+  };
 
   // Show default message if no activities exist
   const recentActivity = activities.length > 0 ? activities : [
@@ -81,7 +104,7 @@ export const ProjectTabs = ({
                 <div className="text-center py-8">
                   <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
                   <p className="text-muted-foreground">No notebooks yet</p>
-                  <Button onClick={() => window.location.href = `/project/${projectId}/notebook`} size="sm" className="mt-3">
+                  <Button onClick={createNewNotebook} size="sm" className="mt-3">
                     Create your first notebook
                   </Button>
                 </div>
@@ -121,7 +144,7 @@ export const ProjectTabs = ({
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Button 
-                onClick={() => window.location.href = `/project/${projectId}/notebook`} 
+                onClick={createNewNotebook}
                 className="h-auto p-4 flex-col gap-2"
               >
                 <Plus className="w-6 h-6" />
@@ -184,14 +207,14 @@ export const ProjectTabs = ({
               Manage and organize your analysis notebooks
             </p>
           </div>
-          <Button onClick={() => window.location.href = `/project/${projectId}/notebook`} className="gap-2">
+          <Button onClick={createNewNotebook} className="gap-2">
             <Plus className="w-4 h-4" />
             New Notebook
           </Button>
         </div>
 
         {notebooks.length === 0 ? (
-          <NoNotebooksState onCreateNotebook={onCreateNotebook} />
+          <NoNotebooksState onCreateNotebook={createNewNotebook} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {notebooks.map((notebook) => (
