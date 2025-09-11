@@ -1,8 +1,10 @@
-import { ArrowLeft, FolderOpen, Calendar, FileText } from "lucide-react";
+import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { Project } from "@/contexts/ProjectContext";
+import { Project, useProjects } from "@/contexts/ProjectContext";
+import { useState, useEffect } from "react";
 
 interface ProjectHeaderProps {
   project: Project;
@@ -11,6 +13,33 @@ interface ProjectHeaderProps {
 
 export const ProjectHeader = ({ project, showBackButton = true }: ProjectHeaderProps) => {
   const navigate = useNavigate();
+  const { updateProject } = useProjects();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(project.name);
+
+  useEffect(() => {
+    setEditName(project.name);
+  }, [project.name]);
+
+  const handleSave = () => {
+    if (editName.trim() && editName !== project.name) {
+      updateProject(project.id, { name: editName.trim() });
+    }
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditName(project.name);
+    setIsEditing(false);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    } else if (e.key === 'Escape') {
+      handleCancel();
+    }
+  };
 
   return (
     <div className="border-b border-border bg-card/50 backdrop-blur-sm">
@@ -32,7 +61,37 @@ export const ProjectHeader = ({ project, showBackButton = true }: ProjectHeaderP
               <FolderOpen className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{project.name}</h1>
+              <div className="flex items-center gap-2">
+                {isEditing ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      onKeyDown={handleKeyPress}
+                      className="text-2xl font-bold h-auto py-1 px-2 border-primary/50 focus:border-primary"
+                      autoFocus
+                    />
+                    <Button size="sm" onClick={handleSave} className="h-8 w-8 p-0">
+                      <Check className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={handleCancel} className="h-8 w-8 p-0">
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 group">
+                    <h1 className="text-2xl font-bold text-foreground">{project.name}</h1>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setIsEditing(true)}
+                      className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
               <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
