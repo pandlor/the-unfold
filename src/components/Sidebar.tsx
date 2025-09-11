@@ -89,7 +89,7 @@ const Sidebar = () => {
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="space-y-1 mt-2">
-            <Button variant="ghost" size="sm" className="w-full justify-start text-xs pl-6" asChild>
+            <Button variant="ghost" size="sm" className={`w-full justify-start text-xs pl-6 ${location.pathname === "/" ? "bg-primary/10 text-primary border-l-2 border-primary" : ""}`} asChild>
               <Link to="/">
                 <Home className="w-3 h-3 mr-2" />
                 Project Hub
