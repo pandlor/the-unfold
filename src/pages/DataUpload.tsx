@@ -20,8 +20,10 @@ const DataUpload = () => {
   const [editNotebookName, setEditNotebookName] = useState("");
   
   const project = projects.find(p => p.id === projectId);
+  console.log('Current project:', project, 'Project ID:', projectId);
   // Use the currentNotebookId from project context, or fall back to the first notebook
   const notebook = project?.notebooks.find(n => n.id === project.currentNotebookId) || project?.notebooks[0];
+  console.log('Current notebook:', notebook);
 
   const handleFileUpload = (files: File[]) => {
     console.log('Files uploaded:', files);
