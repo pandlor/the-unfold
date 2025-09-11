@@ -21,8 +21,24 @@ const DataUpload = () => {
   
   const project = projects.find(p => p.id === projectId);
   console.log('Current project:', project, 'Project ID:', projectId);
+  
+  // Create a default notebook if none exists
+  const { addNotebook } = useProjects();
+  
   // Use the currentNotebookId from project context, or fall back to the first notebook
-  const notebook = project?.notebooks.find(n => n.id === project.currentNotebookId) || project?.notebooks[0];
+  let notebook = project?.notebooks.find(n => n.id === project.currentNotebookId) || project?.notebooks[0];
+  
+  // If no notebook exists, create a default one
+  if (project && !notebook) {
+    const defaultNotebook = {
+      id: `notebook_${Date.now()}`,
+      name: "Analysis Notebook",
+      updatedAt: "Just now"
+    };
+    addNotebook(project.id, defaultNotebook);
+    notebook = defaultNotebook;
+  }
+  
   console.log('Current notebook:', notebook);
 
   const handleFileUpload = (files: File[]) => {
