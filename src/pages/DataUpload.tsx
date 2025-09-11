@@ -60,10 +60,12 @@ const DataUpload = () => {
     setIsEditingNotebook(false);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSaveNotebook();
     } else if (e.key === "Escape") {
+      e.preventDefault();
       handleCancelNotebook();
     }
   };
@@ -89,7 +91,7 @@ const DataUpload = () => {
                           <Input
                             value={editNotebookName}
                             onChange={(e) => setEditNotebookName(e.target.value)}
-                            onKeyDown={handleKeyPress}
+                            onKeyDown={handleKeyDown}
                             className="text-lg font-semibold h-8 px-2"
                             autoFocus
                           />
