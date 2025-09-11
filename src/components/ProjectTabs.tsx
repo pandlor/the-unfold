@@ -158,7 +158,7 @@ export const ProjectTabs = ({
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Button 
-                onClick={onCreateNotebook} 
+                onClick={() => window.location.href = `/project/${projectId}`} 
                 className="h-auto p-4 flex-col gap-2"
               >
                 <Plus className="w-6 h-6" />
