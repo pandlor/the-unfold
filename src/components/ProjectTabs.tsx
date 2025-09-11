@@ -57,7 +57,7 @@ export const ProjectTabs = ({
     });
     
     // Navigate directly to the notebook interface
-    window.location.href = `/project/${projectId}/notebook-interface`;
+    window.location.href = `/project/${projectId}/notebook`;
   };
 
   // Show default message if no activities exist
