@@ -62,45 +62,6 @@ export const ProjectTabs = ({
       </TabsList>
 
       <TabsContent value="overview" className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Total Notebooks</p>
-                  <p className="text-xl font-bold">{notebooks.length}</p>
-                </div>
-                <BookOpen className="w-6 h-6 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Last Updated</p>
-                  <p className="text-xl font-bold">{project.updatedAt}</p>
-                </div>
-                <Clock className="w-6 h-6 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Status</p>
-                  <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20">
-                    Active
-                  </Badge>
-                </div>
-                <TrendingUp className="w-6 h-6 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
