@@ -42,16 +42,20 @@ const DataUpload = () => {
   };
 
   const handleSaveNotebook = () => {
+    console.log('handleSaveNotebook called', { editNotebookName, notebook, project });
     if (editNotebookName.trim() && notebook && project) {
       const updatedNotebooks = project.notebooks.map(n =>
         n.id === notebook.id ? { ...n, name: editNotebookName.trim() } : n
       );
+      console.log('Updating notebooks:', updatedNotebooks);
       updateProject(project.id, { notebooks: updatedNotebooks });
       setIsEditingNotebook(false);
       toast({
         title: "Notebook renamed",
         description: "Notebook name has been updated.",
       });
+    } else {
+      console.log('Save failed - missing data:', { editNotebookName: editNotebookName.trim(), notebook: !!notebook, project: !!project });
     }
   };
 
