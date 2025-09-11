@@ -37,6 +37,7 @@ const DataUpload = () => {
   };
 
   const handleEditNotebook = () => {
+    console.log('handleEditNotebook called');
     setEditNotebookName(notebook?.name || "");
     setIsEditingNotebook(true);
   };
@@ -60,11 +61,13 @@ const DataUpload = () => {
   };
 
   const handleCancelNotebook = () => {
+    console.log('handleCancelNotebook called');
     setEditNotebookName("");
     setIsEditingNotebook(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    console.log('Key pressed:', e.key);
     if (e.key === "Enter") {
       e.preventDefault();
       handleSaveNotebook();
