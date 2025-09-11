@@ -92,7 +92,7 @@ const Sidebar = () => {
             <Button variant="ghost" size="sm" className="w-full justify-start text-xs pl-6" asChild>
               <Link to="/">
                 <Home className="w-3 h-3 mr-2" />
-                Create New Project
+                Project Hub
               </Link>
             </Button>
             {projects.map(project => (
