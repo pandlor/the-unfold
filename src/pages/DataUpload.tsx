@@ -11,12 +11,13 @@ import { FileText } from "lucide-react";
 
 const DataUpload = () => {
   const navigate = useNavigate();
-  const { projectId, notebookId } = useParams();
+  const { projectId } = useParams();
   const { toast } = useToast();
   const { projects } = useProjects();
   
   const project = projects.find(p => p.id === projectId);
-  const notebook = project?.notebooks.find(n => n.id === notebookId);
+  // Use the currentNotebookId from project context, or fall back to the first notebook
+  const notebook = project?.notebooks.find(n => n.id === project.currentNotebookId) || project?.notebooks[0];
 
   const handleFileUpload = (files: File[]) => {
     console.log('Files uploaded:', files);
