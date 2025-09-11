@@ -16,26 +16,37 @@ import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { NotebookListSkeleton } from "@/components/skeletons/NotebookSkeleton";
 import { ProjectTabs } from "@/components/ProjectTabs";
-
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
-  const [deleteDialog, setDeleteDialog] = useState({ open: false, notebookId: "", notebookName: "" });
+  const [deleteDialog, setDeleteDialog] = useState({
+    open: false,
+    notebookId: "",
+    notebookName: ""
+  });
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { projectId } = useParams();
-  const { toast } = useToast();
-  const { projects, addNotebook, deleteNotebook } = useProjects();
+  const {
+    projectId
+  } = useParams();
+  const {
+    toast
+  } = useToast();
+  const {
+    projects,
+    addNotebook,
+    deleteNotebook
+  } = useProjects();
 
   // Get notebooks for current project
   const currentProject = projects.find(p => p.id === projectId);
   const notebooks = currentProject?.notebooks || [];
-
   const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    formRef.current?.scrollIntoView({
+      behavior: 'smooth'
+    });
   };
-
   const handleCreateNotebook = async () => {
     if (!notebookName.trim()) {
       toast({
@@ -45,9 +56,7 @@ const NotebookCreation = () => {
       });
       return;
     }
-
     setIsLoading(true);
-
     try {
       // Simulate creation delay
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -59,7 +68,6 @@ const NotebookCreation = () => {
         updatedAt: "Just created"
       };
       addNotebook(projectId!, newNotebook);
-
       toast({
         title: "Notebook Created",
         description: `${notebookName} has been created successfully!`
@@ -81,24 +89,30 @@ const NotebookCreation = () => {
       setIsLoading(false);
     }
   };
-
   const handleDeleteNotebook = (notebookId: string, notebookName: string) => {
-    setDeleteDialog({ open: true, notebookId, notebookName });
+    setDeleteDialog({
+      open: true,
+      notebookId,
+      notebookName
+    });
   };
-
   const confirmDeleteNotebook = () => {
-    const { notebookId } = deleteDialog;
+    const {
+      notebookId
+    } = deleteDialog;
     deleteNotebook(projectId!, notebookId);
     toast({
       title: "Notebook Deleted",
       description: `${deleteDialog.notebookName} has been deleted successfully.`
     });
-    setDeleteDialog({ open: false, notebookId: "", notebookName: "" });
+    setDeleteDialog({
+      open: false,
+      notebookId: "",
+      notebookName: ""
+    });
   };
-
   if (!currentProject) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col">
+    return <div className="min-h-screen bg-background flex flex-col">
         <Header />
         <div className="flex flex-1">
           <Sidebar />
@@ -112,29 +126,19 @@ const NotebookCreation = () => {
             </div>
           </main>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
+  return <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
         <div className="flex-1 flex flex-col">
           <ProjectHeader project={currentProject} />
           
-          <main className="flex-1 p-8">
+          <main className="flex-1 p-8 bg-slate-50">
             <div className="w-full max-w-6xl mx-auto">
               
-              <ProjectTabs
-                project={currentProject}
-                notebooks={notebooks}
-                projectId={projectId!}
-                onCreateNotebook={scrollToForm}
-                onDeleteNotebook={handleDeleteNotebook}
-                createNotebookSection={
-                  <Card className="bg-card/80 backdrop-blur-sm border-border">
+              <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={scrollToForm} onDeleteNotebook={handleDeleteNotebook} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
                     <CardHeader>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
@@ -152,63 +156,34 @@ const NotebookCreation = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <Label htmlFor="notebook-name">Notebook Name *</Label>
-                          <Input
-                            id="notebook-name"
-                            placeholder="e.g., Customer Analysis, Sales Report..."
-                            value={notebookName}
-                            onChange={(e) => setNotebookName(e.target.value)}
-                            disabled={isLoading}
-                          />
+                          <Input id="notebook-name" placeholder="e.g., Customer Analysis, Sales Report..." value={notebookName} onChange={e => setNotebookName(e.target.value)} disabled={isLoading} />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="notebook-description">Description</Label>
-                          <Textarea
-                            id="notebook-description"
-                            placeholder="Describe your analysis goals and objectives..."
-                            value={notebookDescription}
-                            onChange={(e) => setNotebookDescription(e.target.value)}
-                            rows={3}
-                            disabled={isLoading}
-                          />
+                          <Textarea id="notebook-description" placeholder="Describe your analysis goals and objectives..." value={notebookDescription} onChange={e => setNotebookDescription(e.target.value)} rows={3} disabled={isLoading} />
                         </div>
                       </div>
 
                       <div className="flex justify-end gap-3">
-                        <Button 
-                          variant="outline" 
-                          onClick={() => navigate("/")}
-                          disabled={isLoading}
-                        >
+                        <Button variant="outline" onClick={() => navigate("/")} disabled={isLoading}>
                           Cancel
                         </Button>
-                        <Button 
-                          onClick={handleCreateNotebook}
-                          disabled={isLoading || !notebookName.trim()}
-                          className="gap-2"
-                        >
+                        <Button onClick={handleCreateNotebook} disabled={isLoading || !notebookName.trim()} className="gap-2">
                           <Plus className="w-4 h-4" />
                           {isLoading ? "Creating..." : "Create Notebook"}
                         </Button>
                       </div>
                     </CardContent>
-                  </Card>
-                }
-              />
+                  </Card>} />
 
-              <DeleteConfirmDialog
-                open={deleteDialog.open}
-                onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
-                onConfirm={confirmDeleteNotebook}
-                title="Delete Notebook"
-                description="Are you sure you want to delete"
-                itemName={deleteDialog.notebookName}
-              />
+              <DeleteConfirmDialog open={deleteDialog.open} onOpenChange={open => setDeleteDialog(prev => ({
+              ...prev,
+              open
+            }))} onConfirm={confirmDeleteNotebook} title="Delete Notebook" description="Are you sure you want to delete" itemName={deleteDialog.notebookName} />
             </div>
           </main>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default NotebookCreation;
