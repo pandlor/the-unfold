@@ -16,6 +16,7 @@ import {
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook } from "@/contexts/ProjectContext";
+import { useProjectActivity } from "@/hooks/useProjectActivity";
 
 interface ProjectTabsProps {
   project: Project;
@@ -34,10 +35,11 @@ export const ProjectTabs = ({
   onDeleteNotebook,
   createNotebookSection 
 }: ProjectTabsProps) => {
-  const recentActivity = [
-    { action: "Notebook created", item: "Customer Analysis", time: "2 hours ago" },
-    { action: "Data uploaded", item: "sales_data.csv", time: "1 day ago" },
-    { action: "Report generated", item: "Q4 Summary", time: "3 days ago" },
+  const { activities } = useProjectActivity(projectId);
+
+  // Show default message if no activities exist
+  const recentActivity = activities.length > 0 ? activities : [
+    { action: "Project created", item: project.name, time: project.updatedAt }
   ];
 
   return (

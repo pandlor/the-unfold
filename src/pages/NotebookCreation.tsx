@@ -11,6 +11,7 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { useProjects } from "@/contexts/ProjectContext";
+import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { ProjectHeader } from "@/components/ProjectHeader";
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
@@ -33,11 +34,8 @@ const NotebookCreation = () => {
   const {
     toast
   } = useToast();
-  const {
-    projects,
-    addNotebook,
-    deleteNotebook
-  } = useProjects();
+  const { projects, addNotebook, deleteNotebook } = useProjects();
+  const { addActivity } = useProjectActivity(projectId!);
 
   // Get notebooks for current project
   const currentProject = projects.find(p => p.id === projectId);
@@ -68,6 +66,10 @@ const NotebookCreation = () => {
         updatedAt: "Just created"
       };
       addNotebook(projectId!, newNotebook);
+      
+      // Log the activity
+      addActivity("Notebook created", notebookName);
+      
       toast({
         title: "Notebook Created",
         description: `${notebookName} has been created successfully!`
@@ -101,6 +103,10 @@ const NotebookCreation = () => {
       notebookId
     } = deleteDialog;
     deleteNotebook(projectId!, notebookId);
+    
+    // Log the activity
+    addActivity("Notebook deleted", deleteDialog.notebookName);
+    
     toast({
       title: "Notebook Deleted",
       description: `${deleteDialog.notebookName} has been deleted successfully.`

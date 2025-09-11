@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useProjectActivity } from "@/hooks/useProjectActivity";
 
 export interface Notebook {
   id: string;
@@ -23,6 +24,7 @@ interface ProjectContextType {
   deleteNotebook: (projectId: string, notebookId: string) => void;
   updateProject: (projectId: string, updates: Partial<Project>) => void;
   setCurrentNotebook: (projectId: string, notebookId: string) => void;
+  logActivity: (projectId: string, action: string, item: string) => void;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -90,6 +92,7 @@ const initialProjects: Project[] = [
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [projects, setProjects] = useLocalStorage<Project[]>('dataminder-projects', initialProjects);
+  const [activityTrackers] = useState<Map<string, ReturnType<typeof useProjectActivity>>>(new Map());
 
   const addProject = (newProject: Omit<Project, 'notebooks'>) => {
     const project: Project = {
@@ -139,6 +142,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     ));
   };
 
+  const logActivity = (projectId: string, action: string, item: string) => {
+    // This will be handled by the component using useProjectActivity hook
+    // We'll track it there to avoid circular dependencies
+  };
+
   return (
     <ProjectContext.Provider value={{
       projects,
@@ -147,7 +155,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       addNotebook,
       deleteNotebook,
       updateProject,
-      setCurrentNotebook
+      setCurrentNotebook,
+      logActivity
     }}>
       {children}
     </ProjectContext.Provider>
