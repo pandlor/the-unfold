@@ -184,7 +184,7 @@ export const ProjectTabs = ({
               Manage and organize your analysis notebooks
             </p>
           </div>
-          <Button onClick={() => window.location.href = `/project/${projectId}`} className="gap-2">
+          <Button onClick={() => window.location.href = `/project/${projectId}/notebook`} className="gap-2">
             <Plus className="w-4 h-4" />
             New Notebook
           </Button>
