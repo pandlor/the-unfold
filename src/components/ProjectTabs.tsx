@@ -56,8 +56,8 @@ export const ProjectTabs = ({
       description: `${newNotebook.name} has been created successfully!`
     });
     
-    // Navigate directly to the new notebook
-    window.location.href = `/project/${projectId}/notebook/${newNotebook.id}`;
+    // Navigate directly to the notebook interface
+    window.location.href = `/project/${projectId}/notebook`;
   };
 
   // Show default message if no activities exist
