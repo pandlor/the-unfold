@@ -72,7 +72,7 @@ export const ProjectTabs = ({
 
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-5 mb-8">
+      <TabsList className="grid w-full grid-cols-6 mb-8">
         <TabsTrigger value="overview" className="gap-2">
           <BarChart3 className="w-4 h-4" />
           Overview
@@ -84,6 +84,10 @@ export const ProjectTabs = ({
         <TabsTrigger value="data" className="gap-2">
           <FileText className="w-4 h-4" />
           Data
+        </TabsTrigger>
+        <TabsTrigger value="description" className="gap-2">
+          <FileText className="w-4 h-4" />
+          Description
         </TabsTrigger>
         <TabsTrigger value="activity" className="gap-2">
           <Activity className="w-4 h-4" />
@@ -354,6 +358,126 @@ export const ProjectTabs = ({
               >
                 <BarChart3 className="w-6 h-6" />
                 <span>Data Profile</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="description" className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Project Data Description</h2>
+            <p className="text-muted-foreground">
+              Generate and manage descriptions for all datasets in this project
+            </p>
+          </div>
+        </div>
+
+        {/* Description Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Datasets Described</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-muted-foreground">Out of 0 total</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Description Quality</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">--</div>
+              <p className="text-xs text-muted-foreground">Average completeness</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Last Updated</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">--</div>
+              <p className="text-xs text-muted-foreground">Never</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Description Content */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              Data Descriptions
+            </CardTitle>
+            <CardDescription>
+              Detailed descriptions and summaries for project datasets
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-12">
+              <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No data descriptions available</h3>
+              <p className="text-muted-foreground mb-4">
+                Upload datasets first, then generate comprehensive descriptions to understand your data better
+              </p>
+              <div className="flex gap-3 justify-center">
+                <Button onClick={() => window.location.href = `/project/${projectId}/data-upload`} variant="outline" className="gap-2">
+                  <Upload className="w-4 h-4" />
+                  Upload Data First
+                </Button>
+                <Button disabled className="gap-2">
+                  <FileText className="w-4 h-4" />
+                  Generate Descriptions
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Description Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Description Tools</CardTitle>
+            <CardDescription>
+              Tools for generating and managing data descriptions
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <FileText className="w-6 h-6" />
+                <span>Auto Describe</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <Eye className="w-6 h-6" />
+                <span>View Summary</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <Download className="w-6 h-6" />
+                <span>Export Report</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <BarChart3 className="w-6 h-6" />
+                <span>Statistics</span>
               </Button>
             </div>
           </CardContent>
