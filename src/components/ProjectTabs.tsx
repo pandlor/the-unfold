@@ -153,10 +153,10 @@ export const ProjectTabs = ({
               <Button 
                 variant="outline" 
                 className="h-auto p-4 flex-col gap-2"
-                onClick={() => window.location.href = `/project/${projectId}/upload`}
+                onClick={() => window.location.href = `/project/${projectId}/data-upload`}
               >
                 <FileText className="w-6 h-6" />
-                <span>Import Data</span>
+                <span>Upload Data</span>
               </Button>
               <Button 
                 variant="outline" 

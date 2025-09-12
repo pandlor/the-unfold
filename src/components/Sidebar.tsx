@@ -16,9 +16,6 @@ const Sidebar = () => {
   const currentProject = projects.find(p => p.id === projectId);
   const getCurrentNotebookStep = () => {
     const path = location.pathname;
-    if (path.includes('data-upload')) return 'Data Upload';
-    if (path.includes('data-profiling')) return 'Data Profiling';
-    if (path.includes('data-description')) return 'Data Description';
     if (path.includes('hypotheses')) return 'Hypotheses';
     if (path.includes('analysis')) return 'Analysis';
     if (path.includes('report')) return 'Report';
@@ -31,15 +28,7 @@ const Sidebar = () => {
   const navigationItems = [{
     icon: Upload,
     label: "data upload",
-    path: `/project/${projectId}/notebook/data-upload`
-  }, {
-    icon: BarChart3,
-    label: "data profiling",
-    path: `/project/${projectId}/notebook/data-profiling`
-  }, {
-    icon: FileText,
-    label: "data description",
-    path: `/project/${projectId}/notebook/data-description`
+    path: `/project/${projectId}/data-upload`
   }, {
     icon: Lightbulb,
     label: "hypotheses",

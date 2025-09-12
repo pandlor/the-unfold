@@ -47,10 +47,10 @@ const DataUpload = () => {
   };
 
   const handleContinue = () => {
-    navigate(`/project/${projectId}/notebook/data-profiling`);
+    navigate(`/project/${projectId}`);
     toast({
-      title: "Ready for profiling",
-      description: "Proceeding to data profiling step.",
+      title: "Data uploaded successfully",
+      description: "Returning to project overview.",
     });
   };
 
@@ -165,7 +165,7 @@ const DataUpload = () => {
             
             <div className="flex justify-end mt-6">
               <Button onClick={handleContinue}>
-                Continue to Profiling
+                Back to Project
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
