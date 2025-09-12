@@ -26,14 +26,14 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ProjectCreation />} />
-          <Route path="/project/:projectId" element={<NotebookCreation />} />
-          <Route path="/project/:projectId/notebook" element={<Navigate to="data-upload" replace />} />
-          <Route path="/project/:projectId/notebook/data-upload" element={<DataUpload />} />
-          <Route path="/project/:projectId/notebook/data-profiling" element={<DataProfiling />} />
-          <Route path="/project/:projectId/notebook/data-description" element={<DataDescription />} />
-          <Route path="/project/:projectId/notebook/hypotheses" element={<Hypotheses />} />
-          <Route path="/project/:projectId/notebook/analysis" element={<Analysis />} />
-          <Route path="/project/:projectId/notebook/report" element={<Report />} />
+          <Route path="/project/:projectId" element={<Navigate to="data-upload" replace />} />
+          <Route path="/project/:projectId/data-upload" element={<DataUpload />} />
+          <Route path="/project/:projectId/data-profiling" element={<DataProfiling />} />
+          <Route path="/project/:projectId/data-description" element={<DataDescription />} />
+          <Route path="/project/:projectId/notebook/:notebookId" element={<NotebookInterface />} />
+          <Route path="/project/:projectId/notebook/:notebookId/hypotheses" element={<Hypotheses />} />
+          <Route path="/project/:projectId/notebook/:notebookId/analysis" element={<Analysis />} />
+          <Route path="/project/:projectId/notebook/:notebookId/report" element={<Report />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

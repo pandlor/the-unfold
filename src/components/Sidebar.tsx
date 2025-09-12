@@ -28,19 +28,21 @@ const Sidebar = () => {
   const toggleProject = (projectIdToToggle: string) => {
     setOpenProjects(prev => prev.includes(projectIdToToggle) ? prev.filter(id => id !== projectIdToToggle) : [...prev, projectIdToToggle]);
   };
-  const navigationItems = [{
+  const projectNavigationItems = [{
     icon: Upload,
     label: "data upload",
-    path: `/project/${projectId}/notebook/data-upload`
+    path: `/project/${projectId}/data-upload`
   }, {
     icon: BarChart3,
     label: "data profiling",
-    path: `/project/${projectId}/notebook/data-profiling`
+    path: `/project/${projectId}/data-profiling`
   }, {
     icon: FileText,
     label: "data description",
-    path: `/project/${projectId}/notebook/data-description`
-  }, {
+    path: `/project/${projectId}/data-description`
+  }];
+
+  const notebookNavigationItems = [{
     icon: Lightbulb,
     label: "hypotheses",
     path: `/project/${projectId}/notebook/hypotheses`
@@ -54,7 +56,8 @@ const Sidebar = () => {
     path: `/project/${projectId}/notebook/report`
   }];
   // Check if we should show collapsed mode (when in notebook context)
-  const isInNotebook = projectId && location.pathname.includes('/notebook');
+  const isInNotebook = projectId && location.pathname.includes('/notebook/');
+  const isInProject = projectId && !location.pathname.includes('/notebook/');
   
   if (isInNotebook) {
     return (
@@ -115,17 +118,17 @@ const Sidebar = () => {
                 {/* Project Notebooks */}
                 {openProjects.includes(project.id) && (
                   <div className="ml-12 space-y-1">
-                    {project.notebooks.map(notebook => (
-                      <Button key={notebook.id} variant="ghost" size="sm" className={`w-full justify-start text-xs pl-4 ${location.pathname.includes(`/project/${project.id}/notebook`) ? "bg-muted/50 text-primary" : ""}`} asChild>
-                        <Link to={`/project/${project.id}/notebook`}>
-                          <BookOpen className="w-3 h-3 mr-2" />
-                          <div className="flex flex-col items-start w-full">
-                            <span className="truncate">{notebook.name}</span>
-                            <span className="text-xs text-muted-foreground">{notebook.updatedAt}</span>
-                          </div>
-                        </Link>
-                      </Button>
-                    ))}
+                     {project.notebooks.map(notebook => (
+                       <Button key={notebook.id} variant="ghost" size="sm" className={`w-full justify-start text-xs pl-4 ${location.pathname.includes(`/project/${project.id}/notebook/${notebook.id}`) ? "bg-muted/50 text-primary" : ""}`} asChild>
+                         <Link to={`/project/${project.id}/notebook/${notebook.id}`}>
+                           <BookOpen className="w-3 h-3 mr-2" />
+                           <div className="flex flex-col items-start w-full">
+                             <span className="truncate">{notebook.name}</span>
+                             <span className="text-xs text-muted-foreground">{notebook.updatedAt}</span>
+                           </div>
+                         </Link>
+                       </Button>
+                     ))}
                   </div>
                 )}
               </div>
@@ -140,18 +143,18 @@ const Sidebar = () => {
               <div className="text-xs text-muted-foreground">Current Project:</div>
               <div className="text-xs font-medium text-primary truncate">{currentProject.name}</div>
             </div>
-            {location.pathname.includes('/notebook') && (
+            {isInProject && (
               <div className="px-2 py-1 bg-primary/10 rounded-md">
-                <div className="text-xs text-muted-foreground">Current Step:</div>
+                <div className="text-xs text-muted-foreground">Project Step:</div>
                 <div className="text-xs font-medium text-primary">{getCurrentNotebookStep()}</div>
               </div>
             )}
-            <Button variant="ghost" size="sm" className="w-full justify-start text-xs" asChild>
-              <Link to={`/project/${projectId}/notebook`}>
-                <BookOpen className="w-3 h-3 mr-2" />
-                Go to Notebook
-              </Link>
-            </Button>
+            {isInNotebook && (
+              <div className="px-2 py-1 bg-primary/10 rounded-md">
+                <div className="text-xs text-muted-foreground">Notebook Step:</div>
+                <div className="text-xs font-medium text-primary">{getCurrentNotebookStep()}</div>
+              </div>
+            )}
           </div>
         )}
       </div>
