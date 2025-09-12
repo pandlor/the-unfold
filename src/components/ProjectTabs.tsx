@@ -16,13 +16,19 @@ import {
   Database,
   Trash2,
   Download,
-  Eye
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Check
 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 interface ProjectTabsProps {
   project: Project;
@@ -44,6 +50,14 @@ export const ProjectTabs = ({
   const { activities, addActivity } = useProjectActivity(projectId);
   const { addNotebook } = useProjects();
   const { toast } = useToast();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    researchGroup: '',
+    dataLocation: '',
+    dataCollectionTime: '',
+    dataCollectionMethod: '',
+    studyObjective: ''
+  });
 
   const createNewNotebook = () => {
     const notebookNumber = notebooks.length + 1;
@@ -64,6 +78,57 @@ export const ProjectTabs = ({
     // Navigate directly to the notebook interface
     window.location.href = `/project/${projectId}/notebook`;
   };
+
+  const updateFormData = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const nextStep = () => {
+    if (currentStep < 5) setCurrentStep(currentStep + 1);
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
+  };
+
+  const goToStep = (step: number) => {
+    setCurrentStep(step);
+  };
+
+  const questions = [
+    {
+      id: 1,
+      title: "Description of the Research Group",
+      description: "Provide a detailed description of the research group: who the participants are, their sample size, key demographic characteristics, or other essential information.",
+      field: "researchGroup"
+    },
+    {
+      id: 2,
+      title: "Where Was the Data Collected?",
+      description: "Specify the location of data collection (e.g., geographical location or platform).",
+      field: "dataLocation"
+    },
+    {
+      id: 3,
+      title: "When Was the Data Collected?",
+      description: "Indicate the period during which data collection took place.",
+      field: "dataCollectionTime"
+    },
+    {
+      id: 4,
+      title: "How Was the Data Collected?",
+      description: "Describe the methods used for data collection, such as online surveys, interviews, or observations.",
+      field: "dataCollectionMethod"
+    },
+    {
+      id: 5,
+      title: "What Is the Objective of the Study?",
+      description: "Define the main goal of the study, such as analyzing consumer preferences or assessing service satisfaction.",
+      field: "studyObjective"
+    }
+  ];
+
+  const currentQuestion = questions[currentStep - 1];
 
   // Show default message if no activities exist
   const recentActivity = activities.length > 0 ? activities : [
@@ -369,116 +434,130 @@ export const ProjectTabs = ({
           <div>
             <h2 className="text-2xl font-bold text-foreground">Project Data Description</h2>
             <p className="text-muted-foreground">
-              Generate and manage descriptions for all datasets in this project
+              Describe your research data and methodology to provide context for analysis
             </p>
           </div>
         </div>
 
-        {/* Description Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Datasets Described</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground">Out of 0 total</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Description Quality</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">--</div>
-              <p className="text-xs text-muted-foreground">Average completeness</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Last Updated</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">--</div>
-              <p className="text-xs text-muted-foreground">Never</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Description Content */}
+        {/* Progress Steps */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5" />
-              Data Descriptions
-            </CardTitle>
-            <CardDescription>
-              Detailed descriptions and summaries for project datasets
-            </CardDescription>
+            <CardTitle>Step {currentStep} of 5</CardTitle>
+            <CardDescription>Complete all sections to provide comprehensive data context</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-12">
-              <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No data descriptions available</h3>
-              <p className="text-muted-foreground mb-4">
-                Upload datasets first, then generate comprehensive descriptions to understand your data better
-              </p>
-              <div className="flex gap-3 justify-center">
-                <Button onClick={() => window.location.href = `/project/${projectId}/data-upload`} variant="outline" className="gap-2">
-                  <Upload className="w-4 h-4" />
-                  Upload Data First
-                </Button>
-                <Button disabled className="gap-2">
-                  <FileText className="w-4 h-4" />
-                  Generate Descriptions
-                </Button>
+            {/* Step Indicator */}
+            <div className="flex items-center justify-between mb-6">
+              {questions.map((question, index) => (
+                <div key={question.id} className="flex items-center">
+                  <button
+                    onClick={() => goToStep(question.id)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+                      currentStep === question.id
+                        ? 'bg-primary text-primary-foreground'
+                        : formData[question.field as keyof typeof formData]
+                        ? 'bg-green-100 text-green-700 border-2 border-green-200'
+                        : 'bg-muted text-muted-foreground border-2 border-border'
+                    }`}
+                  >
+                    {formData[question.field as keyof typeof formData] ? (
+                      <Check className="w-4 h-4" />
+                    ) : (
+                      question.id
+                    )}
+                  </button>
+                  {index < questions.length - 1 && (
+                    <div className={`w-12 h-0.5 mx-2 ${
+                      currentStep > question.id ? 'bg-green-200' : 'bg-border'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Current Question */}
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="current-question" className="text-lg font-semibold">
+                  {currentQuestion.title}
+                </Label>
+                <p className="text-muted-foreground mt-1 mb-4">
+                  {currentQuestion.description}
+                </p>
+              </div>
+              
+              <Textarea
+                id="current-question"
+                placeholder="Enter your response..."
+                value={formData[currentQuestion.field as keyof typeof formData]}
+                onChange={(e) => updateFormData(currentQuestion.field, e.target.value)}
+                className="min-h-[120px]"
+              />
+            </div>
+
+            {/* Navigation */}
+            <div className="flex justify-between mt-6">
+              <Button 
+                variant="outline" 
+                onClick={prevStep}
+                disabled={currentStep === 1}
+                className="gap-2"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Previous
+              </Button>
+              
+              <div className="flex gap-2">
+                {currentStep < 5 ? (
+                  <Button onClick={nextStep} className="gap-2">
+                    Next
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                ) : (
+                  <Button 
+                    onClick={() => {
+                      toast({
+                        title: "Description Saved",
+                        description: "Your data description has been saved successfully."
+                      });
+                    }}
+                    className="gap-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    Save Description
+                  </Button>
+                )}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Description Actions */}
+        {/* Quick Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>Description Tools</CardTitle>
-            <CardDescription>
-              Tools for generating and managing data descriptions
-            </CardDescription>
+            <CardTitle>Overview</CardTitle>
+            <CardDescription>Quick view of all responses</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                disabled
-              >
-                <FileText className="w-6 h-6" />
-                <span>Auto Describe</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                disabled
-              >
-                <Eye className="w-6 h-6" />
-                <span>View Summary</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                disabled
-              >
-                <Download className="w-6 h-6" />
-                <span>Export Report</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                disabled
-              >
-                <BarChart3 className="w-6 h-6" />
-                <span>Statistics</span>
-              </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {questions.map((question) => (
+                <div key={question.id} className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-4 h-4 rounded-full ${
+                      formData[question.field as keyof typeof formData] 
+                        ? 'bg-green-500' 
+                        : 'bg-gray-300'
+                    }`} />
+                    <Label className="text-sm font-medium">{question.title}</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground pl-6">
+                    {formData[question.field as keyof typeof formData] 
+                      ? `${formData[question.field as keyof typeof formData].substring(0, 50)}${formData[question.field as keyof typeof formData].length > 50 ? '...' : ''}`
+                      : 'Not completed'
+                    }
+                  </p>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
