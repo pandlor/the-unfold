@@ -11,7 +11,12 @@ import {
   Clock,
   FileText,
   TrendingUp,
-  ArrowUpRight
+  ArrowUpRight,
+  Upload,
+  Database,
+  Trash2,
+  Download,
+  Eye
 } from "lucide-react";
 import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
@@ -67,7 +72,7 @@ export const ProjectTabs = ({
 
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-4 mb-8">
+      <TabsList className="grid w-full grid-cols-5 mb-8">
         <TabsTrigger value="overview" className="gap-2">
           <BarChart3 className="w-4 h-4" />
           Overview
@@ -75,6 +80,10 @@ export const ProjectTabs = ({
         <TabsTrigger value="notebooks" className="gap-2">
           <BookOpen className="w-4 h-4" />
           Notebooks ({notebooks.length})
+        </TabsTrigger>
+        <TabsTrigger value="data" className="gap-2">
+          <FileText className="w-4 h-4" />
+          Data
         </TabsTrigger>
         <TabsTrigger value="activity" className="gap-2">
           <Activity className="w-4 h-4" />
@@ -231,6 +240,124 @@ export const ProjectTabs = ({
         <div className="mt-8">
           {createNotebookSection}
         </div>
+      </TabsContent>
+
+      <TabsContent value="data" className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Data Management</h2>
+            <p className="text-muted-foreground">
+              Manage datasets that will be available to all notebooks in this project
+            </p>
+          </div>
+          <Button onClick={() => window.location.href = `/project/${projectId}/data-upload`} className="gap-2">
+            <Upload className="w-4 h-4" />
+            Upload Data
+          </Button>
+        </div>
+
+        {/* Data Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Total Datasets</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-muted-foreground">No data uploaded yet</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Total Size</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">0 MB</div>
+              <p className="text-xs text-muted-foreground">Storage used</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Last Upload</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">--</div>
+              <p className="text-xs text-muted-foreground">Never</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Data Files List */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Database className="w-5 h-5" />
+              Uploaded Datasets
+            </CardTitle>
+            <CardDescription>
+              Files available to all notebooks in this project
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-12">
+              <Database className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No datasets uploaded</h3>
+              <p className="text-muted-foreground mb-4">
+                Upload your first dataset to get started with analysis
+              </p>
+              <Button onClick={() => window.location.href = `/project/${projectId}/data-upload`} className="gap-2">
+                <Upload className="w-4 h-4" />
+                Upload Dataset
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Data Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Actions</CardTitle>
+            <CardDescription>
+              Quick actions for data management
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => window.location.href = `/project/${projectId}/data-upload`}
+              >
+                <Upload className="w-6 h-6" />
+                <span>Upload Data</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <Eye className="w-6 h-6" />
+                <span>Preview Data</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <Download className="w-6 h-6" />
+                <span>Export Data</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-auto p-4 flex-col gap-2"
+                disabled
+              >
+                <BarChart3 className="w-6 h-6" />
+                <span>Data Profile</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </TabsContent>
 
       <TabsContent value="activity" className="space-y-6">
