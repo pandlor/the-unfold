@@ -29,6 +29,7 @@ import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/components/ui/use-toast";
+import { ProjectHeader } from "@/components/ProjectHeader";
 import { useState } from "react";
 
 interface ProjectTabsProps {
@@ -140,20 +141,19 @@ export const ProjectTabs = ({
     <Tabs defaultValue="overview" className="w-full">
       {/* Management Section */}
       <div className="mb-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview" className="gap-2">
-            <BarChart3 className="w-4 h-4" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="activity" className="gap-2">
-            <Activity className="w-4 h-4" />
-            Activity
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="gap-2">
-            <Settings className="w-4 h-4" />
-            Settings
-          </TabsTrigger>
-        </TabsList>
+        <ProjectHeader 
+          project={project} 
+          showBackButton={false} 
+          activeTab="overview"
+          onTabChange={(value) => {
+            // Handle tab switching logic here if needed
+            const tabsList = document.querySelector('[role="tablist"]') as HTMLElement;
+            if (tabsList) {
+              const targetTab = tabsList.querySelector(`[value="${value}"]`) as HTMLButtonElement;
+              if (targetTab) targetTab.click();
+            }
+          }}
+        />
       </div>
 
       {/* Workflow Section */}
