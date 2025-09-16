@@ -137,7 +137,7 @@ export const ProjectTabs = ({
   ];
 
   return (
-    <div>
+    <Tabs defaultValue="overview" className="w-full">
       {/* Management Section in Header Area */}
       <div className="mb-6">
         <TabsList className="grid w-full grid-cols-3 max-w-md">
@@ -156,9 +156,9 @@ export const ProjectTabs = ({
         </TabsList>
       </div>
       
-      <Tabs defaultValue="overview" className="w-full">
-        {/* Workflow Section */}
-        <TabsList className="grid w-full grid-cols-4 mb-8">
+      {/* Workflow Section */}
+      <div className="mb-8">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="notebooks" className="gap-2">
             <BookOpen className="w-4 h-4" />
             Notebooks ({notebooks.length})
@@ -176,6 +176,7 @@ export const ProjectTabs = ({
             Description
           </TabsTrigger>
         </TabsList>
+      </div>
 
       <TabsContent value="overview" className="space-y-6">
 
@@ -753,6 +754,5 @@ export const ProjectTabs = ({
         </div>
       </TabsContent>
       </Tabs>
-    </div>
   );
 };
