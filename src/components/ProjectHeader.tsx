@@ -1,8 +1,7 @@
-import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X, BarChart3, Activity, Settings } from "lucide-react";
+import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { Project, useProjects } from "@/contexts/ProjectContext";
 import { useState, useEffect } from "react";
@@ -10,11 +9,9 @@ import { useState, useEffect } from "react";
 interface ProjectHeaderProps {
   project: Project;
   showBackButton?: boolean;
-  activeTab?: string;
-  onTabChange?: (value: string) => void;
 }
 
-export const ProjectHeader = ({ project, showBackButton = true, activeTab, onTabChange }: ProjectHeaderProps) => {
+export const ProjectHeader = ({ project, showBackButton = true }: ProjectHeaderProps) => {
   const navigate = useNavigate();
   const { updateProject } = useProjects();
   const [isEditing, setIsEditing] = useState(false);
@@ -112,38 +109,6 @@ export const ProjectHeader = ({ project, showBackButton = true, activeTab, onTab
             Active Project
           </Badge>
         </div>
-
-        {/* Management Tabs */}
-        {activeTab && onTabChange && (
-          <div className="mt-6">
-            <TabsList className="grid w-full grid-cols-3 max-w-md">
-              <TabsTrigger 
-                value="overview" 
-                className="gap-2"
-                onClick={() => onTabChange("overview")}
-              >
-                <BarChart3 className="w-4 h-4" />
-                Overview
-              </TabsTrigger>
-              <TabsTrigger 
-                value="activity" 
-                className="gap-2"
-                onClick={() => onTabChange("activity")}
-              >
-                <Activity className="w-4 h-4" />
-                Activity
-              </TabsTrigger>
-              <TabsTrigger 
-                value="settings" 
-                className="gap-2"
-                onClick={() => onTabChange("settings")}
-              >
-                <Settings className="w-4 h-4" />
-                Settings
-              </TabsTrigger>
-            </TabsList>
-          </div>
-        )}
       </div>
     </div>
   );

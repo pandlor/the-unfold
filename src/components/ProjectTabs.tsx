@@ -29,7 +29,6 @@ import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/components/ui/use-toast";
-import { ProjectHeader } from "@/components/ProjectHeader";
 import { useState } from "react";
 
 interface ProjectTabsProps {
@@ -138,43 +137,45 @@ export const ProjectTabs = ({
   ];
 
   return (
-    <Tabs defaultValue="overview" className="w-full">
-      {/* Management Section */}
-      <div className="mb-4">
-        <ProjectHeader 
-          project={project} 
-          showBackButton={false} 
-          activeTab="overview"
-          onTabChange={(value) => {
-            // Handle tab switching logic here if needed
-            const tabsList = document.querySelector('[role="tablist"]') as HTMLElement;
-            if (tabsList) {
-              const targetTab = tabsList.querySelector(`[value="${value}"]`) as HTMLButtonElement;
-              if (targetTab) targetTab.click();
-            }
-          }}
-        />
+    <div>
+      {/* Management Section in Header Area */}
+      <div className="mb-6">
+        <TabsList className="grid w-full grid-cols-3 max-w-md">
+          <TabsTrigger value="overview" className="gap-2">
+            <BarChart3 className="w-4 h-4" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="activity" className="gap-2">
+            <Activity className="w-4 h-4" />
+            Activity
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="gap-2">
+            <Settings className="w-4 h-4" />
+            Settings
+          </TabsTrigger>
+        </TabsList>
       </div>
-
-      {/* Workflow Section */}
-      <TabsList className="grid w-full grid-cols-4 mb-8">
-        <TabsTrigger value="notebooks" className="gap-2">
-          <BookOpen className="w-4 h-4" />
-          Notebooks ({notebooks.length})
-        </TabsTrigger>
-        <TabsTrigger value="data" className="gap-2">
-          <Upload className="w-4 h-4" />
-          Data
-        </TabsTrigger>
-        <TabsTrigger value="profiling" className="gap-2">
-          <BarChart3 className="w-4 h-4" />
-          Profiling
-        </TabsTrigger>
-        <TabsTrigger value="description" className="gap-2">
-          <FileText className="w-4 h-4" />
-          Description
-        </TabsTrigger>
-      </TabsList>
+      
+      <Tabs defaultValue="overview" className="w-full">
+        {/* Workflow Section */}
+        <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsTrigger value="notebooks" className="gap-2">
+            <BookOpen className="w-4 h-4" />
+            Notebooks ({notebooks.length})
+          </TabsTrigger>
+          <TabsTrigger value="data" className="gap-2">
+            <Upload className="w-4 h-4" />
+            Data
+          </TabsTrigger>
+          <TabsTrigger value="profiling" className="gap-2">
+            <BarChart3 className="w-4 h-4" />
+            Profiling
+          </TabsTrigger>
+          <TabsTrigger value="description" className="gap-2">
+            <FileText className="w-4 h-4" />
+            Description
+          </TabsTrigger>
+        </TabsList>
 
       <TabsContent value="overview" className="space-y-6">
 
@@ -751,6 +752,7 @@ export const ProjectTabs = ({
           </Card>
         </div>
       </TabsContent>
-    </Tabs>
+      </Tabs>
+    </div>
   );
 };
