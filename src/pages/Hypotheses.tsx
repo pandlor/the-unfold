@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
+import ProgressBar from "@/components/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -64,16 +64,17 @@ const Hypotheses = () => {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <AnalysisSidebar />
-        <main className="flex-1 p-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold text-foreground">Hypotheses</h1>
-              <Button onClick={saveHypotheses} className="gap-2">
-                <Save className="h-4 w-4" />
-                Save Hypotheses
-              </Button>
-            </div>
+        <div className="flex-1 flex flex-col">
+          <ProgressBar />
+          <main className="flex-1 p-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold text-foreground">Hypotheses</h1>
+                <Button onClick={saveHypotheses} className="gap-2">
+                  <Save className="h-4 w-4" />
+                  Save Hypotheses
+                </Button>
+              </div>
             
             <div className="mb-6">
               <p className="text-muted-foreground">
@@ -136,8 +137,9 @@ const Hypotheses = () => {
           </div>
         </main>
       </div>
-    </div>
-  );
-};
+       </div>
+     </div>
+   );
+ };
 
 export default Hypotheses;
