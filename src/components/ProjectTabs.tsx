@@ -138,11 +138,26 @@ export const ProjectTabs = ({
 
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-7 mb-8">
-        <TabsTrigger value="overview" className="gap-2">
-          <BarChart3 className="w-4 h-4" />
-          Overview
-        </TabsTrigger>
+      {/* Management Section */}
+      <div className="mb-4">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="overview" className="gap-2">
+            <BarChart3 className="w-4 h-4" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="activity" className="gap-2">
+            <Activity className="w-4 h-4" />
+            Activity
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="gap-2">
+            <Settings className="w-4 h-4" />
+            Settings
+          </TabsTrigger>
+        </TabsList>
+      </div>
+
+      {/* Workflow Section */}
+      <TabsList className="grid w-full grid-cols-4 mb-8">
         <TabsTrigger value="notebooks" className="gap-2">
           <BookOpen className="w-4 h-4" />
           Notebooks ({notebooks.length})
@@ -158,14 +173,6 @@ export const ProjectTabs = ({
         <TabsTrigger value="description" className="gap-2">
           <FileText className="w-4 h-4" />
           Description
-        </TabsTrigger>
-        <TabsTrigger value="activity" className="gap-2">
-          <Activity className="w-4 h-4" />
-          Activity
-        </TabsTrigger>
-        <TabsTrigger value="settings" className="gap-2">
-          <Settings className="w-4 h-4" />
-          Settings
         </TabsTrigger>
       </TabsList>
 
