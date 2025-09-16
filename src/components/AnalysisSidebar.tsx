@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Upload, BarChart3, FileText, Target, TrendingUp, FileOutput, Check, Circle } from "lucide-react";
+import { Target, TrendingUp, FileOutput, Check, Circle } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -8,21 +8,6 @@ const AnalysisSidebar = () => {
   const { projectId } = useParams();
 
   const navigationItems = [
-    {
-      icon: Upload,
-      label: "Data Upload",
-      path: `/project/${projectId}/notebook/data-upload`
-    },
-    {
-      icon: BarChart3,
-      label: "Data Profiling",
-      path: `/project/${projectId}/notebook/data-profiling`
-    },
-    {
-      icon: FileText,
-      label: "Data Description",
-      path: `/project/${projectId}/notebook/data-description`
-    },
     {
       icon: Target,
       label: "Hypotheses",
@@ -42,7 +27,7 @@ const AnalysisSidebar = () => {
 
   // Get current step index for progress calculation
   const getCurrentStepIndex = () => {
-    const stepIds = ['data-upload', 'data-profiling', 'data-description', 'hypotheses', 'analysis', 'report'];
+    const stepIds = ['hypotheses', 'analysis', 'report'];
     const currentStep = stepIds.find(step => location.pathname.includes(step));
     return currentStep ? stepIds.indexOf(currentStep) : 0;
   };
