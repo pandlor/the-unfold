@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
-import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
 import { AnalysisStepSkeleton, DataTableSkeleton } from "@/components/skeletons/AnalysisSkeleton";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
 import { useParams } from "react-router-dom";
+import { useProjects } from "@/contexts/ProjectContext";
 
 const DataProfiling = () => {
   const { projectId } = useParams();
+  const { projects } = useProjects();
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasData, setHasData] = useState(false);
+
+  const project = projects.find(p => p.id === projectId);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -35,7 +38,6 @@ const DataProfiling = () => {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
             {isLoading ? (
@@ -43,14 +45,19 @@ const DataProfiling = () => {
             ) : !hasData && !isProcessing ? (
               <NoAnalysisState 
                 title="No Data to Profile"
-                description="Upload your data files first to begin profiling and analysis."
+                description={`Upload data files to ${project?.name} first to begin profiling and analysis.`}
                 currentStep="data-upload"
                 projectId={projectId}
                 nextStepLabel="Upload Data"
               />
             ) : (
               <>
-                <h1 className="text-3xl font-bold text-foreground mb-6">Data Profiling</h1>
+                <div className="mb-8">
+                  <h1 className="text-3xl font-bold text-foreground mb-2">Data Profiling</h1>
+                  <p className="text-muted-foreground">
+                    Analyze the structure and quality of data in <span className="font-medium">{project?.name}</span>
+                  </p>
+                </div>
                 
                 {isProcessing ? (
                   <div className="space-y-6">

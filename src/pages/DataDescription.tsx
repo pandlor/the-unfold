@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
-import AnalysisSidebar from "@/components/AnalysisSidebar";
 import Header from "@/components/Header";
-import { AnalysisStepSkeleton } from "@/components/skeletons/AnalysisSkeleton";
-import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,19 +8,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useProjects } from "@/contexts/ProjectContext";
+import { useToast } from "@/hooks/use-toast";
 
 const DataDescription = () => {
   const { projectId } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasData, setHasData] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setHasData(false); // Simulate no processed data
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { projects } = useProjects();
+  const { toast } = useToast();
+  const project = projects.find(p => p.id === projectId);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [formData, setFormData] = useState({
     researchGroup: "",
@@ -101,15 +93,26 @@ const DataDescription = () => {
     }
   };
 
+  const handleSaveDescription = () => {
+    toast({
+      title: "Description Saved",
+      description: "Your data description has been saved successfully."
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <AnalysisSidebar />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-foreground mb-6">Data Description</h1>
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-foreground mb-2">Data Description</h1>
+              <p className="text-muted-foreground">
+                Describe the research data and methodology for <span className="font-medium">{project?.name}</span>
+              </p>
+            </div>
             
             {/* Question Navigation */}
             <div className="flex gap-2 mb-6 overflow-x-auto">
@@ -192,7 +195,7 @@ const DataDescription = () => {
             {/* Save Progress */}
             {currentQuestion === questions.length && (
               <div className="mt-6 text-center">
-                <Button size="lg" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto" onClick={handleSaveDescription}>
                   Save Data Description
                 </Button>
               </div>
