@@ -1,5 +1,5 @@
 import { Target, TrendingUp, FileOutput, Check, Circle } from "lucide-react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const ProgressBar = () => {
@@ -47,7 +47,7 @@ const ProgressBar = () => {
             
             return (
               <div key={index} className="flex items-center">
-                <div className="flex items-center space-x-3">
+                <Link to={step.path} className="flex items-center space-x-3 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-muted/40 transition-colors">
                   {/* Progress Circle */}
                   <div
                     className={cn(
@@ -77,7 +77,7 @@ const ProgressBar = () => {
                       Step {index + 1} of {steps.length}
                     </span>
                   </div>
-                </div>
+                </Link>
                 
                 {/* Progress Line */}
                 {index < steps.length - 1 && (
