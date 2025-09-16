@@ -19,7 +19,8 @@ import {
   Eye,
   ChevronLeft,
   ChevronRight,
-  Check
+  Check,
+  FileSearch
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -137,7 +138,7 @@ export const ProjectTabs = ({
 
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-6 mb-8">
+      <TabsList className="grid w-full grid-cols-7 mb-8">
         <TabsTrigger value="overview" className="gap-2">
           <BarChart3 className="w-4 h-4" />
           Overview
@@ -147,8 +148,12 @@ export const ProjectTabs = ({
           Notebooks ({notebooks.length})
         </TabsTrigger>
         <TabsTrigger value="data" className="gap-2">
-          <FileText className="w-4 h-4" />
+          <Upload className="w-4 h-4" />
           Data
+        </TabsTrigger>
+        <TabsTrigger value="profiling" className="gap-2">
+          <BarChart3 className="w-4 h-4" />
+          Profiling
         </TabsTrigger>
         <TabsTrigger value="description" className="gap-2">
           <FileText className="w-4 h-4" />
@@ -419,10 +424,97 @@ export const ProjectTabs = ({
               <Button 
                 variant="outline" 
                 className="h-auto p-4 flex-col gap-2"
-                disabled
+                onClick={() => window.location.href = `/project/${projectId}/data-profiling`}
               >
                 <BarChart3 className="w-6 h-6" />
                 <span>Data Profile</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="profiling" className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Data Profiling</h2>
+            <p className="text-muted-foreground">
+              Analyze the structure and quality of your data
+            </p>
+          </div>
+          <Button 
+            onClick={() => window.location.href = `/project/${projectId}/data-profiling`}
+            className="gap-2"
+          >
+            <BarChart3 className="w-4 h-4" />
+            Start Profiling
+          </Button>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Data Quality
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Check for missing values, outliers, and data consistency
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <FileSearch className="w-4 h-4" />
+                Schema Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Understand data types, distributions, and relationships
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                Statistical Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Generate descriptive statistics and visualizations
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="w-5 h-5" />
+              Profiling Results
+            </CardTitle>
+            <CardDescription>
+              View comprehensive analysis of your datasets
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-12">
+              <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No profiling results yet</h3>
+              <p className="text-muted-foreground mb-4">
+                Upload data and run profiling to see detailed analysis
+              </p>
+              <Button onClick={() => window.location.href = `/project/${projectId}/data-profiling`} className="gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Start Profiling
               </Button>
             </div>
           </CardContent>
@@ -437,6 +529,13 @@ export const ProjectTabs = ({
               Describe your research data and methodology to provide context for analysis
             </p>
           </div>
+          <Button 
+            onClick={() => window.location.href = `/project/${projectId}/data-description`}
+            className="gap-2"
+          >
+            <FileText className="w-4 h-4" />
+            Edit Description
+          </Button>
         </div>
 
         {/* Progress Steps */}

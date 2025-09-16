@@ -28,6 +28,8 @@ const App = () => (
           <Route path="/" element={<ProjectCreation />} />
           <Route path="/project/:projectId" element={<NotebookCreation />} />
           <Route path="/project/:projectId/data-upload" element={<DataUpload />} />
+          <Route path="/project/:projectId/data-profiling" element={<DataProfiling />} />
+          <Route path="/project/:projectId/data-description" element={<DataDescription />} />
           <Route path="/project/:projectId/notebook" element={<Navigate to="hypotheses" replace />} />
           <Route path="/project/:projectId/notebook/hypotheses" element={<Hypotheses />} />
           <Route path="/project/:projectId/notebook/analysis" element={<Analysis />} />
