@@ -98,7 +98,13 @@ const ProjectCreation = () => {
         <div className="max-w-6xl mx-auto">
             {/* Recent Projects Section */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-foreground mb-4">Recent Projects</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-foreground">Recent Projects</h2>
+                <Button onClick={scrollToForm} className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Create New Project
+                </Button>
+              </div>
               {isLoading ? (
                 <ProjectListSkeleton count={6} />
               ) : projects.length > 0 ? (
