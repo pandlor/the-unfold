@@ -183,14 +183,6 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                     </div>
                   </div>
                 </div>
-                
-                <div className="mt-4 p-3 bg-background/60 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Project Progress</span>
-                    <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
-                  </div>
-                  <Progress value={calculateProjectProgress(project.id)} className="mt-2" />
-                </div>
               </CardContent>
             </Card>
           </CollapsibleContent>
