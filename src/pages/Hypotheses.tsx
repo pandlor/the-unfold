@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import ProgressBar from "@/components/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -44,59 +43,53 @@ const Hypotheses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <ProgressBar />
-          <main className="flex-1 p-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-foreground">Hypothesis</h1>
-                <Button onClick={saveHypothesis} className="gap-2">
-                  <Save className="h-4 w-4" />
-                  Save Hypothesis
-                </Button>
-              </div>
-              
-              <div className="mb-6">
-                <p className="text-muted-foreground">
-                  Define your research hypothesis for this notebook. This workspace is dedicated to analyzing and testing this single hypothesis.
-                </p>
-              </div>
+    <Layout>
+      <ProgressBar />
+      <main className="flex-1 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-foreground">Hypothesis</h1>
+            <Button onClick={saveHypothesis} className="gap-2">
+              <Save className="h-4 w-4" />
+              Save Hypothesis
+            </Button>
+          </div>
+          
+          <div className="mb-6">
+            <p className="text-muted-foreground">
+              Define your research hypothesis for this notebook. This workspace is dedicated to analyzing and testing this single hypothesis.
+            </p>
+          </div>
 
-              <Card>
-                <CardHeader className="pb-3">
-                  <Label className="text-base font-medium">
-                    Research Hypothesis
-                  </Label>
-                </CardHeader>
-                <CardContent>
-                  <Textarea
-                    value={hypothesis}
-                    onChange={(e) => setHypothesis(e.target.value)}
-                    placeholder="Write your hypothesis here... (e.g., 'There is a positive correlation between variable A and variable B', 'Group X will show significantly higher values than Group Y')"
-                    className="min-h-[120px] resize-none"
-                  />
-                </CardContent>
-              </Card>
+          <Card>
+            <CardHeader className="pb-3">
+              <Label className="text-base font-medium">
+                Research Hypothesis
+              </Label>
+            </CardHeader>
+            <CardContent>
+              <Textarea
+                value={hypothesis}
+                onChange={(e) => setHypothesis(e.target.value)}
+                placeholder="Write your hypothesis here... (e.g., 'There is a positive correlation between variable A and variable B', 'Group X will show significantly higher values than Group Y')"
+                className="min-h-[120px] resize-none"
+              />
+            </CardContent>
+          </Card>
 
-              <div className="mt-8 bg-muted/30 rounded-lg p-4">
-                <h3 className="font-medium text-foreground mb-2">Tips for Writing a Good Hypothesis:</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Be specific and testable with your data</li>
-                  <li>• State the expected relationship between variables</li>
-                  <li>• Use clear, measurable terms</li>
-                  <li>• Consider both directional and non-directional hypotheses</li>
-                  <li>• Focus on one testable prediction per notebook</li>
-                </ul>
-              </div>
-            </div>
-          </main>
+          <div className="mt-8 bg-muted/30 rounded-lg p-4">
+            <h3 className="font-medium text-foreground mb-2">Tips for Writing a Good Hypothesis:</h3>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• Be specific and testable with your data</li>
+              <li>• State the expected relationship between variables</li>
+              <li>• Use clear, measurable terms</li>
+              <li>• Consider both directional and non-directional hypotheses</li>
+              <li>• Focus on one testable prediction per notebook</li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </Layout>
   );
  };
 
