@@ -160,131 +160,21 @@ export const ProjectTabs = ({
         </TabsList>
 
       <TabsContent value="notebooks" className="space-y-6">
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5" />
-                Recent Notebooks
-              </CardTitle>
-              <CardDescription>
-                Your most recently accessed notebooks
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {notebooks.length === 0 ? (
-                <div className="text-center py-8">
-                  <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                  <p className="text-muted-foreground">No notebooks yet</p>
-                  <Button onClick={createNewNotebook} size="sm" className="mt-3">
-                    Create your first notebook
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {notebooks.slice(0, 3).map((notebook) => (
-                    <button
-                      key={notebook.id}
-                      onClick={() => window.location.href = `/project/${projectId}/notebook`}
-                      className="w-full flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <BookOpen className="w-4 h-4 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{notebook.name}</p>
-                          <p className="text-sm text-muted-foreground">{notebook.updatedAt}</p>
-                        </div>
-                      </div>
-                      <ArrowUpRight className="w-4 h-4 text-muted-foreground" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>
-              Common tasks to get you started
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button 
-                onClick={createNewNotebook}
-                className="h-auto p-4 flex-col gap-2"
-              >
-                <Plus className="w-6 h-6" />
-                <span>Create Notebook</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                onClick={() => window.location.href = `/project/${projectId}/data-upload`}
-              >
-                <FileText className="w-6 h-6" />
-                <span>Upload Data</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                onClick={() => window.location.href = `/project/${projectId}/report`}
-              >
-                <BarChart3 className="w-6 h-6" />
-                <span>View Reports</span>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Activity className="w-5 h-5" />
-                Recent Activity
-              </CardTitle>
-              <CardDescription>
-                Latest actions in your project
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <div className="flex-1">
-                      <p className="text-sm">{activity.action} <span className="font-medium">{activity.item}</span></p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-      </TabsContent>
-
-      <TabsContent value="notebooks" className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">All Notebooks</h2>
+            <h2 className="text-2xl font-bold text-foreground">Project Hypotheses</h2>
             <p className="text-muted-foreground">
-              Manage and organize your analysis notebooks
+              Manage and organize your research hypotheses
             </p>
           </div>
           <Button onClick={createNewNotebook} className="gap-2">
             <Plus className="w-4 h-4" />
-            New Notebook
+            New Hypothesis
           </Button>
         </div>
+
+      </TabsContent>
+
 
         {notebooks.length === 0 ? (
           <NoNotebooksState onCreateNotebook={createNewNotebook} />

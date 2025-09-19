@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
-import { BookOpen, Plus, Search } from "lucide-react";
+import { BookOpen, Plus, Search, Activity, FileText, BarChart3 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
