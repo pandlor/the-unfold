@@ -1,5 +1,4 @@
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import { FileUpload } from "@/components/FileUpload";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -34,16 +33,13 @@ const DataUpload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Upload Project Data</h1>
-                <p className="text-muted-foreground">
+    <Layout>
+      <main className="flex-1 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Upload Project Data</h1>
+              <p className="text-muted-foreground">
                   Upload datasets for <span className="font-medium">{project?.name}</span>. 
                   These files will be available to all notebooks in this project.
                 </p>
@@ -57,11 +53,10 @@ const DataUpload = () => {
                 Back to Project
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-            </div>
           </div>
-        </main>
-      </div>
-    </div>
+        </div>
+      </main>
+    </Layout>
   );
 };
 

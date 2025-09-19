@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import ProgressBar from "@/components/ProgressBar";
 import { AnalysisStepSkeleton } from "@/components/skeletons/AnalysisSkeleton";
 import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
@@ -20,16 +19,12 @@ const Analysis = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <ProgressBar />
-          <main className="flex-1 p-8">
-            <div className="max-w-4xl mx-auto">
-              {isLoading ? (
-                <AnalysisStepSkeleton />
+    <Layout>
+      <ProgressBar />
+      <main className="flex-1 p-8">
+        <div className="max-w-4xl mx-auto">
+          {isLoading ? (
+            <AnalysisStepSkeleton />
               ) : !hasHypotheses ? (
                 <NoAnalysisState 
                   title="No Hypotheses Defined"
@@ -62,12 +57,10 @@ const Analysis = () => {
                   </div>
                 </>
               )}
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
-  );
+          </div>
+        </main>
+      </Layout>
+    );
 };
 
 export default Analysis;

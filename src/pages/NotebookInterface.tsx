@@ -1,20 +1,17 @@
-import Sidebar from "@/components/Sidebar";
+import Layout from "@/components/Layout";
 import AnalysisSidebar from "@/components/AnalysisSidebar";
 import ChatInterface from "@/components/ChatInterface";
-import Header from "@/components/Header";
 
 const NotebookInterface = () => {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
+    <Layout>
       <div className="flex flex-1">
-        <Sidebar />
         <AnalysisSidebar />
         <main className="flex-1">
           <ChatInterface />
         </main>
       </div>
-    </div>
+    </Layout>
   );
 };
 

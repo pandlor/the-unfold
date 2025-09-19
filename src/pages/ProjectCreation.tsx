@@ -10,8 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ProjectListSkeleton } from "@/components/skeletons/ProjectCardSkeleton";
 import { NoProjectsState } from "@/components/empty-states/NoProjectsState";
 import { Link } from "react-router-dom";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import {
   DropdownMenu,
@@ -94,12 +93,9 @@ const ProjectCreation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="max-w-6xl mx-auto">
+    <Layout>
+      <main className="flex-1 p-8">
+        <div className="max-w-6xl mx-auto">
             {/* Recent Projects Section */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-foreground mb-4">Recent Projects</h2>
@@ -171,12 +167,11 @@ const ProjectCreation = () => {
                   </Button>
                 </CardContent>
               </Card>
-            </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
 
-      <DeleteConfirmDialog
+        <DeleteConfirmDialog
         open={deleteDialog.open}
         onOpenChange={(open) => setDeleteDialog(prev => ({ ...prev, open }))}
         onConfirm={confirmDeleteProject}
@@ -184,7 +179,7 @@ const ProjectCreation = () => {
         description="Are you sure you want to delete this project? This action cannot be undone."
         itemName={deleteDialog.projectName}
       />
-    </div>
+    </Layout>
   );
 };
 

@@ -7,8 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
 import { BookOpen, Plus, Search, Activity, FileText, BarChart3 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
@@ -160,30 +159,25 @@ const NotebookCreation = () => {
     navigate("/");
   };
   if (!currentProject) {
-    return <div className="min-h-screen bg-background flex flex-col">
-        <Header />
-        <div className="flex flex-1">
-          <Sidebar />
-          <main className="flex-1 p-8">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
-              <p className="text-muted-foreground mt-2">The project you're looking for doesn't exist.</p>
-              <Button onClick={() => navigate("/")} className="mt-4">
-                Back to Projects
-              </Button>
-            </div>
-          </main>
-        </div>
-      </div>;
+    return (
+      <Layout>
+        <main className="flex-1 p-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
+            <p className="text-muted-foreground mt-2">The project you're looking for doesn't exist.</p>
+            <Button onClick={() => navigate("/")} className="mt-4">
+              Back to Projects
+            </Button>
+          </div>
+        </main>
+      </Layout>
+    );
   }
-  return <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <ProjectHeader 
-            project={currentProject} 
-            activeManagementTab={activeManagementTab}
+  return (
+    <Layout>
+      <ProjectHeader 
+        project={currentProject} 
+        activeManagementTab={activeManagementTab}
             onManagementTabChange={setActiveManagementTab}
           />
           
@@ -366,8 +360,8 @@ const NotebookCreation = () => {
             }))} onConfirm={confirmDeleteNotebook} title="Delete Notebook" description="Are you sure you want to delete" itemName={deleteDialog.notebookName} />
             </div>
           </main>
-        </div>
-      </div>
-    </div>;
+    </Layout>
+  );
 };
+
 export default NotebookCreation;

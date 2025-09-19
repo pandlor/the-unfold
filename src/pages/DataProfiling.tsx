@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Layout from "@/components/Layout";
 import { AnalysisStepSkeleton, DataTableSkeleton } from "@/components/skeletons/AnalysisSkeleton";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { NoAnalysisState } from "@/components/empty-states/NoAnalysisState";
@@ -38,15 +37,12 @@ const DataProfiling = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="max-w-4xl mx-auto">
-            {isLoading ? (
-              <AnalysisStepSkeleton />
-            ) : !hasData && !isProcessing ? (
+    <Layout>
+      <main className="flex-1 p-8">
+        <div className="max-w-4xl mx-auto">
+          {isLoading ? (
+            <AnalysisStepSkeleton />
+          ) : !hasData && !isProcessing ? (
               <NoAnalysisState 
                 title="No Data to Profile"
                 description={`Upload data files to ${project?.name} first to begin profiling and analysis.`}
@@ -84,11 +80,10 @@ const DataProfiling = () => {
                   </div>
                 )}
               </>
-            )}
-          </div>
-        </main>
-      </div>
-    </div>
+          )}
+        </div>
+      </main>
+    </Layout>
   );
 };
 
