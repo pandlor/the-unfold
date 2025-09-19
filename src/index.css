@@ -113,6 +113,26 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Typography Hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-grotesk font-semibold;
+  }
+
+  /* Navigation and UI elements */
+  nav, button, .btn {
+    @apply font-grotesk;
+  }
+
+  /* Code and data elements */
+  code, pre {
+    font-family: 'Space Mono', Consolas, monospace;
+  }
+
+  /* Form labels and buttons */
+  label, .form-label {
+    @apply font-grotesk font-medium;
   }
 }

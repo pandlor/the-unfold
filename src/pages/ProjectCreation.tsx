@@ -99,7 +99,7 @@ const ProjectCreation = () => {
             {/* Recent Projects Section */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-foreground">Recent Projects</h2>
+                <h2 className="text-xl font-grotesk font-semibold text-foreground">Recent Projects</h2>
                 <Button onClick={scrollToForm} className="gap-2">
                   <Plus className="w-4 h-4" />
                   Create New Project
@@ -126,7 +126,7 @@ const ProjectCreation = () => {
             <div id="create-project-form">
               <Card className="bg-card/80 backdrop-blur-sm border-border">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-2xl">Create New Project</CardTitle>
+                  <CardTitle className="text-2xl font-grotesk font-semibold">Create New Project</CardTitle>
                   <CardDescription>
                     Start your data analysis journey by creating a new project
                   </CardDescription>

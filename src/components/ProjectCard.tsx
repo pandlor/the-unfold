@@ -56,7 +56,7 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <CardTitle className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors truncate">
+                  <CardTitle className="text-lg font-grotesk font-semibold text-foreground group-hover:text-primary transition-colors truncate">
                     {project.name}
                   </CardTitle>
                   <ArrowUpRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -116,9 +116,9 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
 
             {/* Notebooks Preview */}
             {project.notebooks.length > 0 ? (
-              <div className="space-y-2">
-                <div className="text-sm font-medium text-foreground">Recent Notebooks</div>
-                <div className="space-y-1">
+                <div className="space-y-2">
+                  <div className="text-sm font-grotesk font-medium text-foreground">Recent Notebooks</div>
+                  <div className="space-y-1">
                   {project.notebooks.slice(0, 2).map((notebook) => (
                     <Button
                       key={notebook.id}
@@ -133,7 +133,7 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
                         <FileText className="w-3 h-3 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">{notebook.name}</p>
+                        <p className="text-sm font-grotesk font-medium text-foreground truncate">{notebook.name}</p>
                         <p className="text-xs text-muted-foreground">{notebook.updatedAt}</p>
                       </div>
                     </Button>

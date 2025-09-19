@@ -65,6 +65,11 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      fontFamily: {
+        'grotesk': ['Space Grotesk', 'system-ui', 'sans-serif'],
+        'mono': ['Space Mono', 'Consolas', 'monospace'],
+        'sans': ['Roboto', 'system-ui', 'sans-serif'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

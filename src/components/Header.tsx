@@ -116,7 +116,7 @@ const Header = () => {
             <BreadcrumbItem key={index}>
               {index > 0 && <BreadcrumbSeparator />}
               {item.isCurrent ? (
-                <BreadcrumbPage className="flex items-center gap-2 text-foreground font-medium">
+                <BreadcrumbPage className="flex items-center gap-2 text-foreground font-grotesk font-semibold">
                   <item.icon className="w-4 h-4" />
                   <span className="truncate max-w-[200px]" title={item.label}>
                     {item.label}
