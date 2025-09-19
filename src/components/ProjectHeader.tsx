@@ -1,7 +1,8 @@
-import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X } from "lucide-react";
+import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X, BarChart3, Activity, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { Project, useProjects } from "@/contexts/ProjectContext";
 import { useState, useEffect } from "react";
@@ -9,9 +10,11 @@ import { useState, useEffect } from "react";
 interface ProjectHeaderProps {
   project: Project;
   showBackButton?: boolean;
+  activeManagementTab?: string;
+  onManagementTabChange?: (tab: string) => void;
 }
 
-export const ProjectHeader = ({ project, showBackButton = true }: ProjectHeaderProps) => {
+export const ProjectHeader = ({ project, showBackButton = true, activeManagementTab = "overview", onManagementTabChange }: ProjectHeaderProps) => {
   const navigate = useNavigate();
   const { updateProject } = useProjects();
   const [isEditing, setIsEditing] = useState(false);
@@ -108,6 +111,26 @@ export const ProjectHeader = ({ project, showBackButton = true }: ProjectHeaderP
           <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
             Active Project
           </Badge>
+        </div>
+        
+        {/* Management Section */}
+        <div className="mt-6">
+          <Tabs value={activeManagementTab} onValueChange={onManagementTabChange}>
+            <TabsList className="grid w-full grid-cols-3 max-w-md">
+              <TabsTrigger value="overview" className="gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="activity" className="gap-2">
+                <Activity className="w-4 h-4" />
+                Activity
+              </TabsTrigger>
+              <TabsTrigger value="settings" className="gap-2">
+                <Settings className="w-4 h-4" />
+                Settings
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
       </div>
     </div>

@@ -137,28 +137,10 @@ export const ProjectTabs = ({
   ];
 
   return (
-    <Tabs defaultValue="overview" className="w-full">
-      {/* Management Section in Header Area */}
-      <div className="mb-6">
-        <TabsList className="grid w-full grid-cols-3 max-w-md">
-          <TabsTrigger value="overview" className="gap-2">
-            <BarChart3 className="w-4 h-4" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="activity" className="gap-2">
-            <Activity className="w-4 h-4" />
-            Activity
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="gap-2">
-            <Settings className="w-4 h-4" />
-            Settings
-          </TabsTrigger>
-        </TabsList>
-      </div>
-      
+    <div>
       {/* Workflow Section */}
-      <div className="mb-8">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs defaultValue="notebooks" className="w-full">
+        <TabsList className="grid w-full grid-cols-4 mb-8">
           <TabsTrigger value="notebooks" className="gap-2">
             <BookOpen className="w-4 h-4" />
             Notebooks ({notebooks.length})
@@ -176,9 +158,8 @@ export const ProjectTabs = ({
             Description
           </TabsTrigger>
         </TabsList>
-      </div>
 
-      <TabsContent value="overview" className="space-y-6">
+      <TabsContent value="notebooks" className="space-y-6">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
@@ -670,89 +651,7 @@ export const ProjectTabs = ({
           </CardContent>
         </Card>
       </TabsContent>
-
-      <TabsContent value="activity" className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Project Activity</h2>
-          <p className="text-muted-foreground">
-            Track all actions and changes in your project
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {recentActivity.map((activity, index) => (
-            <Card key={index}>
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
-                    <Activity className="w-4 h-4 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium">{activity.action}</p>
-                    <p className="text-muted-foreground">{activity.item}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{activity.time}</p>
-                  </div>
-                  <Badge variant="outline">{activity.action.split(' ')[0]}</Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </TabsContent>
-
-      <TabsContent value="settings" className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Project Settings</h2>
-          <p className="text-muted-foreground">
-            Configure your project preferences and options
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>General Settings</CardTitle>
-              <CardDescription>
-                Basic project configuration
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Project Name</label>
-                <p className="text-sm text-muted-foreground mt-1">{project.name}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Project ID</label>
-                <p className="text-sm text-muted-foreground mt-1">{project.id}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Created</label>
-                <p className="text-sm text-muted-foreground mt-1">{project.updatedAt}</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Actions</CardTitle>
-              <CardDescription>
-                Project management actions
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button variant="outline" className="w-full justify-start">
-                Export Project Data
-              </Button>
-              <Button variant="outline" className="w-full justify-start">
-                Archive Project
-              </Button>
-              <Button variant="destructive" className="w-full justify-start">
-                Delete Project
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </TabsContent>
       </Tabs>
+    </div>
   );
 };

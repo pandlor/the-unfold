@@ -20,6 +20,7 @@ import { ProjectTabs } from "@/components/ProjectTabs";
 const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
+  const [activeManagementTab, setActiveManagementTab] = useState("overview");
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
     notebookId: "",
@@ -139,7 +140,11 @@ const NotebookCreation = () => {
       <div className="flex flex-1">
         <Sidebar />
         <div className="flex-1 flex flex-col">
-          <ProjectHeader project={currentProject} />
+          <ProjectHeader 
+            project={currentProject} 
+            activeManagementTab={activeManagementTab}
+            onManagementTabChange={setActiveManagementTab}
+          />
           
           <main className="flex-1 p-8 bg-slate-50">
             <div className="w-full max-w-6xl mx-auto">
