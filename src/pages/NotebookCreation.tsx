@@ -26,6 +26,11 @@ const NotebookCreation = () => {
     notebookId: "",
     notebookName: ""
   });
+  const [projectDeleteDialog, setProjectDeleteDialog] = useState({
+    open: false,
+    projectId: "",
+    projectName: ""
+  });
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -149,11 +154,25 @@ const NotebookCreation = () => {
   };
 
   const handleDeleteProject = () => {
+    setProjectDeleteDialog({
+      open: true,
+      projectId: projectId!,
+      projectName: currentProject?.name || ""
+    });
+  };
+
+  const confirmDeleteProject = () => {
     deleteProject(projectId!);
     
     toast({
       title: "Project Deleted",
-      description: `${currentProject?.name} has been deleted successfully.`
+      description: `${projectDeleteDialog.projectName} has been deleted successfully.`
+    });
+    
+    setProjectDeleteDialog({
+      open: false,
+      projectId: "",
+      projectName: ""
     });
     
     navigate("/");
@@ -354,10 +373,29 @@ const NotebookCreation = () => {
                 </Card>
               )}
 
-              <DeleteConfirmDialog open={deleteDialog.open} onOpenChange={open => setDeleteDialog(prev => ({
-              ...prev,
-              open
-            }))} onConfirm={confirmDeleteNotebook} title="Delete Notebook" description="Are you sure you want to delete" itemName={deleteDialog.notebookName} />
+              <DeleteConfirmDialog 
+                open={deleteDialog.open} 
+                onOpenChange={open => setDeleteDialog(prev => ({
+                  ...prev,
+                  open
+                }))} 
+                onConfirm={confirmDeleteNotebook} 
+                title="Delete Notebook" 
+                description="Are you sure you want to delete this notebook? This action cannot be undone." 
+                itemName={deleteDialog.notebookName} 
+              />
+              
+              <DeleteConfirmDialog 
+                open={projectDeleteDialog.open} 
+                onOpenChange={open => setProjectDeleteDialog(prev => ({
+                  ...prev,
+                  open
+                }))} 
+                onConfirm={confirmDeleteProject} 
+                title="Delete Project" 
+                description="Are you sure you want to permanently delete this project and all its notebooks? This action cannot be undone." 
+                itemName={projectDeleteDialog.projectName} 
+              />
             </div>
           </main>
     </Layout>
