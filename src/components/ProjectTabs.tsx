@@ -173,9 +173,6 @@ export const ProjectTabs = ({
           </Button>
         </div>
 
-      </TabsContent>
-
-
         {notebooks.length === 0 ? (
           <NoNotebooksState onCreateNotebook={createNewNotebook} />
         ) : (
