@@ -87,7 +87,7 @@ const DataDescription = () => {
   const progressPercentage = (completedSteps / questions.length) * 100;
 
   const saveDataDescription = () => {
-    console.log('Saving data description:', formData);
+    // Data description saved successfully
     // Here you would typically save to your backend
   };
 

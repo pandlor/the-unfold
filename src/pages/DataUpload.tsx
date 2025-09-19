@@ -15,7 +15,7 @@ const DataUpload = () => {
   const project = projects.find(p => p.id === projectId);
 
   const handleFileUpload = (files: File[]) => {
-    console.log('Files uploaded:', files);
+    // Files uploaded successfully
     const fileNames = files.map(file => file.name);
     
     updateProjectProgress(projectId!, {

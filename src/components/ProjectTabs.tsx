@@ -28,8 +28,9 @@ import { NotebookCard } from "@/components/NotebookCard";
 import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectTabsProps {
   project: Project;
@@ -51,6 +52,7 @@ export const ProjectTabs = ({
   const { activities, addActivity } = useProjectActivity(projectId);
   const { addNotebook } = useProjects();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     researchGroup: '',
@@ -77,7 +79,7 @@ export const ProjectTabs = ({
     });
     
     // Navigate directly to the notebook interface
-    window.location.href = `/project/${projectId}/notebook`;
+    navigate(`/project/${projectId}/notebook`);
   };
 
   const updateFormData = (field: string, value: string) => {
@@ -201,7 +203,7 @@ export const ProjectTabs = ({
               Manage datasets that will be available to all notebooks in this project
             </p>
           </div>
-          <Button onClick={() => window.location.href = `/project/${projectId}/data-upload`} className="gap-2">
+          <Button onClick={() => navigate(`/project/${projectId}/data-upload`)} className="gap-2">
             <Upload className="w-4 h-4" />
             Upload Data
           </Button>
@@ -256,7 +258,7 @@ export const ProjectTabs = ({
               <p className="text-muted-foreground mb-4">
                 Upload your first dataset to get started with analysis
               </p>
-              <Button onClick={() => window.location.href = `/project/${projectId}/data-upload`} className="gap-2">
+              <Button onClick={() => navigate(`/project/${projectId}/data-upload`)} className="gap-2">
                 <Upload className="w-4 h-4" />
                 Upload Dataset
               </Button>
@@ -277,7 +279,7 @@ export const ProjectTabs = ({
               <Button 
                 variant="outline" 
                 className="h-auto p-4 flex-col gap-2"
-                onClick={() => window.location.href = `/project/${projectId}/data-upload`}
+                onClick={() => navigate(`/project/${projectId}/data-upload`)}
               >
                 <Upload className="w-6 h-6" />
                 <span>Upload Data</span>
@@ -301,7 +303,7 @@ export const ProjectTabs = ({
               <Button 
                 variant="outline" 
                 className="h-auto p-4 flex-col gap-2"
-                onClick={() => window.location.href = `/project/${projectId}/data-profiling`}
+                onClick={() => navigate(`/project/${projectId}/data-profiling`)}
               >
                 <BarChart3 className="w-6 h-6" />
                 <span>Data Profile</span>
@@ -320,7 +322,7 @@ export const ProjectTabs = ({
             </p>
           </div>
           <Button 
-            onClick={() => window.location.href = `/project/${projectId}/data-profiling`}
+            onClick={() => navigate(`/project/${projectId}/data-profiling`)}
             className="gap-2"
           >
             <BarChart3 className="w-4 h-4" />
@@ -389,7 +391,7 @@ export const ProjectTabs = ({
               <p className="text-muted-foreground mb-4">
                 Upload data and run profiling to see detailed analysis
               </p>
-              <Button onClick={() => window.location.href = `/project/${projectId}/data-profiling`} className="gap-2">
+              <Button onClick={() => navigate(`/project/${projectId}/data-profiling`)} className="gap-2">
                 <BarChart3 className="w-4 h-4" />
                 Start Profiling
               </Button>
@@ -407,7 +409,7 @@ export const ProjectTabs = ({
             </p>
           </div>
           <Button 
-            onClick={() => window.location.href = `/project/${projectId}/data-description`}
+            onClick={() => navigate(`/project/${projectId}/data-description`)}
             className="gap-2"
           >
             <FileText className="w-4 h-4" />

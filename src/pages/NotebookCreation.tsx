@@ -1,12 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
-import { BookOpen, Plus, Search, Activity, FileText, BarChart3 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { BookOpen, Plus, Activity, FileText } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { useProjects } from "@/contexts/ProjectContext";
@@ -32,7 +32,6 @@ const NotebookCreation = () => {
     projectName: ""
   });
   const [isLoading, setIsLoading] = useState(false);
-  const formRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const {
     projectId
@@ -56,11 +55,6 @@ const NotebookCreation = () => {
       setEditedProjectName(currentProject.name);
     }
   }, [currentProject]);
-  const scrollToForm = () => {
-    formRef.current?.scrollIntoView({
-      behavior: 'smooth'
-    });
-  };
   const handleCreateNotebook = async () => {
     if (!notebookName.trim()) {
       toast({
@@ -209,7 +203,7 @@ const NotebookCreation = () => {
                   project={currentProject} 
                   notebooks={notebooks} 
                   projectId={projectId!} 
-                  onCreateNotebook={scrollToForm} 
+                  onCreateNotebook={() => {}} 
                   onDeleteNotebook={handleDeleteNotebook} 
                   createNotebookSection={
                     <Card className="bg-card/80 backdrop-blur-sm border-border">

@@ -17,7 +17,7 @@ import {
   Activity,
   Calendar
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Project } from "@/contexts/ProjectContext";
 
 interface ProjectCardProps {
@@ -26,6 +26,8 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
+  const navigate = useNavigate();
+  
   const handleMenuClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -118,12 +120,12 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
                 <div className="text-sm font-medium text-foreground">Recent Notebooks</div>
                 <div className="space-y-1">
                   {project.notebooks.slice(0, 2).map((notebook) => (
-                    <button
+                    <Button
                       key={notebook.id}
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        window.location.href = `/project/${project.id}/notebook`;
+                        navigate(`/project/${project.id}/notebook`);
                       }}
                       className="w-full flex items-center gap-2 p-2 bg-muted/30 rounded-md hover:bg-muted/50 transition-colors text-left"
                     >
@@ -134,7 +136,7 @@ export const ProjectCard = ({ project, onDelete }: ProjectCardProps) => {
                         <p className="text-sm font-medium text-foreground truncate">{notebook.name}</p>
                         <p className="text-xs text-muted-foreground">{notebook.updatedAt}</p>
                       </div>
-                    </button>
+                    </Button>
                   ))}
                   {project.notebooks.length > 2 && (
                     <div className="text-xs text-muted-foreground text-center py-1">
