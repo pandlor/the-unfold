@@ -114,7 +114,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
         </div>
         
         {/* Management Section */}
-        <div className="mt-6">
+        <div className="mt-6 flex justify-center">
           <Tabs value={activeManagementTab} onValueChange={onManagementTabChange}>
             <TabsList className="grid w-full grid-cols-3 max-w-md">
               <TabsTrigger value="overview" className="gap-2">
