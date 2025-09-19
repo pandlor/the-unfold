@@ -139,23 +139,23 @@ export const ProjectTabs = ({
   return (
     <div>
       {/* Workflow Section */}
-      <Tabs defaultValue="notebooks" className="w-full">
+      <Tabs defaultValue="data" className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="notebooks" className="gap-2">
-            <BookOpen className="w-4 h-4" />
-            Notebooks ({notebooks.length})
-          </TabsTrigger>
           <TabsTrigger value="data" className="gap-2">
             <Upload className="w-4 h-4" />
             Data
           </TabsTrigger>
           <TabsTrigger value="profiling" className="gap-2">
-            <BarChart3 className="w-4 h-4" />
+            <TrendingUp className="w-4 h-4" />
             Profiling
           </TabsTrigger>
           <TabsTrigger value="description" className="gap-2">
             <FileText className="w-4 h-4" />
             Description
+          </TabsTrigger>
+          <TabsTrigger value="notebooks" className="gap-2">
+            <BookOpen className="w-4 h-4" />
+            Hypotheses ({notebooks.length})
           </TabsTrigger>
         </TabsList>
 
