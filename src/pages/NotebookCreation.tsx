@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate, useParams } from "react-router-dom";
-import { BookOpen, Plus, Activity, FileText } from "lucide-react";
+import { Lightbulb, Plus, Activity, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
@@ -59,7 +59,7 @@ const NotebookCreation = () => {
     if (!notebookName.trim()) {
       toast({
         title: "Error",
-        description: "Please enter a notebook name",
+        description: "Please enter a hypothesis title",
         variant: "destructive"
       });
       return;
@@ -78,10 +78,10 @@ const NotebookCreation = () => {
       addNotebook(projectId!, newNotebook);
       
       // Log the activity
-      addActivity("Notebook created", notebookName);
+      addActivity("Hypothesis created", notebookName);
       
       toast({
-        title: "Notebook Created",
+        title: "Hypothesis Created",
         description: `${notebookName} has been created successfully!`
       });
 
@@ -206,16 +206,16 @@ const NotebookCreation = () => {
                   onCreateNotebook={() => {}} 
                   onDeleteNotebook={handleDeleteNotebook} 
                   createNotebookSection={
-                    <Card className="bg-card/80 backdrop-blur-sm border-border">
+                        <Card className="bg-card/80 backdrop-blur-sm border-border">
                       <CardHeader>
                         <div className="flex items-center gap-3">
                           <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
-                            <BookOpen className="w-5 h-5 text-primary" />
+                            <Lightbulb className="w-5 h-5 text-primary" />
                           </div>
                           <div>
-                            <CardTitle className="text-xl">Create New Notebook</CardTitle>
+                            <CardTitle className="text-xl">Create New Hypothesis</CardTitle>
                             <CardDescription>
-                              Set up a new analysis environment for your data
+                              Formulate a testable research question for your data analysis
                             </CardDescription>
                           </div>
                         </div>
@@ -223,20 +223,20 @@ const NotebookCreation = () => {
                       <CardContent className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <Label htmlFor="notebook-name">Notebook Name *</Label>
+                            <Label htmlFor="notebook-name">Hypothesis Title *</Label>
                             <Input 
                               id="notebook-name" 
-                              placeholder="e.g., Customer Analysis, Sales Report..." 
+                              placeholder="e.g., Customer satisfaction affects retention..." 
                               value={notebookName} 
                               onChange={e => setNotebookName(e.target.value)} 
                               disabled={isLoading} 
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="notebook-description">Description</Label>
+                            <Label htmlFor="notebook-description">Research Question</Label>
                             <Textarea 
                               id="notebook-description" 
-                              placeholder="Describe your analysis goals and objectives..." 
+                              placeholder="Define your testable hypothesis and expected outcomes..." 
                               value={notebookDescription} 
                               onChange={e => setNotebookDescription(e.target.value)} 
                               rows={3} 
@@ -251,7 +251,7 @@ const NotebookCreation = () => {
                           </Button>
                           <Button onClick={handleCreateNotebook} disabled={isLoading || !notebookName.trim()} className="gap-2">
                             <Plus className="w-4 h-4" />
-                            {isLoading ? "Creating..." : "Create Notebook"}
+                            {isLoading ? "Creating..." : "Create Hypothesis"}
                           </Button>
                         </div>
                       </CardContent>
