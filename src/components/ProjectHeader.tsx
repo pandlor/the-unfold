@@ -124,25 +124,10 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
               variant="ghost" 
               className="w-full justify-between p-3 h-auto bg-muted/20 hover:bg-muted/40 rounded-lg border border-border/50"
             >
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-4 text-sm">
-                  <div className="flex items-center gap-1">
-                    <Database className="w-4 h-4 text-blue-500" />
-                    <span className="font-medium">{project.progress?.uploadedDatasets.length || 0}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <FileSpreadsheet className="w-4 h-4 text-green-500" />
-                    <span className="font-medium">{project.progress?.profilingCompleted ? "✓" : "—"}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Target className="w-4 h-4 text-purple-500" />
-                    <span className="font-medium">{project.progress?.hypothesesCount || 0}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4 text-primary" />
-                    <span className="font-medium">{calculateProjectProgress(project.id)}%</span>
-                  </div>
-                </div>
+              <div className="flex items-center gap-2 flex-1">
+                <span className="text-sm text-muted-foreground">Project Progress</span>
+                <Progress value={calculateProjectProgress(project.id)} className="flex-1 max-w-xs" />
+                <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
               </div>
               {isOverviewOpen ? (
                 <ChevronUp className="w-4 h-4 text-muted-foreground" />
