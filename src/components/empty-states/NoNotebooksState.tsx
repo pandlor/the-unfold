@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Sparkles, Plus } from "lucide-react";
+import { Lightbulb, Sparkles, Plus } from "lucide-react";
 
 interface NoNotebooksStateProps {
   onCreateNotebook: () => void;
@@ -13,35 +13,35 @@ export const NoNotebooksState = ({ onCreateNotebook }: NoNotebooksStateProps) =>
         <div className="relative mx-auto w-24 h-24 mb-6">
           <div className="absolute inset-0 bg-primary/10 rounded-full"></div>
           <div className="absolute inset-2 bg-primary/20 rounded-full flex items-center justify-center">
-            <BookOpen className="w-8 h-8 text-primary" />
+            <Lightbulb className="w-8 h-8 text-primary" />
           </div>
           <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-primary animate-pulse" />
         </div>
         
         <h3 className="text-xl font-semibold text-foreground mb-2">
-          Create Your First Notebook
+          Create Your First Hypothesis
         </h3>
         <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-          Notebooks help you organize your data analysis workflow. Start by creating your first notebook to begin exploring your data.
+          Start your research journey by formulating clear, testable hypotheses. Create your first hypothesis to guide your data analysis and discovery process.
         </p>
         
         <Button onClick={onCreateNotebook} size="lg" className="mb-6">
           <Plus className="w-5 h-5 mr-2" />
-          Create Notebook
+          Create Hypothesis
         </Button>
         
         <div className="space-y-3 text-sm text-muted-foreground">
           <div className="flex items-center justify-center gap-2">
             <div className="w-2 h-2 bg-primary/50 rounded-full"></div>
-            <span>Upload and analyze datasets</span>
+            <span>Formulate testable research questions</span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <div className="w-2 h-2 bg-primary/50 rounded-full"></div>
-            <span>Generate insights and hypotheses</span>
+            <span>Design experiments and analysis plans</span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <div className="w-2 h-2 bg-primary/50 rounded-full"></div>
-            <span>Create comprehensive reports</span>
+            <span>Document findings and conclusions</span>
           </div>
         </div>
       </CardContent>
