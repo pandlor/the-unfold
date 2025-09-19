@@ -42,6 +42,9 @@ const NotebookCreation = () => {
   // Get notebooks for current project
   const currentProject = projects.find(p => p.id === projectId);
   const notebooks = currentProject?.notebooks || [];
+  
+  // Get real project activities
+  const { activities } = useProjectActivity(projectId!);
 
   // Initialize edited project name when project loads
   React.useEffect(() => {
@@ -267,27 +270,28 @@ const NotebookCreation = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">Project created</p>
-                          <p className="text-xs text-muted-foreground">Just now</p>
+                      {activities.length === 0 ? (
+                        <div className="text-center py-8">
+                          <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                          <p className="text-muted-foreground">No recent activity</p>
+                          <p className="text-sm text-muted-foreground">Start working on your project to see activity here</p>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">Data uploaded</p>
-                          <p className="text-xs text-muted-foreground">2 minutes ago</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">Notebook created</p>
-                          <p className="text-xs text-muted-foreground">5 minutes ago</p>
-                        </div>
-                      </div>
+                      ) : (
+                        activities.map((activity, index) => (
+                          <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                            <div className={`w-2 h-2 rounded-full ${
+                              activity.action.toLowerCase().includes('created') ? 'bg-green-500' :
+                              activity.action.toLowerCase().includes('deleted') ? 'bg-red-500' :
+                              activity.action.toLowerCase().includes('renamed') || activity.action.toLowerCase().includes('updated') ? 'bg-blue-500' :
+                              'bg-purple-500'
+                            }`}></div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium">{activity.action}: {activity.item}</p>
+                              <p className="text-xs text-muted-foreground">{activity.time}</p>
+                            </div>
+                          </div>
+                        ))
+                      )}
                     </div>
                   </CardContent>
                 </Card>
