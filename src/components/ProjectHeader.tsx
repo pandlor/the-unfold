@@ -1,4 +1,4 @@
-import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X, BarChart3, Activity, Settings, TrendingUp, Database, FileSpreadsheet, Target } from "lucide-react";
+import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X, BarChart3, Activity, Settings, TrendingUp, Database, FileSpreadsheet, Target, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Project, useProjects } from "@/contexts/ProjectContext";
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface ProjectHeaderProps {
   project: Project;
@@ -21,6 +22,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
   const { updateProject, calculateProjectProgress } = useProjects();
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(project.name);
+  const [isOverviewOpen, setIsOverviewOpen] = useState(false);
 
   useEffect(() => {
     setEditName(project.name);
@@ -115,64 +117,99 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
           </Badge>
         </div>
         
-        {/* Project Overview Card */}
-        <div className="mt-6">
-          <Card className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <TrendingUp className="w-5 h-5 text-primary" />
-                Project Overview
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                  <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Database className="w-5 h-5 text-blue-500" />
+        {/* Project Overview Card - Collapsible */}
+        <Collapsible open={isOverviewOpen} onOpenChange={setIsOverviewOpen} className="mt-6">
+          <CollapsibleTrigger asChild>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-between p-3 h-auto bg-muted/20 hover:bg-muted/40 rounded-lg border border-border/50"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-1">
+                    <Database className="w-4 h-4 text-blue-500" />
+                    <span className="font-medium">{project.progress?.uploadedDatasets.length || 0}</span>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Datasets</p>
-                    <p className="text-xs text-muted-foreground">
-                      {project.progress?.uploadedDatasets.length || 0} uploaded
-                    </p>
+                  <div className="flex items-center gap-1">
+                    <FileSpreadsheet className="w-4 h-4 text-green-500" />
+                    <span className="font-medium">{project.progress?.profilingCompleted ? "✓" : "—"}</span>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                  <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                    <FileSpreadsheet className="w-5 h-5 text-green-500" />
+                  <div className="flex items-center gap-1">
+                    <Target className="w-4 h-4 text-purple-500" />
+                    <span className="font-medium">{project.progress?.hypothesesCount || 0}</span>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Data Profiling</p>
-                    <p className="text-xs text-muted-foreground">
-                      {project.progress?.profilingCompleted ? "Completed" : "Not started"}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                  <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                    <Target className="w-5 h-5 text-purple-500" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Hypotheses</p>
-                    <p className="text-xs text-muted-foreground">
-                      {project.progress?.hypothesesCount || 0} created
-                    </p>
+                  <div className="flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4 text-primary" />
+                    <span className="font-medium">{calculateProjectProgress(project.id)}%</span>
                   </div>
                 </div>
               </div>
-              
-              <div className="mt-4 p-3 bg-background/60 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Project Progress</span>
-                  <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
+              {isOverviewOpen ? (
+                <ChevronUp className="w-4 h-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              )}
+            </Button>
+          </CollapsibleTrigger>
+          
+          <CollapsibleContent>
+            <Card className="mt-2 bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <TrendingUp className="w-5 h-5 text-primary" />
+                  Project Overview
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                    <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                      <Database className="w-5 h-5 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Datasets</p>
+                      <p className="text-xs text-muted-foreground">
+                        {project.progress?.uploadedDatasets.length || 0} uploaded
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                    <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                      <FileSpreadsheet className="w-5 h-5 text-green-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Data Profiling</p>
+                      <p className="text-xs text-muted-foreground">
+                        {project.progress?.profilingCompleted ? "Completed" : "Not started"}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                    <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+                      <Target className="w-5 h-5 text-purple-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Hypotheses</p>
+                      <p className="text-xs text-muted-foreground">
+                        {project.progress?.hypothesesCount || 0} created
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <Progress value={calculateProjectProgress(project.id)} className="mt-2" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                
+                <div className="mt-4 p-3 bg-background/60 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Project Progress</span>
+                    <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
+                  </div>
+                  <Progress value={calculateProjectProgress(project.id)} className="mt-2" />
+                </div>
+              </CardContent>
+            </Card>
+          </CollapsibleContent>
+        </Collapsible>
         
         {/* Management Section */}
         <div className="mt-6 flex justify-center">
