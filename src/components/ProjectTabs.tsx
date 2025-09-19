@@ -145,13 +145,13 @@ export const ProjectTabs = ({
             <Upload className="w-4 h-4" />
             Data
           </TabsTrigger>
-          <TabsTrigger value="profiling" className="gap-2">
-            <TrendingUp className="w-4 h-4" />
-            Profiling
-          </TabsTrigger>
           <TabsTrigger value="description" className="gap-2">
             <FileText className="w-4 h-4" />
             Description
+          </TabsTrigger>
+          <TabsTrigger value="profiling" className="gap-2">
+            <TrendingUp className="w-4 h-4" />
+            Profiling
           </TabsTrigger>
           <TabsTrigger value="notebooks" className="gap-2">
             <BookOpen className="w-4 h-4" />
