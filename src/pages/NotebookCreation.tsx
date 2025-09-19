@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +21,7 @@ const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
   const [activeManagementTab, setActiveManagementTab] = useState("overview");
+  const [editedProjectName, setEditedProjectName] = useState("");
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
     notebookId: "",
@@ -35,12 +36,19 @@ const NotebookCreation = () => {
   const {
     toast
   } = useToast();
-  const { projects, addNotebook, deleteNotebook } = useProjects();
+  const { projects, addNotebook, deleteNotebook, updateProject, deleteProject } = useProjects();
   const { addActivity } = useProjectActivity(projectId!);
 
   // Get notebooks for current project
   const currentProject = projects.find(p => p.id === projectId);
   const notebooks = currentProject?.notebooks || [];
+
+  // Initialize edited project name when project loads
+  React.useEffect(() => {
+    if (currentProject) {
+      setEditedProjectName(currentProject.name);
+    }
+  }, [currentProject]);
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({
       behavior: 'smooth'
@@ -117,6 +125,36 @@ const NotebookCreation = () => {
       notebookId: "",
       notebookName: ""
     });
+  };
+
+  const handleProjectNameChange = () => {
+    if (!editedProjectName.trim()) {
+      toast({
+        title: "Error",
+        description: "Project name cannot be empty",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    updateProject(projectId!, { name: editedProjectName.trim() });
+    addActivity("Project renamed", editedProjectName.trim());
+    
+    toast({
+      title: "Project Updated",
+      description: "Project name has been updated successfully!"
+    });
+  };
+
+  const handleDeleteProject = () => {
+    deleteProject(projectId!);
+    
+    toast({
+      title: "Project Deleted",
+      description: `${currentProject?.name} has been deleted successfully.`
+    });
+    
+    navigate("/");
   };
   if (!currentProject) {
     return <div className="min-h-screen bg-background flex flex-col">
@@ -274,11 +312,20 @@ const NotebookCreation = () => {
                     <div className="space-y-6">
                       <div className="space-y-2">
                         <Label htmlFor="project-name">Project Name</Label>
-                        <Input 
-                          id="project-name" 
-                          value={currentProject.name} 
-                          placeholder="Enter project name"
-                        />
+                        <div className="flex gap-2">
+                          <Input 
+                            id="project-name" 
+                            value={editedProjectName} 
+                            onChange={(e) => setEditedProjectName(e.target.value)}
+                            placeholder="Enter project name"
+                          />
+                          <Button 
+                            onClick={handleProjectNameChange}
+                            disabled={editedProjectName === currentProject?.name || !editedProjectName.trim()}
+                          >
+                            Save
+                          </Button>
+                        </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="project-description">Project Description</Label>
@@ -288,16 +335,21 @@ const NotebookCreation = () => {
                           rows={3}
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label>Data Privacy</Label>
-                        <div className="flex items-center space-x-2">
-                          <input type="checkbox" id="private" className="rounded" />
-                          <Label htmlFor="private" className="text-sm">Make this project private</Label>
+                      
+                      <div className="border-t pt-6">
+                        <div className="space-y-2">
+                          <Label className="text-destructive">Danger Zone</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Permanently delete this project and all its data. This action cannot be undone.
+                          </p>
+                          <Button 
+                            variant="destructive" 
+                            onClick={handleDeleteProject}
+                            className="w-full"
+                          >
+                            Delete Project
+                          </Button>
                         </div>
-                      </div>
-                      <div className="flex justify-end gap-3">
-                        <Button variant="outline">Cancel</Button>
-                        <Button>Save Changes</Button>
                       </div>
                     </div>
                   </CardContent>
