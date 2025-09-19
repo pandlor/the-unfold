@@ -119,7 +119,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
             <TabsList className="grid w-full grid-cols-3 max-w-md">
               <TabsTrigger value="overview" className="gap-2">
                 <BarChart3 className="w-4 h-4" />
-                Overview
+                Dashboard
               </TabsTrigger>
               <TabsTrigger value="activity" className="gap-2">
                 <Activity className="w-4 h-4" />
