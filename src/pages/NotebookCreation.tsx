@@ -149,43 +149,160 @@ const NotebookCreation = () => {
           <main className="flex-1 p-8 bg-slate-50">
             <div className="w-full max-w-6xl mx-auto">
               
-              <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={scrollToForm} onDeleteNotebook={handleDeleteNotebook} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
-                          <BookOpen className="w-5 h-5 text-primary" />
+              {/* Content based on active management tab */}
+              {activeManagementTab === "overview" && (
+                <ProjectTabs 
+                  project={currentProject} 
+                  notebooks={notebooks} 
+                  projectId={projectId!} 
+                  onCreateNotebook={scrollToForm} 
+                  onDeleteNotebook={handleDeleteNotebook} 
+                  createNotebookSection={
+                    <Card className="bg-card/80 backdrop-blur-sm border-border">
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
+                            <BookOpen className="w-5 h-5 text-primary" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-xl">Create New Notebook</CardTitle>
+                            <CardDescription>
+                              Set up a new analysis environment for your data
+                            </CardDescription>
+                          </div>
                         </div>
-                        <div>
-                          <CardTitle className="text-xl">Create New Notebook</CardTitle>
-                          <CardDescription>
-                            Set up a new analysis environment for your data
-                          </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="notebook-name">Notebook Name *</Label>
+                            <Input 
+                              id="notebook-name" 
+                              placeholder="e.g., Customer Analysis, Sales Report..." 
+                              value={notebookName} 
+                              onChange={e => setNotebookName(e.target.value)} 
+                              disabled={isLoading} 
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="notebook-description">Description</Label>
+                            <Textarea 
+                              id="notebook-description" 
+                              placeholder="Describe your analysis goals and objectives..." 
+                              value={notebookDescription} 
+                              onChange={e => setNotebookDescription(e.target.value)} 
+                              rows={3} 
+                              disabled={isLoading} 
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="notebook-name">Notebook Name *</Label>
-                          <Input id="notebook-name" placeholder="e.g., Customer Analysis, Sales Report..." value={notebookName} onChange={e => setNotebookName(e.target.value)} disabled={isLoading} />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="notebook-description">Description</Label>
-                          <Textarea id="notebook-description" placeholder="Describe your analysis goals and objectives..." value={notebookDescription} onChange={e => setNotebookDescription(e.target.value)} rows={3} disabled={isLoading} />
-                        </div>
-                      </div>
 
-                      <div className="flex justify-end gap-3">
-                        <Button variant="outline" onClick={() => navigate("/")} disabled={isLoading}>
-                          Cancel
-                        </Button>
-                        <Button onClick={handleCreateNotebook} disabled={isLoading || !notebookName.trim()} className="gap-2">
-                          <Plus className="w-4 h-4" />
-                          {isLoading ? "Creating..." : "Create Notebook"}
-                        </Button>
+                        <div className="flex justify-end gap-3">
+                          <Button variant="outline" onClick={() => navigate("/")} disabled={isLoading}>
+                            Cancel
+                          </Button>
+                          <Button onClick={handleCreateNotebook} disabled={isLoading || !notebookName.trim()} className="gap-2">
+                            <Plus className="w-4 h-4" />
+                            {isLoading ? "Creating..." : "Create Notebook"}
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  } 
+                />
+              )}
+
+              {activeManagementTab === "activity" && (
+                <Card className="bg-card">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-10 h-10 bg-blue-500/10 rounded-lg">
+                        <Activity className="w-5 h-5 text-blue-500" />
                       </div>
-                    </CardContent>
-                  </Card>} />
+                      <div>
+                        <CardTitle className="text-xl">Project Activity</CardTitle>
+                        <CardDescription>
+                          Recent actions and changes in this project
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Project created</p>
+                          <p className="text-xs text-muted-foreground">Just now</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Data uploaded</p>
+                          <p className="text-xs text-muted-foreground">2 minutes ago</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Notebook created</p>
+                          <p className="text-xs text-muted-foreground">5 minutes ago</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {activeManagementTab === "settings" && (
+                <Card className="bg-card">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-10 h-10 bg-orange-500/10 rounded-lg">
+                        <FileText className="w-5 h-5 text-orange-500" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-xl">Project Settings</CardTitle>
+                        <CardDescription>
+                          Configure project preferences and options
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="project-name">Project Name</Label>
+                        <Input 
+                          id="project-name" 
+                          value={currentProject.name} 
+                          placeholder="Enter project name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="project-description">Project Description</Label>
+                        <Textarea 
+                          id="project-description" 
+                          placeholder="Describe your project..."
+                          rows={3}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Data Privacy</Label>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" id="private" className="rounded" />
+                          <Label htmlFor="private" className="text-sm">Make this project private</Label>
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-3">
+                        <Button variant="outline">Cancel</Button>
+                        <Button>Save Changes</Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               <DeleteConfirmDialog open={deleteDialog.open} onOpenChange={open => setDeleteDialog(prev => ({
               ...prev,
