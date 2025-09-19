@@ -10,8 +10,8 @@ interface Step {
 
 const steps: Step[] = [
   { id: 'data-upload', label: 'Data Upload', path: '/notebook/data-upload' },
-  { id: 'data-profiling', label: 'Data Profiling', path: '/notebook/data-profiling' },
   { id: 'data-description', label: 'Data Description', path: '/notebook/data-description' },
+  { id: 'data-profiling', label: 'Data Profiling', path: '/notebook/data-profiling' },
   { id: 'hypotheses', label: 'Hypotheses', path: '/notebook/hypotheses' },
   { id: 'analysis', label: 'Analysis', path: '/notebook/analysis' },
   { id: 'report', label: 'Report', path: '/notebook/report' },

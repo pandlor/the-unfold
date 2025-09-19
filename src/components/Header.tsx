@@ -44,8 +44,8 @@ const Header = () => {
   // Analysis step mapping
   const analysisSteps: Record<string, { label: string; icon: any }> = {
     'data-upload': { label: 'Data Upload', icon: Upload },
-    'data-profiling': { label: 'Data Profiling', icon: BarChart3 },
     'data-description': { label: 'Data Description', icon: FileText },
+    'data-profiling': { label: 'Data Profiling', icon: BarChart3 },
     'hypotheses': { label: 'Hypotheses', icon: Target },
     'analysis': { label: 'Analysis', icon: TrendingUp },
     'report': { label: 'Report', icon: FileOutput },

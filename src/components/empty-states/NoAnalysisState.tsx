@@ -28,15 +28,15 @@ export const NoAnalysisState = ({
         label: 'Upload your data files',
         path: `/project/${projectId}/notebook/data-upload`
       },
+      'data-description': { 
+        icon: FileText, 
+        label: 'Describe your data context',
+        path: `/project/${projectId}/notebook/data-description`
+      },
       'data-profiling': { 
         icon: BarChart3, 
         label: 'Profile your data structure',
         path: `/project/${projectId}/notebook/data-profiling`
-      },
-      'data-description': { 
-        icon: FileText, 
-        label: 'Generate data descriptions',
-        path: `/project/${projectId}/notebook/data-description`
       },
       'hypotheses': { 
         icon: Lightbulb, 
@@ -93,7 +93,7 @@ export const NoAnalysisState = ({
           
           {/* Progress indicators */}
           <div className="grid grid-cols-4 gap-2 pt-4">
-            {['Upload', 'Profile', 'Describe', 'Analyze'].map((step, index) => (
+            {['Upload', 'Describe', 'Profile', 'Analyze'].map((step, index) => (
               <div key={step} className="flex flex-col items-center space-y-1">
                 <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
                   index === 0 ? 'bg-accent text-white' : 'bg-muted text-muted-foreground'
