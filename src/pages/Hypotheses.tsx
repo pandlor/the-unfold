@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useParams } from "react-router-dom";
+import { useProjects } from "@/contexts/ProjectContext";
 
 interface Hypothesis {
   id: number;
@@ -16,6 +18,8 @@ interface Hypothesis {
 
 const Hypotheses = () => {
   const { toast } = useToast();
+  const { projectId } = useParams();
+  const { updateProjectProgress } = useProjects();
   const [hypothesis, setHypothesis] = useState<string>("");
 
   const saveHypothesis = () => {
@@ -27,6 +31,12 @@ const Hypotheses = () => {
       });
       return;
     }
+    
+    updateProjectProgress(projectId!, {
+      hypothesesDefined: true,
+      hypothesesCount: 1
+    });
+    
     toast({
       title: "Hypothesis saved",
       description: "Your hypothesis has been saved successfully",

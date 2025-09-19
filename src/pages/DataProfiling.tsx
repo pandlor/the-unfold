@@ -9,7 +9,7 @@ import { useProjects } from "@/contexts/ProjectContext";
 
 const DataProfiling = () => {
   const { projectId } = useParams();
-  const { projects } = useProjects();
+  const { projects, updateProjectProgress } = useProjects();
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasData, setHasData] = useState(false);
@@ -31,6 +31,10 @@ const DataProfiling = () => {
     await new Promise(resolve => setTimeout(resolve, 3000));
     setIsProcessing(false);
     setHasData(true);
+    
+    updateProjectProgress(projectId!, {
+      profilingCompleted: true
+    });
   };
 
   return (

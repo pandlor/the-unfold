@@ -11,13 +11,18 @@ const DataUpload = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { toast } = useToast();
-  const { projects } = useProjects();
+  const { projects, updateProjectProgress } = useProjects();
   
   const project = projects.find(p => p.id === projectId);
 
   const handleFileUpload = (files: File[]) => {
     console.log('Files uploaded:', files);
-    // Process the uploaded files for the project
+    const fileNames = files.map(file => file.name);
+    
+    updateProjectProgress(projectId!, {
+      dataUploaded: true,
+      uploadedDatasets: fileNames
+    });
   };
 
   const handleContinue = () => {

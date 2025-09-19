@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { Project, useProjects } from "@/contexts/ProjectContext";
 import { useState, useEffect } from "react";
+import { Progress } from "@/components/ui/progress";
 
 interface ProjectHeaderProps {
   project: Project;
@@ -17,7 +18,7 @@ interface ProjectHeaderProps {
 
 export const ProjectHeader = ({ project, showBackButton = true, activeManagementTab = "overview", onManagementTabChange }: ProjectHeaderProps) => {
   const navigate = useNavigate();
-  const { updateProject } = useProjects();
+  const { updateProject, calculateProjectProgress } = useProjects();
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(project.name);
 
@@ -131,7 +132,9 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                   </div>
                   <div>
                     <p className="text-sm font-medium">Datasets</p>
-                    <p className="text-xs text-muted-foreground">0 uploaded</p>
+                    <p className="text-xs text-muted-foreground">
+                      {project.progress?.uploadedDatasets.length || 0} uploaded
+                    </p>
                   </div>
                 </div>
                 
@@ -141,7 +144,9 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                   </div>
                   <div>
                     <p className="text-sm font-medium">Data Profiling</p>
-                    <p className="text-xs text-muted-foreground">Not started</p>
+                    <p className="text-xs text-muted-foreground">
+                      {project.progress?.profilingCompleted ? "Completed" : "Not started"}
+                    </p>
                   </div>
                 </div>
                 
@@ -151,7 +156,9 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                   </div>
                   <div>
                     <p className="text-sm font-medium">Hypotheses</p>
-                    <p className="text-xs text-muted-foreground">0 created</p>
+                    <p className="text-xs text-muted-foreground">
+                      {project.progress?.hypothesesCount || 0} created
+                    </p>
                   </div>
                 </div>
               </div>
@@ -159,11 +166,9 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
               <div className="mt-4 p-3 bg-background/60 rounded-lg">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Project Progress</span>
-                  <span className="text-sm text-muted-foreground">5%</span>
+                  <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
                 </div>
-                <div className="w-full bg-muted rounded-full h-2 mt-2">
-                  <div className="bg-primary h-2 rounded-full" style={{ width: '5%' }}></div>
-                </div>
+                <Progress value={calculateProjectProgress(project.id)} className="mt-2" />
               </div>
             </CardContent>
           </Card>

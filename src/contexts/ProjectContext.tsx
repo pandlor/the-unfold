@@ -8,12 +8,24 @@ export interface Notebook {
   updatedAt: string;
 }
 
+export interface ProjectProgress {
+  dataUploaded: boolean;
+  profilingCompleted: boolean;
+  descriptionCompleted: boolean;
+  hypothesesDefined: boolean;
+  analysisCompleted: boolean;
+  reportGenerated: boolean;
+  uploadedDatasets: string[];
+  hypothesesCount: number;
+}
+
 export interface Project {
   id: string;
   name: string;
   updatedAt: string;
   notebooks: Notebook[];
   currentNotebookId?: string; // Track which notebook is currently active
+  progress?: ProjectProgress;
 }
 
 interface ProjectContextType {
@@ -25,9 +37,22 @@ interface ProjectContextType {
   updateProject: (projectId: string, updates: Partial<Project>) => void;
   setCurrentNotebook: (projectId: string, notebookId: string) => void;
   logActivity: (projectId: string, action: string, item: string) => void;
+  updateProjectProgress: (projectId: string, updates: Partial<ProjectProgress>) => void;
+  calculateProjectProgress: (projectId: string) => number;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
+
+const getDefaultProgress = (): ProjectProgress => ({
+  dataUploaded: false,
+  profilingCompleted: false,
+  descriptionCompleted: false,
+  hypothesesDefined: false,
+  analysisCompleted: false,
+  reportGenerated: false,
+  uploadedDatasets: [],
+  hypothesesCount: 0,
+});
 
 const initialProjects: Project[] = [
   {
@@ -45,7 +70,14 @@ const initialProjects: Project[] = [
         name: "Data Exploration",
         updatedAt: "1 day ago"
       }
-    ]
+    ],
+    progress: {
+      ...getDefaultProgress(),
+      dataUploaded: true,
+      hypothesesDefined: true,
+      uploadedDatasets: ["customer_data.csv", "sales_data.xlsx"],
+      hypothesesCount: 2,
+    }
   },
   {
     id: "sample2",
@@ -57,7 +89,12 @@ const initialProjects: Project[] = [
         name: "Customer Insights",
         updatedAt: "3 days ago"
       }
-    ]
+    ],
+    progress: {
+      ...getDefaultProgress(),
+      dataUploaded: true,
+      uploadedDatasets: ["analytics_data.csv"],
+    }
   },
   {
     id: "proj_1757530116846",
@@ -74,7 +111,8 @@ const initialProjects: Project[] = [
         name: "Behavior Patterns",
         updatedAt: "2 hours ago"
       }
-    ]
+    ],
+    progress: getDefaultProgress()
   },
   {
     id: "proj_1757530116847",
@@ -86,7 +124,8 @@ const initialProjects: Project[] = [
         name: "Revenue Analysis",
         updatedAt: "Yesterday"
       }
-    ]
+    ],
+    progress: getDefaultProgress()
   }
 ];
 
@@ -97,7 +136,8 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const addProject = (newProject: Omit<Project, 'notebooks'>) => {
     const project: Project = {
       ...newProject,
-      notebooks: []
+      notebooks: [],
+      progress: getDefaultProgress()
     };
     setProjects(prev => [project, ...prev]);
   };
@@ -142,6 +182,40 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     ));
   };
 
+  const updateProjectProgress = (projectId: string, updates: Partial<ProjectProgress>) => {
+    setProjects(prev => prev.map(project => 
+      project.id === projectId 
+        ? { 
+            ...project, 
+            progress: { 
+              ...getDefaultProgress(), 
+              ...project.progress, 
+              ...updates 
+            },
+            updatedAt: new Date().toLocaleString()
+          }
+        : project
+    ));
+  };
+
+  const calculateProjectProgress = (projectId: string): number => {
+    const project = projects.find(p => p.id === projectId);
+    if (!project?.progress) return 0;
+
+    const progress = project.progress;
+    const totalSteps = 6;
+    let completedSteps = 0;
+
+    if (progress.dataUploaded) completedSteps++;
+    if (progress.profilingCompleted) completedSteps++;
+    if (progress.descriptionCompleted) completedSteps++;
+    if (progress.hypothesesDefined) completedSteps++;
+    if (progress.analysisCompleted) completedSteps++;
+    if (progress.reportGenerated) completedSteps++;
+
+    return Math.round((completedSteps / totalSteps) * 100);
+  };
+
   const logActivity = (projectId: string, action: string, item: string) => {
     // This will be handled by the component using useProjectActivity hook
     // We'll track it there to avoid circular dependencies
@@ -156,7 +230,9 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       deleteNotebook,
       updateProject,
       setCurrentNotebook,
-      logActivity
+      logActivity,
+      updateProjectProgress,
+      calculateProjectProgress
     }}>
       {children}
     </ProjectContext.Provider>
