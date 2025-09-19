@@ -1,8 +1,9 @@
-import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X, BarChart3, Activity, Settings } from "lucide-react";
+import { ArrowLeft, FolderOpen, Calendar, FileText, Edit2, Check, X, BarChart3, Activity, Settings, TrendingUp, Database, FileSpreadsheet, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { Project, useProjects } from "@/contexts/ProjectContext";
 import { useState, useEffect } from "react";
@@ -111,6 +112,61 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
           <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
             Active Project
           </Badge>
+        </div>
+        
+        {/* Project Overview Card */}
+        <div className="mt-6">
+          <Card className="bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                Project Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                  <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Database className="w-5 h-5 text-blue-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Datasets</p>
+                    <p className="text-xs text-muted-foreground">0 uploaded</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                  <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                    <FileSpreadsheet className="w-5 h-5 text-green-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Data Profiling</p>
+                    <p className="text-xs text-muted-foreground">Not started</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                  <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+                    <Target className="w-5 h-5 text-purple-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Hypotheses</p>
+                    <p className="text-xs text-muted-foreground">0 created</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-4 p-3 bg-background/60 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Project Progress</span>
+                  <span className="text-sm text-muted-foreground">5%</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2 mt-2">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '5%' }}></div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
         
         {/* Management Section */}
