@@ -112,9 +112,42 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
             </div>
           </div>
           
-          <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-            Active Project
-          </Badge>
+          <div className="flex items-start gap-4">
+            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+              Active Project
+            </Badge>
+            
+            {/* Management Buttons - Vertical Layout */}
+            <div className="flex flex-col gap-2">
+              <Button
+                variant={activeManagementTab === "overview" ? "default" : "secondary"}
+                size="sm"
+                onClick={() => onManagementTabChange?.("overview")}
+                className="justify-start gap-2 min-w-[120px] h-9"
+              >
+                <BarChart3 className="w-4 h-4" />
+                Dashboard
+              </Button>
+              <Button
+                variant={activeManagementTab === "activity" ? "default" : "secondary"}
+                size="sm"
+                onClick={() => onManagementTabChange?.("activity")}
+                className="justify-start gap-2 min-w-[120px] h-9"
+              >
+                <Activity className="w-4 h-4" />
+                Activity
+              </Button>
+              <Button
+                variant={activeManagementTab === "settings" ? "default" : "secondary"}
+                size="sm"
+                onClick={() => onManagementTabChange?.("settings")}
+                className="justify-start gap-2 min-w-[120px] h-9"
+              >
+                <Settings className="w-4 h-4" />
+                Settings
+              </Button>
+            </div>
+          </div>
         </div>
         
         {/* Project Overview Card - Collapsible */}
@@ -187,26 +220,6 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
             </Card>
           </CollapsibleContent>
         </Collapsible>
-        
-        {/* Management Section */}
-        <div className="mt-6 flex justify-center">
-          <Tabs value={activeManagementTab} onValueChange={onManagementTabChange}>
-            <TabsList className="grid w-full grid-cols-3 max-w-md">
-              <TabsTrigger value="overview" className="gap-2">
-                <BarChart3 className="w-4 h-4" />
-                Dashboard
-              </TabsTrigger>
-              <TabsTrigger value="activity" className="gap-2">
-                <Activity className="w-4 h-4" />
-                Activity
-              </TabsTrigger>
-              <TabsTrigger value="settings" className="gap-2">
-                <Settings className="w-4 h-4" />
-                Settings
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
       </div>
     </div>
   );
