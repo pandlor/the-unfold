@@ -157,11 +157,45 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
               variant="ghost" 
               className="w-full justify-between p-3 h-auto bg-muted/20 hover:bg-muted/40 rounded-lg border border-border/50"
             >
-              <div className="flex items-center gap-2 flex-1">
+              <div className="flex items-center gap-4">
                 <span className="text-sm text-muted-foreground">Project Progress</span>
-                <Progress value={calculateProjectProgress(project.id)} className="flex-1 max-w-xs" />
-                <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
+                
+                {/* Circular Progress Ring */}
+                <div className="relative w-16 h-16">
+                  <svg className="w-full h-full transform -rotate-90">
+                    {/* Background circle */}
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      fill="none"
+                      className="text-border"
+                    />
+                    {/* Progress circle */}
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      fill="none"
+                      strokeDasharray={`${2 * Math.PI * 28}`}
+                      strokeDashoffset={`${2 * Math.PI * 28 * (1 - calculateProjectProgress(project.id) / 100)}`}
+                      className="text-primary transition-all duration-500"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  {/* Percentage text */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-xs font-semibold text-foreground">
+                      {calculateProjectProgress(project.id)}%
+                    </span>
+                  </div>
+                </div>
               </div>
+              
               {isOverviewOpen ? (
                 <ChevronUp className="w-4 h-4 text-muted-foreground" />
               ) : (
