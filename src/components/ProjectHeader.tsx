@@ -47,13 +47,13 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
       handleCancel();
     }
   };
-
+  
   const progress = Number(calculateProjectProgress(project.id) || 0);
   const radius = 36;
   const circumference = 2 * Math.PI * radius;
-  const arc = circumference * 0.85; // visible arc length (85%), rest is gap
+  const arc = circumference * 0.75; // visible arc length (~270°), rest is bottom gap
   const baseOffset = arc / 2; // centers the gap at the bottom
-
+  
   return (
     <div className="border-b border-border bg-card/50 backdrop-blur-sm">
       <div className="p-6">
@@ -167,7 +167,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                 <span className="text-sm text-muted-foreground">Project Progress</span>
                 
                 {/* Circular Progress Ring (gauge with bottom gap) */}
-                <div className="relative w-24 h-24">
+                <div className="relative w-28 h-28">
                   <svg viewBox="0 0 100 100" className="w-full h-full">
                     {/* Track */}
                     <circle
@@ -175,7 +175,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                       cy="50"
                       r={radius}
                       stroke="currentColor"
-                      strokeWidth="12"
+                      strokeWidth="14"
                       fill="none"
                       className="text-muted/30"
                       strokeDasharray={`${arc} ${circumference}`}
@@ -189,7 +189,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                       cy="50"
                       r={radius}
                       stroke="currentColor"
-                      strokeWidth="12"
+                      strokeWidth="14"
                       fill="none"
                       className="text-primary transition-all duration-500"
                       strokeDasharray={`${arc} ${circumference}`}
