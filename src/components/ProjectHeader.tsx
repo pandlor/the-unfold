@@ -47,13 +47,7 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
       handleCancel();
     }
   };
-  
-  const progress = Number(calculateProjectProgress(project.id) || 0);
-  const radius = 36;
-  const circumference = 2 * Math.PI * radius;
-  const arc = circumference * 0.75; // visible arc length (~270°), rest is bottom gap
-  const baseOffset = arc / 2; // centers the gap at the bottom
-  
+
   return (
     <div className="border-b border-border bg-card/50 backdrop-blur-sm">
       <div className="p-6">
@@ -166,42 +160,37 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
               <div className="flex items-center gap-4">
                 <span className="text-sm text-muted-foreground">Project Progress</span>
                 
-                {/* Circular Progress Ring (gauge with bottom gap) */}
-                <div className="relative w-28 h-28">
-                  <svg viewBox="0 0 100 100" className="w-full h-full">
-                    {/* Track */}
+                {/* Circular Progress Ring */}
+                <div className="relative w-16 h-16">
+                  <svg className="w-full h-full transform -rotate-90">
+                    {/* Background circle */}
                     <circle
-                      cx="50"
-                      cy="50"
-                      r={radius}
+                      cx="32"
+                      cy="32"
+                      r="28"
                       stroke="currentColor"
-                      strokeWidth="14"
+                      strokeWidth="6"
                       fill="none"
-                      className="text-muted/30"
-                      strokeDasharray={`${arc} ${circumference}`}
-                      strokeDashoffset={baseOffset}
-                      style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
-                      strokeLinecap="butt"
+                      className="text-border"
                     />
-                    {/* Progress */}
+                    {/* Progress circle */}
                     <circle
-                      cx="50"
-                      cy="50"
-                      r={radius}
+                      cx="32"
+                      cy="32"
+                      r="28"
                       stroke="currentColor"
-                      strokeWidth="14"
+                      strokeWidth="6"
                       fill="none"
+                      strokeDasharray={`${2 * Math.PI * 28}`}
+                      strokeDashoffset={`${2 * Math.PI * 28 * (1 - calculateProjectProgress(project.id) / 100)}`}
                       className="text-primary transition-all duration-500"
-                      strokeDasharray={`${arc} ${circumference}`}
-                      strokeDashoffset={baseOffset + arc * (1 - progress / 100)}
-                      style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
-                      strokeLinecap="butt"
+                      strokeLinecap="round"
                     />
                   </svg>
                   {/* Percentage text */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-base font-semibold text-foreground tabular-nums">
-                      {progress.toFixed(2)}%
+                    <span className="text-xs font-semibold text-foreground">
+                      {calculateProjectProgress(project.id)}%
                     </span>
                   </div>
                 </div>
