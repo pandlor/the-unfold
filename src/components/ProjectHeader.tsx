@@ -120,28 +120,34 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
             {/* Management Buttons - Vertical Layout */}
             <div className="flex flex-col gap-2">
               <Button
-                variant={activeManagementTab === "overview" ? "default" : "secondary"}
+                variant={activeManagementTab === "overview" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onManagementTabChange?.("overview")}
-                className="justify-start gap-2 min-w-[120px] h-9"
+                className={`justify-start gap-2 min-w-[120px] h-9 ${
+                  activeManagementTab !== "overview" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""
+                }`}
               >
                 <BarChart3 className="w-4 h-4" />
                 Dashboard
               </Button>
               <Button
-                variant={activeManagementTab === "activity" ? "default" : "secondary"}
+                variant={activeManagementTab === "activity" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onManagementTabChange?.("activity")}
-                className="justify-start gap-2 min-w-[120px] h-9"
+                className={`justify-start gap-2 min-w-[120px] h-9 ${
+                  activeManagementTab !== "activity" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""
+                }`}
               >
                 <Activity className="w-4 h-4" />
                 Activity
               </Button>
               <Button
-                variant={activeManagementTab === "settings" ? "default" : "secondary"}
+                variant={activeManagementTab === "settings" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onManagementTabChange?.("settings")}
-                className="justify-start gap-2 min-w-[120px] h-9"
+                className={`justify-start gap-2 min-w-[120px] h-9 ${
+                  activeManagementTab !== "settings" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""
+                }`}
               >
                 <Settings className="w-4 h-4" />
                 Settings
