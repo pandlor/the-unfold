@@ -179,40 +179,71 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                    <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                      <Database className="w-5 h-5 text-blue-500" />
+                <div className="space-y-4">
+                  {/* Description Fields */}
+                  <div className="grid grid-cols-1 gap-3 p-4 bg-background/60 rounded-lg border border-border/50">
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1 block">
+                        Data Description
+                      </label>
+                      <p className="text-sm text-foreground">
+                        {project.description || "No data description provided yet"}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Datasets</p>
-                      <p className="text-xs text-muted-foreground">
-                        {project.progress?.uploadedDatasets.length || 0} uploaded
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1 block">
+                        Research Group
+                      </label>
+                      <p className="text-sm text-foreground">
+                        {project.researchGroup || "No research group specified"}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1 block">
+                        Goals
+                      </label>
+                      <p className="text-sm text-foreground">
+                        {project.goals || "No goals defined yet"}
                       </p>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                    <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                      <FileSpreadsheet className="w-5 h-5 text-green-500" />
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                        <Database className="w-5 h-5 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Datasets</p>
+                        <p className="text-xs text-muted-foreground">
+                          {project.progress?.uploadedDatasets.length || 0} uploaded
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium">Data Profiling</p>
-                      <p className="text-xs text-muted-foreground">
-                        {project.progress?.profilingCompleted ? "Completed" : "Not started"}
-                      </p>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                      <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                        <FileSpreadsheet className="w-5 h-5 text-green-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Data Profiling</p>
+                        <p className="text-xs text-muted-foreground">
+                          {project.progress?.profilingCompleted ? "Completed" : "Not started"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                    <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                      <Target className="w-5 h-5 text-purple-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">Hypotheses</p>
-                      <p className="text-xs text-muted-foreground">
-                        {project.progress?.hypothesesCount || 0} created
-                      </p>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
+                      <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+                        <Target className="w-5 h-5 text-purple-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Hypotheses</p>
+                        <p className="text-xs text-muted-foreground">
+                          {project.progress?.hypothesesCount || 0} created
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

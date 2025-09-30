@@ -25,6 +25,9 @@ export interface Project {
   notebooks: Notebook[];
   currentNotebookId?: string; // Track which notebook is currently active
   progress?: ProjectProgress;
+  description?: string;
+  researchGroup?: string;
+  goals?: string;
 }
 
 interface ProjectContextType {
