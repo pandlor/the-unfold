@@ -9,37 +9,41 @@ import { Project, useProjects } from "@/contexts/ProjectContext";
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
 interface ProjectHeaderProps {
   project: Project;
   showBackButton?: boolean;
   activeManagementTab?: string;
   onManagementTabChange?: (tab: string) => void;
 }
-
-export const ProjectHeader = ({ project, showBackButton = true, activeManagementTab = "overview", onManagementTabChange }: ProjectHeaderProps) => {
+export const ProjectHeader = ({
+  project,
+  showBackButton = true,
+  activeManagementTab = "overview",
+  onManagementTabChange
+}: ProjectHeaderProps) => {
   const navigate = useNavigate();
-  const { updateProject, calculateProjectProgress } = useProjects();
+  const {
+    updateProject,
+    calculateProjectProgress
+  } = useProjects();
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(project.name);
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
-
   useEffect(() => {
     setEditName(project.name);
   }, [project.name]);
-
   const handleSave = () => {
     if (editName.trim() && editName !== project.name) {
-      updateProject(project.id, { name: editName.trim() });
+      updateProject(project.id, {
+        name: editName.trim()
+      });
     }
     setIsEditing(false);
   };
-
   const handleCancel = () => {
     setEditName(project.name);
     setIsEditing(false);
   };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSave();
@@ -47,20 +51,12 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
       handleCancel();
     }
   };
-
-  return (
-    <div className="border-b border-border bg-card/50 backdrop-blur-sm">
+  return <div className="border-b border-border bg-card/50 backdrop-blur-sm">
       <div className="p-6">
-        {showBackButton && (
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/")}
-            className="mb-4 hover:bg-muted/50"
-          >
+        {showBackButton && <Button variant="ghost" onClick={() => navigate("/")} className="mb-4 hover:bg-muted/50">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Projects
-          </Button>
-        )}
+          </Button>}
         
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
@@ -69,35 +65,20 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
             </div>
             <div>
               <div className="flex items-center gap-2">
-                {isEditing ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      onKeyDown={handleKeyPress}
-                      className="text-2xl font-bold h-auto py-1 px-2 border-primary/50 focus:border-primary"
-                      autoFocus
-                    />
+                {isEditing ? <div className="flex items-center gap-2">
+                    <Input value={editName} onChange={e => setEditName(e.target.value)} onKeyDown={handleKeyPress} className="text-2xl font-bold h-auto py-1 px-2 border-primary/50 focus:border-primary" autoFocus />
                     <Button size="sm" onClick={handleSave} className="h-8 w-8 p-0">
                       <Check className="w-4 h-4" />
                     </Button>
                     <Button size="sm" variant="ghost" onClick={handleCancel} className="h-8 w-8 p-0">
                       <X className="w-4 h-4" />
                     </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 group">
+                  </div> : <div className="flex items-center gap-2 group">
                     <h1 className="text-2xl font-bold text-foreground">{project.name}</h1>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setIsEditing(true)}
-                      className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
+                    <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)} className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Edit2 className="w-4 h-4" />
                     </Button>
-                  </div>
-                )}
+                  </div>}
               </div>
               <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
@@ -113,42 +94,19 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
           </div>
           
           <div className="flex items-start gap-4">
-            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-              Active Project
-            </Badge>
+            
             
             {/* Management Buttons - Vertical Layout */}
             <div className="flex flex-col gap-2">
-              <Button
-                variant={activeManagementTab === "overview" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => onManagementTabChange?.("overview")}
-                className={`justify-start gap-2 min-w-[120px] h-9 ${
-                  activeManagementTab !== "overview" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""
-                }`}
-              >
+              <Button variant={activeManagementTab === "overview" ? "default" : "ghost"} size="sm" onClick={() => onManagementTabChange?.("overview")} className={`justify-start gap-2 min-w-[120px] h-9 ${activeManagementTab !== "overview" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}>
                 <BarChart3 className="w-4 h-4" />
                 Dashboard
               </Button>
-              <Button
-                variant={activeManagementTab === "activity" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => onManagementTabChange?.("activity")}
-                className={`justify-start gap-2 min-w-[120px] h-9 ${
-                  activeManagementTab !== "activity" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""
-                }`}
-              >
+              <Button variant={activeManagementTab === "activity" ? "default" : "ghost"} size="sm" onClick={() => onManagementTabChange?.("activity")} className={`justify-start gap-2 min-w-[120px] h-9 ${activeManagementTab !== "activity" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}>
                 <Activity className="w-4 h-4" />
                 Activity
               </Button>
-              <Button
-                variant={activeManagementTab === "settings" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => onManagementTabChange?.("settings")}
-                className={`justify-start gap-2 min-w-[120px] h-9 ${
-                  activeManagementTab !== "settings" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""
-                }`}
-              >
+              <Button variant={activeManagementTab === "settings" ? "default" : "ghost"} size="sm" onClick={() => onManagementTabChange?.("settings")} className={`justify-start gap-2 min-w-[120px] h-9 ${activeManagementTab !== "settings" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}>
                 <Settings className="w-4 h-4" />
                 Settings
               </Button>
@@ -159,20 +117,13 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
         {/* Project Overview Card - Collapsible */}
         <Collapsible open={isOverviewOpen} onOpenChange={setIsOverviewOpen} className="mt-6">
           <CollapsibleTrigger asChild>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-between p-3 h-auto bg-muted/20 hover:bg-muted/40 rounded-lg border border-border/50"
-            >
+            <Button variant="ghost" className="w-full justify-between p-3 h-auto bg-muted/20 hover:bg-muted/40 rounded-lg border border-border/50">
               <div className="flex items-center gap-2 flex-1">
                 <span className="text-sm text-muted-foreground">Project Progress</span>
                 <Progress value={calculateProjectProgress(project.id)} className="flex-1 max-w-xs" />
                 <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
               </div>
-              {isOverviewOpen ? (
-                <ChevronUp className="w-4 h-4 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-              )}
+              {isOverviewOpen ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
             </Button>
           </CollapsibleTrigger>
           
@@ -258,6 +209,5 @@ export const ProjectHeader = ({ project, showBackButton = true, activeManagement
           </CollapsibleContent>
         </Collapsible>
       </div>
-    </div>
-  );
+    </div>;
 };
