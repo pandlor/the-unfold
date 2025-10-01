@@ -2,12 +2,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { 
   BookOpen, 
   Plus, 
   Activity, 
   Settings, 
-  BarChart3, 
+  BarChart3,
   Clock,
   FileText,
   TrendingUp,
@@ -417,76 +418,115 @@ export const ProjectTabs = ({
           </Button>
         </div>
 
-        {/* Progress Steps */}
+        {/* Progress Overview */}
+        <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Completion Progress</h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {Object.values(formData).filter(Boolean).length} of 5 questions answered
+                  </p>
+                </div>
+                <Badge variant="secondary" className="text-sm">
+                  {Math.round((Object.values(formData).filter(Boolean).length / 5) * 100)}% Complete
+                </Badge>
+              </div>
+              <Progress 
+                value={(Object.values(formData).filter(Boolean).length / 5) * 100} 
+                className="h-2"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Step Navigation Cards */}
         <Card>
           <CardHeader>
-            <CardTitle>Step {currentStep} of 5</CardTitle>
-            <CardDescription>Complete all sections to provide comprehensive data context</CardDescription>
+            <CardTitle>Data Description Framework</CardTitle>
+            <CardDescription>Answer the 5W questions to provide comprehensive context for your research data</CardDescription>
           </CardHeader>
           <CardContent>
-            {/* Step Indicator with Questions */}
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center justify-between">
-                {questions.map((question, index) => {
-                  const labels = ['Who?', 'Where?', 'When?', 'How?', 'Why?'];
-                  return (
-                    <div key={question.id} className="flex items-center flex-1">
-                      <div className="flex flex-col items-center flex-1">
-                        <span className={`text-xs font-medium mb-2 transition-colors ${
-                          currentStep === question.id 
-                            ? 'text-primary' 
-                            : formData[question.field as keyof typeof formData]
-                            ? 'text-green-600'
-                            : 'text-muted-foreground'
-                        }`}>
-                          {labels[index]}
-                        </span>
-                        <button
-                          onClick={() => goToStep(question.id)}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all shadow-sm ${
-                            currentStep === question.id
-                              ? 'bg-primary text-primary-foreground ring-4 ring-primary/20 scale-110'
-                              : formData[question.field as keyof typeof formData]
-                              ? 'bg-green-500 text-white hover:bg-green-600'
-                              : 'bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-border'
-                          }`}
-                        >
-                          {formData[question.field as keyof typeof formData] ? (
-                            <Check className="w-5 h-5" />
-                          ) : (
-                            question.id
-                          )}
-                        </button>
+            {/* Step Selector Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+              {questions.map((question, index) => {
+                const labels = ['Who?', 'Where?', 'When?', 'How?', 'Why?'];
+                const isActive = currentStep === question.id;
+                const isCompleted = formData[question.field as keyof typeof formData];
+                
+                return (
+                  <button
+                    key={question.id}
+                    onClick={() => goToStep(question.id)}
+                    className={`group relative p-4 rounded-xl border-2 transition-all duration-200 text-left ${
+                      isActive
+                        ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
+                        : isCompleted
+                        ? 'border-green-200 bg-green-50 hover:border-green-300 hover:shadow-md'
+                        : 'border-border bg-background hover:border-primary/30 hover:shadow-md'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${
+                        isActive
+                          ? 'bg-primary text-primary-foreground'
+                          : isCompleted
+                          ? 'bg-green-500 text-white'
+                          : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'
+                      }`}>
+                        {isCompleted ? <Check className="w-4 h-4" /> : question.id}
                       </div>
-                      {index < questions.length - 1 && (
-                        <div className={`h-0.5 flex-1 mx-3 transition-colors ${
-                          formData[question.field as keyof typeof formData] ? 'bg-green-300' : 'bg-border'
-                        }`} />
+                      {isActive && (
+                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                       )}
                     </div>
-                  );
-                })}
-              </div>
+                    <div>
+                      <p className={`text-sm font-semibold mb-1 ${
+                        isActive ? 'text-primary' : isCompleted ? 'text-green-700' : 'text-foreground'
+                      }`}>
+                        {labels[index]}
+                      </p>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {question.title.replace(/^(Description of the Research Group|Where Was the Data Collected\?|When Was the Data Collected\?|How Was the Data Collected\?|What Is the Objective of the Study\?)/, '').trim() || question.title}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Current Question */}
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="current-question" className="text-lg font-semibold">
-                  {currentQuestion.title}
-                </Label>
-                <p className="text-muted-foreground mt-1 mb-4">
-                  {currentQuestion.description}
-                </p>
+            {/* Current Question Form */}
+            <div className="bg-muted/30 rounded-xl p-6 border border-border">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                  <span className="text-lg font-bold text-primary-foreground">{currentStep}</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-foreground mb-2">
+                    {currentQuestion.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {currentQuestion.description}
+                  </p>
+                </div>
               </div>
               
-              <Textarea
-                id="current-question"
-                placeholder="Enter your response..."
-                value={formData[currentQuestion.field as keyof typeof formData]}
-                onChange={(e) => updateFormData(currentQuestion.field, e.target.value)}
-                className="min-h-[120px]"
-              />
+              <div className="space-y-3">
+                <Label htmlFor="current-question" className="text-sm font-medium">
+                  Your Response
+                </Label>
+                <Textarea
+                  id="current-question"
+                  placeholder="Type your answer here..."
+                  value={formData[currentQuestion.field as keyof typeof formData]}
+                  onChange={(e) => updateFormData(currentQuestion.field, e.target.value)}
+                  className="min-h-[140px] resize-none"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {formData[currentQuestion.field as keyof typeof formData]?.length || 0} characters
+                </p>
+              </div>
             </div>
 
             {/* Navigation */}
