@@ -39,15 +39,25 @@ const NotebookCreation = () => {
   const {
     toast
   } = useToast();
-  const { projects, addNotebook, deleteNotebook, updateProject, deleteProject } = useProjects();
-  const { addActivity } = useProjectActivity(projectId!);
+  const {
+    projects,
+    addNotebook,
+    deleteNotebook,
+    updateProject,
+    deleteProject
+  } = useProjects();
+  const {
+    addActivity
+  } = useProjectActivity(projectId!);
 
   // Get notebooks for current project
   const currentProject = projects.find(p => p.id === projectId);
   const notebooks = currentProject?.notebooks || [];
-  
+
   // Get real project activities
-  const { activities } = useProjectActivity(projectId!);
+  const {
+    activities
+  } = useProjectActivity(projectId!);
 
   // Initialize edited project name when project loads
   React.useEffect(() => {
@@ -76,10 +86,9 @@ const NotebookCreation = () => {
         updatedAt: "Just created"
       };
       addNotebook(projectId!, newNotebook);
-      
+
       // Log the activity
       addActivity("Hypothesis created", notebookName);
-      
       toast({
         title: "Hypothesis Created",
         description: `${notebookName} has been created successfully!`
@@ -113,10 +122,9 @@ const NotebookCreation = () => {
       notebookId
     } = deleteDialog;
     deleteNotebook(projectId!, notebookId);
-    
+
     // Log the activity
     addActivity("Notebook deleted", deleteDialog.notebookName);
-    
     toast({
       title: "Notebook Deleted",
       description: `${deleteDialog.notebookName} has been deleted successfully.`
@@ -127,7 +135,6 @@ const NotebookCreation = () => {
       notebookName: ""
     });
   };
-
   const handleProjectNameChange = () => {
     if (!editedProjectName.trim()) {
       toast({
@@ -137,16 +144,15 @@ const NotebookCreation = () => {
       });
       return;
     }
-
-    updateProject(projectId!, { name: editedProjectName.trim() });
+    updateProject(projectId!, {
+      name: editedProjectName.trim()
+    });
     addActivity("Project renamed", editedProjectName.trim());
-    
     toast({
       title: "Project Updated",
       description: "Project name has been updated successfully!"
     });
   };
-
   const handleDeleteProject = () => {
     setProjectDeleteDialog({
       open: true,
@@ -154,26 +160,21 @@ const NotebookCreation = () => {
       projectName: currentProject?.name || ""
     });
   };
-
   const confirmDeleteProject = () => {
     deleteProject(projectId!);
-    
     toast({
       title: "Project Deleted",
       description: `${projectDeleteDialog.projectName} has been deleted successfully.`
     });
-    
     setProjectDeleteDialog({
       open: false,
       projectId: "",
       projectName: ""
     });
-    
     navigate("/");
   };
   if (!currentProject) {
-    return (
-      <Layout>
+    return <Layout>
         <main className="flex-1 p-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-foreground">Project not found</h1>
@@ -183,30 +184,16 @@ const NotebookCreation = () => {
             </Button>
           </div>
         </main>
-      </Layout>
-    );
+      </Layout>;
   }
-  return (
-    <Layout>
-      <ProjectHeader 
-        project={currentProject} 
-        activeManagementTab={activeManagementTab}
-            onManagementTabChange={setActiveManagementTab}
-          />
+  return <Layout>
+      <ProjectHeader project={currentProject} activeManagementTab={activeManagementTab} onManagementTabChange={setActiveManagementTab} />
           
-          <main className="flex-1 p-8 bg-slate-50">
+          <main className="flex-1 p-8 bg-slate-50/0">
             <div className="w-full max-w-6xl mx-auto">
               
               {/* Content based on active management tab */}
-              {activeManagementTab === "overview" && (
-                <ProjectTabs 
-                  project={currentProject} 
-                  notebooks={notebooks} 
-                  projectId={projectId!} 
-                  onCreateNotebook={() => {}} 
-                  onDeleteNotebook={handleDeleteNotebook} 
-                  createNotebookSection={
-                        <Card className="bg-card/80 backdrop-blur-sm border-border">
+              {activeManagementTab === "overview" && <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={() => {}} onDeleteNotebook={handleDeleteNotebook} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
                       <CardHeader>
                         <div className="flex items-center gap-3">
                           <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
@@ -224,24 +211,11 @@ const NotebookCreation = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
                             <Label htmlFor="notebook-name">Hypothesis Title *</Label>
-                            <Input 
-                              id="notebook-name" 
-                              placeholder="e.g., Customer satisfaction affects retention..." 
-                              value={notebookName} 
-                              onChange={e => setNotebookName(e.target.value)} 
-                              disabled={isLoading} 
-                            />
+                            <Input id="notebook-name" placeholder="e.g., Customer satisfaction affects retention..." value={notebookName} onChange={e => setNotebookName(e.target.value)} disabled={isLoading} />
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="notebook-description">Research Question</Label>
-                            <Textarea 
-                              id="notebook-description" 
-                              placeholder="Define your testable hypothesis and expected outcomes..." 
-                              value={notebookDescription} 
-                              onChange={e => setNotebookDescription(e.target.value)} 
-                              rows={3} 
-                              disabled={isLoading} 
-                            />
+                            <Textarea id="notebook-description" placeholder="Define your testable hypothesis and expected outcomes..." value={notebookDescription} onChange={e => setNotebookDescription(e.target.value)} rows={3} disabled={isLoading} />
                           </div>
                         </div>
 
@@ -255,13 +229,9 @@ const NotebookCreation = () => {
                           </Button>
                         </div>
                       </CardContent>
-                    </Card>
-                  } 
-                />
-              )}
+                    </Card>} />}
 
-              {activeManagementTab === "activity" && (
-                <Card className="bg-card">
+              {activeManagementTab === "activity" && <Card className="bg-card">
                   <CardHeader>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-10 h-10 bg-blue-500/10 rounded-lg">
@@ -277,35 +247,22 @@ const NotebookCreation = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {activities.length === 0 ? (
-                        <div className="text-center py-8">
+                      {activities.length === 0 ? <div className="text-center py-8">
                           <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                           <p className="text-muted-foreground">No recent activity</p>
                           <p className="text-sm text-muted-foreground">Start working on your project to see activity here</p>
-                        </div>
-                      ) : (
-                        activities.map((activity, index) => (
-                          <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                            <div className={`w-2 h-2 rounded-full ${
-                              activity.action.toLowerCase().includes('created') ? 'bg-green-500' :
-                              activity.action.toLowerCase().includes('deleted') ? 'bg-red-500' :
-                              activity.action.toLowerCase().includes('renamed') || activity.action.toLowerCase().includes('updated') ? 'bg-blue-500' :
-                              'bg-purple-500'
-                            }`}></div>
+                        </div> : activities.map((activity, index) => <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                            <div className={`w-2 h-2 rounded-full ${activity.action.toLowerCase().includes('created') ? 'bg-green-500' : activity.action.toLowerCase().includes('deleted') ? 'bg-red-500' : activity.action.toLowerCase().includes('renamed') || activity.action.toLowerCase().includes('updated') ? 'bg-blue-500' : 'bg-purple-500'}`}></div>
                             <div className="flex-1">
                               <p className="text-sm font-medium">{activity.action}: {activity.item}</p>
                               <p className="text-xs text-muted-foreground">{activity.time}</p>
                             </div>
-                          </div>
-                        ))
-                      )}
+                          </div>)}
                     </div>
                   </CardContent>
-                </Card>
-              )}
+                </Card>}
 
-              {activeManagementTab === "settings" && (
-                <Card className="bg-card">
+              {activeManagementTab === "settings" && <Card className="bg-card">
                   <CardHeader>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-10 h-10 bg-orange-500/10 rounded-lg">
@@ -324,27 +281,15 @@ const NotebookCreation = () => {
                       <div className="space-y-2">
                         <Label htmlFor="project-name">Project Name</Label>
                         <div className="flex gap-2">
-                          <Input 
-                            id="project-name" 
-                            value={editedProjectName} 
-                            onChange={(e) => setEditedProjectName(e.target.value)}
-                            placeholder="Enter project name"
-                          />
-                          <Button 
-                            onClick={handleProjectNameChange}
-                            disabled={editedProjectName === currentProject?.name || !editedProjectName.trim()}
-                          >
+                          <Input id="project-name" value={editedProjectName} onChange={e => setEditedProjectName(e.target.value)} placeholder="Enter project name" />
+                          <Button onClick={handleProjectNameChange} disabled={editedProjectName === currentProject?.name || !editedProjectName.trim()}>
                             Save
                           </Button>
                         </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="project-description">Project Description</Label>
-                        <Textarea 
-                          id="project-description" 
-                          placeholder="Describe your project..."
-                          rows={3}
-                        />
+                        <Textarea id="project-description" placeholder="Describe your project..." rows={3} />
                       </div>
                       
                       <div className="border-t pt-6">
@@ -353,47 +298,26 @@ const NotebookCreation = () => {
                           <p className="text-sm text-muted-foreground">
                             Permanently delete this project and all its data. This action cannot be undone.
                           </p>
-                          <Button 
-                            variant="destructive" 
-                            onClick={handleDeleteProject}
-                            className="w-full"
-                          >
+                          <Button variant="destructive" onClick={handleDeleteProject} className="w-full">
                             Delete Project
                           </Button>
                         </div>
                       </div>
                     </div>
                   </CardContent>
-                </Card>
-              )}
+                </Card>}
 
-              <DeleteConfirmDialog 
-                open={deleteDialog.open} 
-                onOpenChange={open => setDeleteDialog(prev => ({
-                  ...prev,
-                  open
-                }))} 
-                onConfirm={confirmDeleteNotebook} 
-                title="Delete Notebook" 
-                description="Are you sure you want to delete this notebook? This action cannot be undone." 
-                itemName={deleteDialog.notebookName} 
-              />
+              <DeleteConfirmDialog open={deleteDialog.open} onOpenChange={open => setDeleteDialog(prev => ({
+          ...prev,
+          open
+        }))} onConfirm={confirmDeleteNotebook} title="Delete Notebook" description="Are you sure you want to delete this notebook? This action cannot be undone." itemName={deleteDialog.notebookName} />
               
-              <DeleteConfirmDialog 
-                open={projectDeleteDialog.open} 
-                onOpenChange={open => setProjectDeleteDialog(prev => ({
-                  ...prev,
-                  open
-                }))} 
-                onConfirm={confirmDeleteProject} 
-                title="Delete Project" 
-                description="Are you sure you want to permanently delete this project and all its notebooks? This action cannot be undone." 
-                itemName={projectDeleteDialog.projectName} 
-              />
+              <DeleteConfirmDialog open={projectDeleteDialog.open} onOpenChange={open => setProjectDeleteDialog(prev => ({
+          ...prev,
+          open
+        }))} onConfirm={confirmDeleteProject} title="Delete Project" description="Are you sure you want to permanently delete this project and all its notebooks? This action cannot be undone." itemName={projectDeleteDialog.projectName} />
             </div>
           </main>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default NotebookCreation;
