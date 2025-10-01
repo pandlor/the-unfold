@@ -424,33 +424,49 @@ export const ProjectTabs = ({
             <CardDescription>Complete all sections to provide comprehensive data context</CardDescription>
           </CardHeader>
           <CardContent>
-            {/* Step Indicator */}
-            <div className="flex items-center justify-between mb-6">
-              {questions.map((question, index) => (
-                <div key={question.id} className="flex items-center">
-                  <button
-                    onClick={() => goToStep(question.id)}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
-                      currentStep === question.id
-                        ? 'bg-primary text-primary-foreground'
-                        : formData[question.field as keyof typeof formData]
-                        ? 'bg-green-100 text-green-700 border-2 border-green-200'
-                        : 'bg-muted text-muted-foreground border-2 border-border'
-                    }`}
-                  >
-                    {formData[question.field as keyof typeof formData] ? (
-                      <Check className="w-4 h-4" />
-                    ) : (
-                      question.id
-                    )}
-                  </button>
-                  {index < questions.length - 1 && (
-                    <div className={`w-12 h-0.5 mx-2 ${
-                      currentStep > question.id ? 'bg-green-200' : 'bg-border'
-                    }`} />
-                  )}
-                </div>
-              ))}
+            {/* Step Indicator with Questions */}
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center justify-between">
+                {questions.map((question, index) => {
+                  const labels = ['Who?', 'Where?', 'When?', 'How?', 'Why?'];
+                  return (
+                    <div key={question.id} className="flex items-center flex-1">
+                      <div className="flex flex-col items-center flex-1">
+                        <span className={`text-xs font-medium mb-2 transition-colors ${
+                          currentStep === question.id 
+                            ? 'text-primary' 
+                            : formData[question.field as keyof typeof formData]
+                            ? 'text-green-600'
+                            : 'text-muted-foreground'
+                        }`}>
+                          {labels[index]}
+                        </span>
+                        <button
+                          onClick={() => goToStep(question.id)}
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all shadow-sm ${
+                            currentStep === question.id
+                              ? 'bg-primary text-primary-foreground ring-4 ring-primary/20 scale-110'
+                              : formData[question.field as keyof typeof formData]
+                              ? 'bg-green-500 text-white hover:bg-green-600'
+                              : 'bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-border'
+                          }`}
+                        >
+                          {formData[question.field as keyof typeof formData] ? (
+                            <Check className="w-5 h-5" />
+                          ) : (
+                            question.id
+                          )}
+                        </button>
+                      </div>
+                      {index < questions.length - 1 && (
+                        <div className={`h-0.5 flex-1 mx-3 transition-colors ${
+                          formData[question.field as keyof typeof formData] ? 'bg-green-300' : 'bg-border'
+                        }`} />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Current Question */}
