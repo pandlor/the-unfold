@@ -134,17 +134,17 @@ export const ProjectHeader = ({
                         fill="none"
                         className="text-muted/20"
                       />
-                      {/* Progress circle with gradient */}
+                      {/* Progress circle with conditional gradient */}
                       <circle
                         cx="80"
                         cy="80"
                         r="70"
-                        stroke="url(#progressGradient)"
+                        stroke={progress === 0 ? "currentColor" : "url(#progressGradient)"}
                         strokeWidth="12"
                         fill="none"
                         strokeDasharray={2 * Math.PI * 70}
                         strokeDashoffset={2 * Math.PI * 70 - (progress / 100) * 2 * Math.PI * 70}
-                        className="transition-all duration-700 ease-out"
+                        className={`transition-all duration-700 ease-out ${progress === 0 ? 'text-muted/40' : ''}`}
                         strokeLinecap="round"
                       />
                       <defs>
