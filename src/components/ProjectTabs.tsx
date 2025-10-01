@@ -3,26 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { 
-  BookOpen, 
-  Plus, 
-  Activity, 
-  Settings, 
-  BarChart3,
-  Clock,
-  FileText,
-  TrendingUp,
-  ArrowUpRight,
-  Upload,
-  Database,
-  Trash2,
-  Download,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-  Check,
-  FileSearch
-} from "lucide-react";
+import { BookOpen, Plus, Activity, Settings, BarChart3, Clock, FileText, TrendingUp, ArrowUpRight, Upload, Database, Trash2, Download, Eye, ChevronLeft, ChevronRight, Check, FileSearch } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { NotebookCard } from "@/components/NotebookCard";
@@ -32,7 +13,6 @@ import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 interface ProjectTabsProps {
   project: Project;
   notebooks: Notebook[];
@@ -41,18 +21,24 @@ interface ProjectTabsProps {
   onDeleteNotebook: (notebookId: string, notebookName: string) => void;
   createNotebookSection: React.ReactNode;
 }
-
-export const ProjectTabs = ({ 
-  project, 
-  notebooks, 
-  projectId, 
-  onCreateNotebook, 
+export const ProjectTabs = ({
+  project,
+  notebooks,
+  projectId,
+  onCreateNotebook,
   onDeleteNotebook,
-  createNotebookSection 
+  createNotebookSection
 }: ProjectTabsProps) => {
-  const { activities, addActivity } = useProjectActivity(projectId);
-  const { addNotebook } = useProjects();
-  const { toast } = useToast();
+  const {
+    activities,
+    addActivity
+  } = useProjectActivity(projectId);
+  const {
+    addNotebook
+  } = useProjects();
+  const {
+    toast
+  } = useToast();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -62,7 +48,6 @@ export const ProjectTabs = ({
     dataCollectionMethod: '',
     studyObjective: ''
   });
-
   const createNewNotebook = () => {
     const notebookNumber = notebooks.length + 1;
     const newNotebook = {
@@ -70,77 +55,66 @@ export const ProjectTabs = ({
       name: `Analysis Notebook ${notebookNumber}`,
       updatedAt: "Just created"
     };
-    
     addNotebook(projectId, newNotebook);
     addActivity("Notebook created", newNotebook.name);
-    
     toast({
       title: "Notebook Created",
       description: `${newNotebook.name} has been created successfully!`
     });
-    
+
     // Navigate directly to the notebook interface
     navigate(`/project/${projectId}/notebook`);
   };
-
   const updateFormData = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
-
   const nextStep = () => {
     if (currentStep < 5) setCurrentStep(currentStep + 1);
   };
-
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
-
   const goToStep = (step: number) => {
     setCurrentStep(step);
   };
-
-  const questions = [
-    {
-      id: 1,
-      title: "Description of the Research Group",
-      description: "Provide a detailed description of the research group: who the participants are, their sample size, key demographic characteristics, or other essential information.",
-      field: "researchGroup"
-    },
-    {
-      id: 2,
-      title: "Where Was the Data Collected?",
-      description: "Specify the location of data collection (e.g., geographical location or platform).",
-      field: "dataLocation"
-    },
-    {
-      id: 3,
-      title: "When Was the Data Collected?",
-      description: "Indicate the period during which data collection took place.",
-      field: "dataCollectionTime"
-    },
-    {
-      id: 4,
-      title: "How Was the Data Collected?",
-      description: "Describe the methods used for data collection, such as online surveys, interviews, or observations.",
-      field: "dataCollectionMethod"
-    },
-    {
-      id: 5,
-      title: "What Is the Objective of the Study?",
-      description: "Define the main goal of the study, such as analyzing consumer preferences or assessing service satisfaction.",
-      field: "studyObjective"
-    }
-  ];
-
+  const questions = [{
+    id: 1,
+    title: "Description of the Research Group",
+    description: "Provide a detailed description of the research group: who the participants are, their sample size, key demographic characteristics, or other essential information.",
+    field: "researchGroup"
+  }, {
+    id: 2,
+    title: "Where Was the Data Collected?",
+    description: "Specify the location of data collection (e.g., geographical location or platform).",
+    field: "dataLocation"
+  }, {
+    id: 3,
+    title: "When Was the Data Collected?",
+    description: "Indicate the period during which data collection took place.",
+    field: "dataCollectionTime"
+  }, {
+    id: 4,
+    title: "How Was the Data Collected?",
+    description: "Describe the methods used for data collection, such as online surveys, interviews, or observations.",
+    field: "dataCollectionMethod"
+  }, {
+    id: 5,
+    title: "What Is the Objective of the Study?",
+    description: "Define the main goal of the study, such as analyzing consumer preferences or assessing service satisfaction.",
+    field: "studyObjective"
+  }];
   const currentQuestion = questions[currentStep - 1];
 
   // Show default message if no activities exist
-  const recentActivity = activities.length > 0 ? activities : [
-    { action: "Project created", item: project.name, time: project.updatedAt }
-  ];
-
-  return (
-    <div>
+  const recentActivity = activities.length > 0 ? activities : [{
+    action: "Project created",
+    item: project.name,
+    time: project.updatedAt
+  }];
+  return <div>
       {/* Workflow Section */}
       <Tabs defaultValue="data" className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-8">
@@ -176,20 +150,9 @@ export const ProjectTabs = ({
           </Button>
         </div>
 
-        {notebooks.length === 0 ? (
-          <NoNotebooksState onCreateNotebook={createNewNotebook} />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {notebooks.map((notebook) => (
-              <NotebookCard
-                key={notebook.id}
-                notebook={notebook}
-                projectId={projectId}
-                onDelete={onDeleteNotebook}
-              />
-            ))}
-          </div>
-        )}
+        {notebooks.length === 0 ? <NoNotebooksState onCreateNotebook={createNewNotebook} /> : <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {notebooks.map(notebook => <NotebookCard key={notebook.id} notebook={notebook} projectId={projectId} onDelete={onDeleteNotebook} />)}
+          </div>}
 
         <div className="mt-8">
           {createNotebookSection}
@@ -277,35 +240,19 @@ export const ProjectTabs = ({
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                onClick={() => navigate(`/project/${projectId}/data-upload`)}
-              >
+              <Button variant="outline" className="h-auto p-4 flex-col gap-2" onClick={() => navigate(`/project/${projectId}/data-upload`)}>
                 <Upload className="w-6 h-6" />
                 <span>Upload Data</span>
               </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                disabled
-              >
+              <Button variant="outline" className="h-auto p-4 flex-col gap-2" disabled>
                 <Eye className="w-6 h-6" />
                 <span>Preview Data</span>
               </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                disabled
-              >
+              <Button variant="outline" className="h-auto p-4 flex-col gap-2" disabled>
                 <Download className="w-6 h-6" />
                 <span>Export Data</span>
               </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto p-4 flex-col gap-2"
-                onClick={() => navigate(`/project/${projectId}/data-profiling`)}
-              >
+              <Button variant="outline" className="h-auto p-4 flex-col gap-2" onClick={() => navigate(`/project/${projectId}/data-profiling`)}>
                 <BarChart3 className="w-6 h-6" />
                 <span>Data Profile</span>
               </Button>
@@ -322,10 +269,7 @@ export const ProjectTabs = ({
               Analyze the structure and quality of your data
             </p>
           </div>
-          <Button 
-            onClick={() => navigate(`/project/${projectId}/data-profiling`)}
-            className="gap-2"
-          >
+          <Button onClick={() => navigate(`/project/${projectId}/data-profiling`)} className="gap-2">
             <BarChart3 className="w-4 h-4" />
             Start Profiling
           </Button>
@@ -409,10 +353,7 @@ export const ProjectTabs = ({
               Describe your research data and methodology to provide context for analysis
             </p>
           </div>
-          <Button 
-            onClick={() => navigate(`/project/${projectId}/data-description`)}
-            className="gap-2"
-          >
+          <Button onClick={() => navigate(`/project/${projectId}/data-description`)} className="gap-2">
             <FileText className="w-4 h-4" />
             Edit Description
           </Button>
@@ -420,25 +361,7 @@ export const ProjectTabs = ({
 
         {/* Progress Overview */}
         <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground">Completion Progress</h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {Object.values(formData).filter(Boolean).length} of 5 questions answered
-                  </p>
-                </div>
-                <Badge variant="secondary" className="text-sm">
-                  {Math.round((Object.values(formData).filter(Boolean).length / 5) * 100)}% Complete
-                </Badge>
-              </div>
-              <Progress 
-                value={(Object.values(formData).filter(Boolean).length / 5) * 100} 
-                className="h-2"
-              />
-            </div>
-          </CardContent>
+          
         </Card>
 
         {/* Step Navigation Cards */}
@@ -454,45 +377,22 @@ export const ProjectTabs = ({
                 const labels = ['Who?', 'Where?', 'When?', 'How?', 'Why?'];
                 const isActive = currentStep === question.id;
                 const isCompleted = formData[question.field as keyof typeof formData];
-                
-                return (
-                  <button
-                    key={question.id}
-                    onClick={() => goToStep(question.id)}
-                    className={`group relative p-4 rounded-xl border-2 transition-all duration-200 text-left ${
-                      isActive
-                        ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
-                        : isCompleted
-                        ? 'border-green-200 bg-green-50 hover:border-green-300 hover:shadow-md'
-                        : 'border-border bg-background hover:border-primary/30 hover:shadow-md'
-                    }`}
-                  >
+                return <button key={question.id} onClick={() => goToStep(question.id)} className={`group relative p-4 rounded-xl border-2 transition-all duration-200 text-left ${isActive ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10' : isCompleted ? 'border-green-200 bg-green-50 hover:border-green-300 hover:shadow-md' : 'border-border bg-background hover:border-primary/30 hover:shadow-md'}`}>
                     <div className="flex items-start justify-between mb-2">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${
-                        isActive
-                          ? 'bg-primary text-primary-foreground'
-                          : isCompleted
-                          ? 'bg-green-500 text-white'
-                          : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'
-                      }`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${isActive ? 'bg-primary text-primary-foreground' : isCompleted ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'}`}>
                         {isCompleted ? <Check className="w-4 h-4" /> : question.id}
                       </div>
-                      {isActive && (
-                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                      )}
+                      {isActive && <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />}
                     </div>
                     <div>
-                      <p className={`text-sm font-semibold mb-1 ${
-                        isActive ? 'text-primary' : isCompleted ? 'text-green-700' : 'text-foreground'
-                      }`}>
+                      <p className={`text-sm font-semibold mb-1 ${isActive ? 'text-primary' : isCompleted ? 'text-green-700' : 'text-foreground'}`}>
                         {labels[index]}
                       </p>
                       <p className="text-xs text-muted-foreground line-clamp-2">
                         {question.title.replace(/^(Description of the Research Group|Where Was the Data Collected\?|When Was the Data Collected\?|How Was the Data Collected\?|What Is the Objective of the Study\?)/, '').trim() || question.title}
                       </p>
                     </div>
-                  </button>
-                );
+                  </button>;
               })}
             </div>
 
@@ -516,13 +416,7 @@ export const ProjectTabs = ({
                 <Label htmlFor="current-question" className="text-sm font-medium">
                   Your Response
                 </Label>
-                <Textarea
-                  id="current-question"
-                  placeholder="Type your answer here..."
-                  value={formData[currentQuestion.field as keyof typeof formData]}
-                  onChange={(e) => updateFormData(currentQuestion.field, e.target.value)}
-                  className="min-h-[140px] resize-none"
-                />
+                <Textarea id="current-question" placeholder="Type your answer here..." value={formData[currentQuestion.field as keyof typeof formData]} onChange={e => updateFormData(currentQuestion.field, e.target.value)} className="min-h-[140px] resize-none" />
                 <p className="text-xs text-muted-foreground">
                   {formData[currentQuestion.field as keyof typeof formData]?.length || 0} characters
                 </p>
@@ -531,36 +425,24 @@ export const ProjectTabs = ({
 
             {/* Navigation */}
             <div className="flex justify-between mt-6">
-              <Button 
-                variant="outline" 
-                onClick={prevStep}
-                disabled={currentStep === 1}
-                className="gap-2"
-              >
+              <Button variant="outline" onClick={prevStep} disabled={currentStep === 1} className="gap-2">
                 <ChevronLeft className="w-4 h-4" />
                 Previous
               </Button>
               
               <div className="flex gap-2">
-                {currentStep < 5 ? (
-                  <Button onClick={nextStep} className="gap-2">
+                {currentStep < 5 ? <Button onClick={nextStep} className="gap-2">
                     Next
                     <ChevronRight className="w-4 h-4" />
-                  </Button>
-                ) : (
-                  <Button 
-                    onClick={() => {
-                      toast({
-                        title: "Description Saved",
-                        description: "Your data description has been saved successfully."
-                      });
-                    }}
-                    className="gap-2"
-                  >
+                  </Button> : <Button onClick={() => {
+                  toast({
+                    title: "Description Saved",
+                    description: "Your data description has been saved successfully."
+                  });
+                }} className="gap-2">
                     <Check className="w-4 h-4" />
                     Save Description
-                  </Button>
-                )}
+                  </Button>}
               </div>
             </div>
           </CardContent>
@@ -574,29 +456,19 @@ export const ProjectTabs = ({
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {questions.map((question) => (
-                <div key={question.id} className="space-y-2">
+              {questions.map(question => <div key={question.id} className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className={`w-4 h-4 rounded-full ${
-                      formData[question.field as keyof typeof formData] 
-                        ? 'bg-green-500' 
-                        : 'bg-gray-300'
-                    }`} />
+                    <div className={`w-4 h-4 rounded-full ${formData[question.field as keyof typeof formData] ? 'bg-green-500' : 'bg-gray-300'}`} />
                     <Label className="text-sm font-medium">{question.title}</Label>
                   </div>
                   <p className="text-xs text-muted-foreground pl-6">
-                    {formData[question.field as keyof typeof formData] 
-                      ? `${formData[question.field as keyof typeof formData].substring(0, 50)}${formData[question.field as keyof typeof formData].length > 50 ? '...' : ''}`
-                      : 'Not completed'
-                    }
+                    {formData[question.field as keyof typeof formData] ? `${formData[question.field as keyof typeof formData].substring(0, 50)}${formData[question.field as keyof typeof formData].length > 50 ? '...' : ''}` : 'Not completed'}
                   </p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </CardContent>
         </Card>
       </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>;
 };
