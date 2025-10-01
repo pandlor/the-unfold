@@ -11,7 +11,7 @@ import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 interface ProjectTabsProps {
   project: Project;
@@ -50,6 +50,19 @@ export const ProjectTabs = ({
     dataCollectionMethod: project.dataDescription?.dataCollectionMethod || '',
     studyObjective: project.dataDescription?.studyObjective || ''
   });
+
+  // Update form data when project data changes
+  useEffect(() => {
+    if (project.dataDescription) {
+      setFormData({
+        researchGroup: project.dataDescription.researchGroup || '',
+        dataLocation: project.dataDescription.dataLocation || '',
+        dataCollectionTime: project.dataDescription.dataCollectionTime || '',
+        dataCollectionMethod: project.dataDescription.dataCollectionMethod || '',
+        studyObjective: project.dataDescription.studyObjective || ''
+      });
+    }
+  }, [project.dataDescription]);
   const createNewNotebook = () => {
     const notebookNumber = notebooks.length + 1;
     const newNotebook = {

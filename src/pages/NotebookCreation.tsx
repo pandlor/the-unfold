@@ -187,7 +187,12 @@ const NotebookCreation = () => {
       </Layout>;
   }
   return <Layout>
-      <ProjectHeader project={currentProject} activeManagementTab={activeManagementTab} onManagementTabChange={setActiveManagementTab} />
+      <ProjectHeader 
+        key={`project-header-${currentProject.id}-${JSON.stringify(currentProject.dataDescription)}`}
+        project={currentProject} 
+        activeManagementTab={activeManagementTab} 
+        onManagementTabChange={setActiveManagementTab} 
+      />
           
           <main className="flex-1 p-8 bg-slate-50/0">
             <div className="w-full max-w-6xl mx-auto">
