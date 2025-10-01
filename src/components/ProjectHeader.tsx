@@ -51,6 +51,13 @@ export const ProjectHeader = ({
       handleCancel();
     }
   };
+  const progress = calculateProjectProgress(project.id);
+  
+  // Circular progress bar calculations
+  const radius = 45;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
   return <div className="border-b border-border bg-card/50 backdrop-blur-sm">
       <div className="p-6">
         {showBackButton && <Button variant="ghost" onClick={() => navigate("/")} className="mb-4 hover:bg-muted/50">
@@ -58,24 +65,25 @@ export const ProjectHeader = ({
             Back to Projects
           </Button>}
         
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg">
+        <div className="flex items-start justify-between gap-8">
+          {/* Left Section - Project Info */}
+          <div className="flex items-start gap-4 flex-1">
+            <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg flex-shrink-0">
               <FolderOpen className="w-6 h-6 text-primary" />
             </div>
-            <div>
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 {isEditing ? <div className="flex items-center gap-2">
                     <Input value={editName} onChange={e => setEditName(e.target.value)} onKeyDown={handleKeyPress} className="text-2xl font-bold h-auto py-1 px-2 border-primary/50 focus:border-primary" autoFocus />
-                    <Button size="sm" onClick={handleSave} className="h-8 w-8 p-0">
+                    <Button size="sm" onClick={handleSave} className="h-8 w-8 p-0 flex-shrink-0">
                       <Check className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={handleCancel} className="h-8 w-8 p-0">
+                    <Button size="sm" variant="ghost" onClick={handleCancel} className="h-8 w-8 p-0 flex-shrink-0">
                       <X className="w-4 h-4" />
                     </Button>
                   </div> : <div className="flex items-center gap-2 group">
-                    <h1 className="text-2xl font-bold text-foreground">{project.name}</h1>
-                    <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)} className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <h1 className="text-2xl font-bold text-foreground truncate">{project.name}</h1>
+                    <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)} className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                       <Edit2 className="w-4 h-4" />
                     </Button>
                   </div>}
@@ -92,25 +100,127 @@ export const ProjectHeader = ({
               </div>
             </div>
           </div>
-          
-          <div className="flex items-start gap-4">
+
+          {/* Right Section - Key Stats */}
+          <div className="flex gap-3 flex-shrink-0">
+            <Card className="w-40 bg-blue-500/5 border-blue-500/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Database className="w-5 h-5 text-blue-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Datasets</p>
+                    <p className="text-xs text-muted-foreground">
+                      {project.progress?.uploadedDatasets.length || 0} uploaded
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             
+            <Card className="w-40 bg-green-500/5 border-green-500/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <FileSpreadsheet className="w-5 h-5 text-green-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Data Profiling</p>
+                    <p className="text-xs text-muted-foreground">
+                      {project.progress?.profilingCompleted ? "Completed" : "Not started"}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             
-            {/* Management Buttons - Vertical Layout */}
-            <div className="flex flex-col gap-2">
-              <Button variant={activeManagementTab === "overview" ? "default" : "ghost"} size="sm" onClick={() => onManagementTabChange?.("overview")} className={`justify-start gap-2 min-w-[120px] h-9 ${activeManagementTab !== "overview" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}>
-                <BarChart3 className="w-4 h-4" />
-                Dashboard
-              </Button>
-              <Button variant={activeManagementTab === "activity" ? "default" : "ghost"} size="sm" onClick={() => onManagementTabChange?.("activity")} className={`justify-start gap-2 min-w-[120px] h-9 ${activeManagementTab !== "activity" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}>
-                <Activity className="w-4 h-4" />
-                Activity
-              </Button>
-              <Button variant={activeManagementTab === "settings" ? "default" : "ghost"} size="sm" onClick={() => onManagementTabChange?.("settings")} className={`justify-start gap-2 min-w-[120px] h-9 ${activeManagementTab !== "settings" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}>
-                <Settings className="w-4 h-4" />
-                Settings
-              </Button>
-            </div>
+            <Card className="w-40 bg-purple-500/5 border-purple-500/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Target className="w-5 h-5 text-purple-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Hypotheses</p>
+                    <p className="text-xs text-muted-foreground">
+                      {project.progress?.hypothesesCount || 0} created
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Center Section - Progress & Management */}
+        <div className="flex items-start gap-8 mt-8">
+          {/* Circular Progress */}
+          <Card className="bg-muted/20 border-border/50">
+            <CardContent className="p-6">
+              <h3 className="text-sm font-medium text-muted-foreground mb-4">Project Progress</h3>
+              <div className="relative w-32 h-32 mx-auto">
+                <svg className="transform -rotate-90 w-32 h-32">
+                  {/* Background circle */}
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth="8"
+                    fill="none"
+                    className="text-muted/20"
+                  />
+                  {/* Progress circle */}
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth="8"
+                    fill="none"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    className="text-primary transition-all duration-500"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold">{progress.toFixed(0)}%</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Management Buttons */}
+          <div className="flex gap-3">
+            <Button 
+              variant={activeManagementTab === "overview" ? "default" : "ghost"} 
+              size="lg"
+              onClick={() => onManagementTabChange?.("overview")} 
+              className={`gap-2 min-w-[140px] h-auto py-4 ${activeManagementTab !== "overview" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}
+            >
+              <BarChart3 className="w-5 h-5" />
+              <span className="font-medium">Dashboard</span>
+            </Button>
+            <Button 
+              variant={activeManagementTab === "activity" ? "default" : "ghost"} 
+              size="lg"
+              onClick={() => onManagementTabChange?.("activity")} 
+              className={`gap-2 min-w-[140px] h-auto py-4 ${activeManagementTab !== "activity" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}
+            >
+              <Activity className="w-5 h-5" />
+              <span className="font-medium">Activity</span>
+            </Button>
+            <Button 
+              variant={activeManagementTab === "settings" ? "default" : "ghost"} 
+              size="lg"
+              onClick={() => onManagementTabChange?.("settings")} 
+              className={`gap-2 min-w-[140px] h-auto py-4 ${activeManagementTab !== "settings" ? "bg-muted text-muted-foreground hover:bg-muted/80" : ""}`}
+            >
+              <Settings className="w-5 h-5" />
+              <span className="font-medium">Settings</span>
+            </Button>
           </div>
         </div>
         
@@ -118,10 +228,9 @@ export const ProjectHeader = ({
         <Collapsible open={isOverviewOpen} onOpenChange={setIsOverviewOpen} className="mt-6">
           <CollapsibleTrigger asChild>
             <Button variant="ghost" className="w-full justify-between p-3 h-auto bg-muted/20 hover:bg-muted/40 rounded-lg border border-border/50">
-              <div className="flex items-center gap-2 flex-1">
-                <span className="text-sm text-muted-foreground">Project Progress</span>
-                <Progress value={calculateProjectProgress(project.id)} className="flex-1 max-w-xs" />
-                <span className="text-sm text-muted-foreground">{calculateProjectProgress(project.id)}%</span>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">Project Overview</span>
               </div>
               {isOverviewOpen ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
             </Button>
@@ -129,79 +238,31 @@ export const ProjectHeader = ({
           
           <CollapsibleContent>
             <Card className="mt-2 bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                  Project Overview
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Description Fields */}
-                  <div className="grid grid-cols-1 gap-3 p-4 bg-background/60 rounded-lg border border-border/50">
-                    <div>
-                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1 block">
-                        Data Description
-                      </label>
-                      <p className="text-sm text-foreground">
-                        {project.description || "No data description provided yet"}
-                      </p>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1 block">
-                        Research Group
-                      </label>
-                      <p className="text-sm text-foreground">
-                        {project.researchGroup || "No research group specified"}
-                      </p>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1 block">
-                        Goals
-                      </label>
-                      <p className="text-sm text-foreground">
-                        {project.goals || "No goals defined yet"}
-                      </p>
-                    </div>
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">
+                      Data Description
+                    </label>
+                    <p className="text-sm text-foreground">
+                      {project.description || "No data description provided yet"}
+                    </p>
                   </div>
-
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                      <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                        <Database className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Datasets</p>
-                        <p className="text-xs text-muted-foreground">
-                          {project.progress?.uploadedDatasets.length || 0} uploaded
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                      <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                        <FileSpreadsheet className="w-5 h-5 text-green-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Data Profiling</p>
-                        <p className="text-xs text-muted-foreground">
-                          {project.progress?.profilingCompleted ? "Completed" : "Not started"}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3 p-3 bg-background/60 rounded-lg">
-                      <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                        <Target className="w-5 h-5 text-purple-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Hypotheses</p>
-                        <p className="text-xs text-muted-foreground">
-                          {project.progress?.hypothesesCount || 0} created
-                        </p>
-                      </div>
-                    </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">
+                      Research Group
+                    </label>
+                    <p className="text-sm text-foreground">
+                      {project.researchGroup || "No research group specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">
+                      Goals
+                    </label>
+                    <p className="text-sm text-foreground">
+                      {project.goals || "No goals defined yet"}
+                    </p>
                   </div>
                 </div>
               </CardContent>
