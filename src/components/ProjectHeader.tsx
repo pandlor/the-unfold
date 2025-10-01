@@ -346,7 +346,7 @@ export const ProjectHeader = ({
           
           <CollapsibleContent className="animate-accordion-down">
             <Card className="mt-3 bg-gradient-to-br from-muted/30 to-muted/10 border-border/50 shadow-sm">
-              <CardContent className="p-6">
+              <CardContent className="p-6" key={`project-details-${project.id}-${project.updatedAt}`}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
