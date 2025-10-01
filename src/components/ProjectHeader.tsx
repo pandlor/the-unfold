@@ -272,53 +272,53 @@ export const ProjectHeader = ({
 
           {/* Right: Key Metrics Dashboard - Compact & Consistent */}
           <div className="col-span-12 lg:col-span-4">
-            <div className="space-y-3">
+            <div className="space-y-2">
               <Card className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border-blue-500/20 hover:border-blue-500/30 transition-all shadow-sm hover:shadow-md">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-500/15 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <Database className="w-6 h-6 text-blue-600" />
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 bg-blue-500/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Database className="w-5 h-5 text-blue-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">Datasets</p>
-                      <p className="text-2xl font-bold text-blue-600">
+                      <p className="text-xs font-semibold text-foreground">Datasets</p>
+                      <p className="text-xl font-bold text-blue-600">
                         {project.progress?.uploadedDatasets.length || 0}
                       </p>
-                      <p className="text-xs text-muted-foreground">files uploaded</p>
+                      <p className="text-[10px] text-muted-foreground">files uploaded</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               
               <Card className="bg-gradient-to-br from-green-500/10 to-green-500/5 border-green-500/20 hover:border-green-500/30 transition-all shadow-sm hover:shadow-md">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-500/15 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <FileSpreadsheet className="w-6 h-6 text-green-600" />
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 bg-green-500/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <FileSpreadsheet className="w-5 h-5 text-green-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">Data Profiling</p>
-                      <p className={`text-lg font-bold ${project.progress?.profilingCompleted ? "text-green-600" : "text-muted-foreground"}`}>
+                      <p className="text-xs font-semibold text-foreground">Data Profiling</p>
+                      <p className={`text-base font-bold ${project.progress?.profilingCompleted ? "text-green-600" : "text-muted-foreground"}`}>
                         {project.progress?.profilingCompleted ? "Complete" : "Pending"}
                       </p>
-                      <p className="text-xs text-muted-foreground">analysis status</p>
+                      <p className="text-[10px] text-muted-foreground">analysis status</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               
               <Card className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 border-purple-500/20 hover:border-purple-500/30 transition-all shadow-sm hover:shadow-md">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-purple-500/15 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <Target className="w-6 h-6 text-purple-600" />
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 bg-purple-500/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Target className="w-5 h-5 text-purple-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">Hypotheses</p>
-                      <p className="text-2xl font-bold text-purple-600">
+                      <p className="text-xs font-semibold text-foreground">Hypotheses</p>
+                      <p className="text-xl font-bold text-purple-600">
                         {project.progress?.hypothesesCount || 0}
                       </p>
-                      <p className="text-xs text-muted-foreground">created & tested</p>
+                      <p className="text-[10px] text-muted-foreground">created & tested</p>
                     </div>
                   </div>
                 </CardContent>
