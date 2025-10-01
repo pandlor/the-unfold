@@ -11,7 +11,7 @@ import { NoNotebooksState } from "@/components/empty-states/NoNotebooksState";
 import { Project, Notebook, useProjects } from "@/contexts/ProjectContext";
 import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 interface ProjectTabsProps {
   project: Project;
@@ -19,7 +19,7 @@ interface ProjectTabsProps {
   projectId: string;
   onCreateNotebook: () => void;
   onDeleteNotebook: (notebookId: string, notebookName: string) => void;
-  createNotebookSection: React.ReactNode;
+  createNotebookSection: ReactNode;
 }
 export const ProjectTabs = ({
   project,
