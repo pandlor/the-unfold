@@ -28,6 +28,13 @@ export interface Project {
   description?: string;
   researchGroup?: string;
   goals?: string;
+  dataDescription?: {
+    researchGroup: string;
+    dataLocation: string;
+    dataCollectionTime: string;
+    dataCollectionMethod: string;
+    studyObjective: string;
+  };
 }
 
 interface ProjectContextType {

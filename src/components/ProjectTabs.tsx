@@ -34,7 +34,9 @@ export const ProjectTabs = ({
     addActivity
   } = useProjectActivity(projectId);
   const {
-    addNotebook
+    addNotebook,
+    updateProject,
+    updateProjectProgress
   } = useProjects();
   const {
     toast
@@ -42,11 +44,11 @@ export const ProjectTabs = ({
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    researchGroup: '',
-    dataLocation: '',
-    dataCollectionTime: '',
-    dataCollectionMethod: '',
-    studyObjective: ''
+    researchGroup: project.dataDescription?.researchGroup || '',
+    dataLocation: project.dataDescription?.dataLocation || '',
+    dataCollectionTime: project.dataDescription?.dataCollectionTime || '',
+    dataCollectionMethod: project.dataDescription?.dataCollectionMethod || '',
+    studyObjective: project.dataDescription?.studyObjective || ''
   });
   const createNewNotebook = () => {
     const notebookNumber = notebooks.length + 1;
@@ -435,6 +437,13 @@ export const ProjectTabs = ({
                     Next
                     <ChevronRight className="w-4 h-4" />
                   </Button> : <Button onClick={() => {
+                  updateProject(projectId, {
+                    dataDescription: formData,
+                    updatedAt: new Date().toLocaleString()
+                  });
+                  updateProjectProgress(projectId, {
+                    descriptionCompleted: true
+                  });
                   toast({
                     title: "Description Saved",
                     description: "Your data description has been saved successfully."
