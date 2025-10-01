@@ -188,7 +188,7 @@ const NotebookCreation = () => {
   }
   return <Layout>
       <ProjectHeader 
-        key={`project-header-${currentProject.id}-${JSON.stringify(currentProject.dataDescription)}`}
+        key={`project-header-${currentProject.id}-${currentProject.updatedAt}`}
         project={currentProject} 
         activeManagementTab={activeManagementTab} 
         onManagementTabChange={setActiveManagementTab} 

@@ -450,13 +450,30 @@ export const ProjectTabs = ({
                     Next
                     <ChevronRight className="w-4 h-4" />
                   </Button> : <Button onClick={() => {
+                  // Validate that all fields are filled
+                  const allFieldsFilled = Object.values(formData).every(value => value.trim() !== '');
+                  
+                  if (!allFieldsFilled) {
+                    toast({
+                      title: "Incomplete Description",
+                      description: "Please fill in all fields before saving.",
+                      variant: "destructive"
+                    });
+                    return;
+                  }
+
+                  // Save the description and update progress
                   updateProject(projectId, {
                     dataDescription: formData,
                     updatedAt: new Date().toLocaleString()
                   });
+                  
                   updateProjectProgress(projectId, {
                     descriptionCompleted: true
                   });
+                  
+                  addActivity("Data description saved", "All 5W questions completed");
+                  
                   toast({
                     title: "Description Saved",
                     description: "Your data description has been saved successfully."

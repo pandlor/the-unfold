@@ -348,81 +348,81 @@ export const ProjectHeader = ({
             <Card className="mt-3 bg-gradient-to-br from-muted/30 to-muted/10 border-border/50 shadow-sm">
               <CardContent className="p-6" key={`project-details-${project.id}-${project.updatedAt}`}>
                 {project.dataDescription ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Who - Research Group */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                          <Users className="w-4 h-4 text-blue-600" />
-                        </div>
-                        <label className="text-sm font-semibold text-foreground">
-                          Who? <span className="text-xs text-muted-foreground font-normal">Research Group</span>
-                        </label>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {project.dataDescription.researchGroup || "Not specified"}
-                      </p>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Who - Research Group */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Users className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <label className="text-sm font-semibold text-foreground">
+                    Who? <span className="text-xs text-muted-foreground font-normal">Research Group</span>
+                  </label>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.dataDescription?.researchGroup || "Not specified"}
+                </p>
+              </div>
                     
-                    {/* Where - Data Location */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center">
-                          <MapPin className="w-4 h-4 text-green-600" />
-                        </div>
-                        <label className="text-sm font-semibold text-foreground">
-                          Where? <span className="text-xs text-muted-foreground font-normal">Data Location</span>
-                        </label>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {project.dataDescription.dataLocation || "Not specified"}
-                      </p>
-                    </div>
-                    
-                    {/* When - Collection Time */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                          <Clock className="w-4 h-4 text-purple-600" />
-                        </div>
-                        <label className="text-sm font-semibold text-foreground">
-                          When? <span className="text-xs text-muted-foreground font-normal">Collection Time</span>
-                        </label>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {project.dataDescription.dataCollectionTime || "Not specified"}
-                      </p>
-                    </div>
-                    
-                    {/* How - Collection Method */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 bg-orange-500/10 rounded-lg flex items-center justify-center">
-                          <Settings className="w-4 h-4 text-orange-600" />
-                        </div>
-                        <label className="text-sm font-semibold text-foreground">
-                          How? <span className="text-xs text-muted-foreground font-normal">Collection Method</span>
-                        </label>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {project.dataDescription.dataCollectionMethod || "Not specified"}
-                      </p>
-                    </div>
-                    
-                    {/* Why - Study Objective */}
-                    <div className="md:col-span-2 lg:col-span-2">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Target className="w-4 h-4 text-primary" />
-                        </div>
-                        <label className="text-sm font-semibold text-foreground">
-                          Why? <span className="text-xs text-muted-foreground font-normal">Study Objective</span>
-                        </label>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {project.dataDescription.studyObjective || "Not specified"}
-                      </p>
-                    </div>
+              {/* Where - Data Location */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-4 h-4 text-green-600" />
+                  </div>
+                  <label className="text-sm font-semibold text-foreground">
+                    Where? <span className="text-xs text-muted-foreground font-normal">Data Location</span>
+                  </label>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.dataDescription?.dataLocation || "Not specified"}
+                </p>
+              </div>
+
+              {/* When - Collection Time */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <label className="text-sm font-semibold text-foreground">
+                    When? <span className="text-xs text-muted-foreground font-normal">Collection Time</span>
+                  </label>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.dataDescription?.dataCollectionTime || "Not specified"}
+                </p>
+              </div>
+
+              {/* How - Collection Method */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-orange-500/10 rounded-lg flex items-center justify-center">
+                    <Settings className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <label className="text-sm font-semibold text-foreground">
+                    How? <span className="text-xs text-muted-foreground font-normal">Collection Method</span>
+                  </label>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.dataDescription?.dataCollectionMethod || "Not specified"}
+                </p>
+              </div>
+
+              {/* Why - Study Objective */}
+              <div className="md:col-span-2 lg:col-span-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Target className="w-4 h-4 text-primary" />
+                  </div>
+                  <label className="text-sm font-semibold text-foreground">
+                    Why? <span className="text-xs text-muted-foreground font-normal">Study Objective</span>
+                  </label>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.dataDescription?.studyObjective || "Not specified"}
+                </p>
+              </div>
                   </div>
                 ) : (
                   <div className="text-center py-8">
