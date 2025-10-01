@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,7 @@ import { Save, FileText, Calendar, Globe, Users, Target, ChevronLeft, ChevronRig
 
 const DataDescription = () => {
   const { projectId } = useParams();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -200,10 +201,18 @@ const DataDescription = () => {
                       <ChevronRight className="w-4 h-4" />
                     </Button>
                   ) : (
-                    <Button onClick={saveDataDescription} className="gap-2">
-                      <Save className="w-4 h-4" />
-                      Save Data Description
-                    </Button>
+                    <>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => navigate(`/project/${projectId}`)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={saveDataDescription} className="gap-2">
+                        <Save className="w-4 h-4" />
+                        Save Data Description
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
