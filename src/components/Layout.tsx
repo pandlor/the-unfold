@@ -6,9 +6,9 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-// Helper function to read sidebar state from cookie
+// Helper function to read sidebar state from cookie (moved outside component)
 const getSidebarStateFromCookie = (): boolean => {
-  if (typeof document === 'undefined') return true; // Default to open on server
+  if (typeof document === 'undefined') return true;
   
   const cookies = document.cookie.split(';');
   const sidebarCookie = cookies.find(cookie => 
@@ -20,24 +20,11 @@ const getSidebarStateFromCookie = (): boolean => {
     return value === 'true';
   }
   
-  return true; // Default to open if no cookie found
+  return true;
 };
 
 export default function Layout({ children }: LayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  // Load sidebar state from cookie on mount
-  useEffect(() => {
-    const savedState = getSidebarStateFromCookie();
-    setSidebarOpen(savedState);
-    setIsInitialized(true);
-  }, []);
-
-  // Don't render until we've loaded the saved state
-  if (!isInitialized) {
-    return null;
-  }
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => getSidebarStateFromCookie());
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>

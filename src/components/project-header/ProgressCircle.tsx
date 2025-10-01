@@ -1,5 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 
+const CIRCLE_RADIUS = 43.75;
+const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
+
 interface ProgressCircleProps {
   progress: number;
   uploadedDatasets: number;
@@ -32,7 +35,7 @@ export const ProgressCircle = ({
               <circle
                 cx="50%"
                 cy="50%"
-                r="43.75%"
+                r={`${CIRCLE_RADIUS}%`}
                 stroke="currentColor"
                 strokeWidth="7.5%"
                 fill="none"
@@ -42,16 +45,12 @@ export const ProgressCircle = ({
               <circle
                 cx="50%"
                 cy="50%"
-                r="43.75%"
-                stroke={
-                  progress === 0 ? "currentColor" : "url(#progressGradient)"
-                }
+                r={`${CIRCLE_RADIUS}%`}
+                stroke={progress === 0 ? "currentColor" : "url(#progressGradient)"}
                 strokeWidth="7.5%"
                 fill="none"
-                strokeDasharray={2 * Math.PI * 43.75}
-                strokeDashoffset={
-                  2 * Math.PI * 43.75 - (progress / 100) * 2 * Math.PI * 43.75
-                }
+                strokeDasharray={CIRCLE_CIRCUMFERENCE}
+                strokeDashoffset={CIRCLE_CIRCUMFERENCE - (progress / 100) * CIRCLE_CIRCUMFERENCE}
                 className={`transition-all duration-700 ease-out ${
                   progress === 0 ? "text-muted/40" : ""
                 }`}
