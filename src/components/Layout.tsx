@@ -41,10 +41,10 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 flex flex-col overflow-x-hidden">
           {children}
         </main>
       </div>
