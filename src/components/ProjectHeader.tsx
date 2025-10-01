@@ -122,28 +122,28 @@ export const ProjectHeader = ({
                     Project completion status
                   </p>
                   
-                  <div className="relative w-40 h-40 mx-auto mb-4">
-                    <svg className="transform -rotate-90 w-40 h-40">
+                  <div className="relative w-full aspect-square max-w-[160px] mx-auto mb-4">
+                    <svg className="transform -rotate-90 w-full h-full">
                       {/* Background circle */}
                       <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
+                        cx="50%"
+                        cy="50%"
+                        r="43.75%"
                         stroke="currentColor"
-                        strokeWidth="12"
+                        strokeWidth="7.5%"
                         fill="none"
                         className="text-muted/20"
                       />
                       {/* Progress circle with conditional gradient */}
                       <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
+                        cx="50%"
+                        cy="50%"
+                        r="43.75%"
                         stroke={progress === 0 ? "currentColor" : "url(#progressGradient)"}
-                        strokeWidth="12"
+                        strokeWidth="7.5%"
                         fill="none"
-                        strokeDasharray={2 * Math.PI * 70}
-                        strokeDashoffset={2 * Math.PI * 70 - (progress / 100) * 2 * Math.PI * 70}
+                        strokeDasharray={2 * Math.PI * 43.75}
+                        strokeDashoffset={2 * Math.PI * 43.75 - (progress / 100) * 2 * Math.PI * 43.75}
                         className={`transition-all duration-700 ease-out ${progress === 0 ? 'text-muted/40' : ''}`}
                         strokeLinecap="round"
                       />
@@ -155,7 +155,7 @@ export const ProjectHeader = ({
                       </defs>
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-4xl font-bold text-foreground">{progress.toFixed(0)}%</span>
+                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">{progress.toFixed(0)}%</span>
                       <span className="text-xs text-muted-foreground mt-1">complete</span>
                     </div>
                   </div>
