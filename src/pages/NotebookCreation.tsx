@@ -198,7 +198,7 @@ const NotebookCreation = () => {
             <div className="w-full max-w-6xl mx-auto">
               
               {/* Content based on active management tab */}
-              {activeManagementTab === "overview" && <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={() => {}} onDeleteNotebook={handleDeleteNotebook} activeTab={activeDashboardTab} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
+              {activeManagementTab === "overview" && <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={() => {}} onDeleteNotebook={handleDeleteNotebook} activeTab={activeDashboardTab} onTabChange={setActiveDashboardTab} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
                       <CardHeader>
                         <div className="flex items-center gap-3">
                           <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">
