@@ -113,13 +113,13 @@ export const ProjectTabs = ({
       {/* Workflow Section */}
       <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="data" className="gap-2">
-            <Upload className="w-4 h-4" />
-            Data
-          </TabsTrigger>
           <TabsTrigger value="description" className="gap-2">
             <FileText className="w-4 h-4" />
             Description
+          </TabsTrigger>
+          <TabsTrigger value="data" className="gap-2">
+            <Upload className="w-4 h-4" />
+            Data
           </TabsTrigger>
           <TabsTrigger value="profiling" className="gap-2">
             <TrendingUp className="w-4 h-4" />
