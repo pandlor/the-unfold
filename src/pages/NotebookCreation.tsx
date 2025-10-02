@@ -54,10 +54,8 @@ const NotebookCreation = () => {
   const currentProject = projects.find(p => p.id === projectId);
   const notebooks = currentProject?.notebooks || [];
 
-  // Get real project activities
-  const {
-    activities
-  } = useProjectActivity(projectId!);
+  // Get real project activities (activities already retrieved via addActivity hook above)
+  const { activities } = useProjectActivity(projectId!);
 
   // Initialize edited project name when project loads
   React.useEffect(() => {
