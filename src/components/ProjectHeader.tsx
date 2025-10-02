@@ -163,7 +163,9 @@ export const ProjectHeader = ({
             <MetricsCards
               datasetsCount={project.progress?.uploadedDatasets.length || 0}
               profilingCompleted={project.progress?.profilingCompleted || false}
-              hypothesesCount={project.progress?.hypothesesCount || 0}
+              hypothesesCount={project.notebooks?.length || 0}
+              projectId={project.id}
+              onTabChange={onManagementTabChange}
             />
           </div>
         </div>
