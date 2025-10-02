@@ -18,15 +18,16 @@ export const ProgressCircle = ({
   return (
     <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-md hover:shadow-lg transition-shadow">
       <CardContent className="p-6">
-        <div className="text-center">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-1">
-            Overall Progress
-          </h3>
-          <p className="text-xs text-muted-foreground/80 mb-4">
-            Project completion status
-          </p>
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+          Overall Progress
+        </h3>
+        <p className="text-xs text-muted-foreground/80 mb-6">
+          Project completion status
+        </p>
 
-          <div className="relative w-full aspect-square max-w-[160px] mx-auto mb-4">
+        <div className="flex items-center gap-6">
+          {/* Progress Circle */}
+          <div className="relative w-[140px] h-[140px] flex-shrink-0">
             <svg className="transform -rotate-90 w-full h-full">
               {/* Background circle */}
               <circle
@@ -88,54 +89,55 @@ export const ProgressCircle = ({
             </div>
           </div>
 
-          <div className="space-y-2 text-left">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Data Upload</span>
+          {/* Progress Items */}
+          <div className="flex-1 space-y-3">
+            <div className="flex items-center gap-2 text-sm">
               <span
-                className={`font-medium ${
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
                   uploadedDatasets > 0
-                    ? "text-green-600"
-                    : "text-muted-foreground"
+                    ? "bg-green-100 text-green-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {uploadedDatasets > 0 ? "✓" : "○"}
               </span>
+              <span className="text-muted-foreground">Data Upload</span>
             </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Data Profiling</span>
+            <div className="flex items-center gap-2 text-sm">
               <span
-                className={`font-medium ${
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
                   profilingCompleted
-                    ? "text-green-600"
-                    : "text-muted-foreground"
+                    ? "bg-green-100 text-green-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {profilingCompleted ? "✓" : "○"}
               </span>
+              <span className="text-muted-foreground">Data Profiling</span>
             </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Hypotheses</span>
+            <div className="flex items-center gap-2 text-sm">
               <span
-                className={`font-medium ${
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
                   hypothesesCount > 0
-                    ? "text-green-600"
-                    : "text-muted-foreground"
+                    ? "bg-green-100 text-green-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {hypothesesCount > 0 ? "✓" : "○"}
               </span>
+              <span className="text-muted-foreground">Hypotheses</span>
             </div>
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">Analysis</span>
+            <div className="flex items-center gap-2 text-sm">
               <span
-                className={`font-medium ${
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
                   analysisCompleted
-                    ? "text-green-600"
-                    : "text-muted-foreground"
+                    ? "bg-green-100 text-green-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {analysisCompleted ? "✓" : "○"}
               </span>
+              <span className="text-muted-foreground">Analysis</span>
             </div>
           </div>
         </div>

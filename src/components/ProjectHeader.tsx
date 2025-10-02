@@ -148,7 +148,7 @@ export const ProjectHeader = ({
         {/* Main Content Area - Responsive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
           {/* Left: Progress Circle */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-6">
             <ProgressCircle
               progress={progress}
               uploadedDatasets={project.progress?.uploadedDatasets.length || 0}
@@ -158,16 +158,8 @@ export const ProjectHeader = ({
             />
           </div>
 
-          {/* Center: Management Tabs */}
-          <div className="lg:col-span-5">
-            <ManagementTabs
-              activeTab={activeManagementTab}
-              onTabChange={onManagementTabChange}
-            />
-          </div>
-
           {/* Right: Metrics Cards */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-6">
             <MetricsCards
               datasetsCount={project.progress?.uploadedDatasets.length || 0}
               profilingCompleted={project.progress?.profilingCompleted || false}
@@ -286,6 +278,14 @@ export const ProjectHeader = ({
             </Card>
           </CollapsibleContent>
         </Collapsible>
+
+        {/* Project Management Tabs */}
+        <div className="mt-6">
+          <ManagementTabs
+            activeTab={activeManagementTab}
+            onTabChange={onManagementTabChange}
+          />
+        </div>
       </div>
     </div>
   );
