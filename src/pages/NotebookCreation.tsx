@@ -20,6 +20,7 @@ const NotebookCreation = () => {
   const [notebookName, setNotebookName] = useState("");
   const [notebookDescription, setNotebookDescription] = useState("");
   const [activeManagementTab, setActiveManagementTab] = useState("overview");
+  const [activeDashboardTab, setActiveDashboardTab] = useState("data");
   const [editedProjectName, setEditedProjectName] = useState("");
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
@@ -189,14 +190,15 @@ const NotebookCreation = () => {
         key={`project-header-${currentProject.id}-${currentProject.updatedAt}`}
         project={currentProject} 
         activeManagementTab={activeManagementTab} 
-        onManagementTabChange={setActiveManagementTab} 
+        onManagementTabChange={setActiveManagementTab}
+        onDashboardTabChange={setActiveDashboardTab}
       />
           
           <main className="flex-1 p-8 bg-slate-50/0">
             <div className="w-full max-w-6xl mx-auto">
               
               {/* Content based on active management tab */}
-              {activeManagementTab === "overview" && <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={() => {}} onDeleteNotebook={handleDeleteNotebook} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
+              {activeManagementTab === "overview" && <ProjectTabs project={currentProject} notebooks={notebooks} projectId={projectId!} onCreateNotebook={() => {}} onDeleteNotebook={handleDeleteNotebook} activeTab={activeDashboardTab} createNotebookSection={<Card className="bg-card/80 backdrop-blur-sm border-border">
                       <CardHeader>
                         <div className="flex items-center gap-3">
                           <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg">

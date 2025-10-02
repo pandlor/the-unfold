@@ -15,12 +15,14 @@ interface ProjectHeaderProps {
   showBackButton?: boolean;
   activeManagementTab?: string;
   onManagementTabChange?: (tab: string) => void;
+  onDashboardTabChange?: (dashboardTab: string) => void;
 }
 export const ProjectHeader = ({
   project,
   showBackButton = true,
   activeManagementTab = "overview",
-  onManagementTabChange
+  onManagementTabChange,
+  onDashboardTabChange
 }: ProjectHeaderProps) => {
   const navigate = useNavigate();
   const {
@@ -165,7 +167,10 @@ export const ProjectHeader = ({
               profilingCompleted={project.progress?.profilingCompleted || false}
               hypothesesCount={project.notebooks?.length || 0}
               projectId={project.id}
-              onTabChange={onManagementTabChange}
+              onTabChange={(managementTab, dashboardTab) => {
+                onManagementTabChange?.(managementTab);
+                onDashboardTabChange?.(dashboardTab);
+              }}
             />
           </div>
         </div>

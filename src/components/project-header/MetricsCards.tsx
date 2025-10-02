@@ -6,7 +6,7 @@ interface MetricsCardsProps {
   profilingCompleted: boolean;
   hypothesesCount: number;
   projectId: string;
-  onTabChange?: (tab: string) => void;
+  onTabChange?: (managementTab: string, dashboardTab: string) => void;
 }
 
 export const MetricsCards = ({
@@ -20,7 +20,7 @@ export const MetricsCards = ({
     <div className="space-y-1.5">
       <Card 
         className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border-blue-500/20 hover:border-blue-500/30 transition-all shadow-sm hover:shadow-md cursor-pointer group"
-        onClick={() => onTabChange?.("data")}
+        onClick={() => onTabChange?.("overview", "data")}
       >
         <CardContent className="p-2.5">
           <div className="flex items-center gap-2">
@@ -38,7 +38,7 @@ export const MetricsCards = ({
 
       <Card 
         className="bg-gradient-to-br from-green-500/10 to-green-500/5 border-green-500/20 hover:border-green-500/30 transition-all shadow-sm hover:shadow-md cursor-pointer group"
-        onClick={() => onTabChange?.("profiling")}
+        onClick={() => onTabChange?.("overview", "profiling")}
       >
         <CardContent className="p-2.5">
           <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const MetricsCards = ({
 
       <Card 
         className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 border-purple-500/20 hover:border-purple-500/30 transition-all shadow-sm hover:shadow-md cursor-pointer group"
-        onClick={() => onTabChange?.("hypotheses")}
+        onClick={() => onTabChange?.("overview", "notebooks")}
       >
         <CardContent className="p-2.5">
           <div className="flex items-center gap-2">

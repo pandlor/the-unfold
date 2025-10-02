@@ -21,6 +21,7 @@ interface ProjectTabsProps {
   onCreateNotebook: () => void;
   onDeleteNotebook: (notebookId: string, notebookName: string) => void;
   createNotebookSection: ReactNode;
+  activeTab?: string;
 }
 export const ProjectTabs = ({
   project,
@@ -28,7 +29,8 @@ export const ProjectTabs = ({
   projectId,
   onCreateNotebook,
   onDeleteNotebook,
-  createNotebookSection
+  createNotebookSection,
+  activeTab = "data"
 }: ProjectTabsProps) => {
   const {
     activities,
@@ -107,7 +109,7 @@ export const ProjectTabs = ({
   }];
   return <div>
       {/* Workflow Section */}
-      <Tabs defaultValue="data" className="w-full">
+      <Tabs value={activeTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-8">
           <TabsTrigger value="data" className="gap-2">
             <Upload className="w-4 h-4" />
