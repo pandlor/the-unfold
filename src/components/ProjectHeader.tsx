@@ -148,7 +148,7 @@ export const ProjectHeader = ({
         {/* Main Content Area - Responsive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
           {/* Left: Progress Circle */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-4">
             <ProgressCircle
               progress={progress}
               uploadedDatasets={project.progress?.uploadedDatasets.length || 0}
@@ -158,16 +158,8 @@ export const ProjectHeader = ({
             />
           </div>
 
-          {/* Center: Management Tabs */}
-          <div className="lg:col-span-5">
-            <ManagementTabs
-              activeTab={activeManagementTab}
-              onTabChange={onManagementTabChange}
-            />
-          </div>
-
           {/* Right: Metrics Cards */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-8">
             <MetricsCards
               datasetsCount={project.progress?.uploadedDatasets.length || 0}
               profilingCompleted={project.progress?.profilingCompleted || false}
@@ -195,7 +187,7 @@ export const ProjectHeader = ({
           
           <CollapsibleContent className="animate-accordion-down">
             <Card className="mt-3 bg-gradient-to-br from-muted/30 to-muted/10 border-border/50 shadow-sm">
-              <CardContent className="p-6" key={`project-details-${project.id}-${project.updatedAt}`}>
+              <CardContent className="p-6 space-y-6" key={`project-details-${project.id}-${project.updatedAt}`}>
                 {project.dataDescription ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Who - Research Group */}
@@ -272,7 +264,7 @@ export const ProjectHeader = ({
                   {project.dataDescription?.studyObjective || "Not specified"}
                 </p>
               </div>
-                  </div>
+                   </div>
                 ) : (
                   <div className="text-center py-8">
                     <FileText className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
@@ -282,6 +274,12 @@ export const ProjectHeader = ({
                     </p>
                   </div>
                 )}
+                
+                {/* Management Tabs */}
+                <ManagementTabs
+                  activeTab={activeManagementTab}
+                  onTabChange={onManagementTabChange}
+                />
               </CardContent>
             </Card>
           </CollapsibleContent>
