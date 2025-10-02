@@ -13,7 +13,6 @@ import { useProjectActivity } from "@/hooks/useProjectActivity";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { DATA_DESCRIPTION_QUESTIONS } from "@/constants/dataDescriptionQuestions";
 interface ProjectTabsProps {
   project: Project;
   notebooks: Notebook[];
@@ -96,7 +95,32 @@ export const ProjectTabs = ({
   const goToStep = (step: number) => {
     setCurrentStep(step);
   };
-  const questions = DATA_DESCRIPTION_QUESTIONS;
+  const questions = [{
+    id: 1,
+    title: "Description of the Research Group",
+    description: "Provide a detailed description of the research group: who the participants are, their sample size, key demographic characteristics, or other essential information.",
+    field: "researchGroup"
+  }, {
+    id: 2,
+    title: "Where Was the Data Collected?",
+    description: "Specify the location of data collection (e.g., geographical location or platform).",
+    field: "dataLocation"
+  }, {
+    id: 3,
+    title: "When Was the Data Collected?",
+    description: "Indicate the period during which data collection took place.",
+    field: "dataCollectionTime"
+  }, {
+    id: 4,
+    title: "How Was the Data Collected?",
+    description: "Describe the methods used for data collection, such as online surveys, interviews, or observations.",
+    field: "dataCollectionMethod"
+  }, {
+    id: 5,
+    title: "What Is the Objective of the Study?",
+    description: "Define the main goal of the study, such as analyzing consumer preferences or assessing service satisfaction.",
+    field: "studyObjective"
+  }];
   const currentQuestion = questions[currentStep - 1];
 
   // Show default message if no activities exist
